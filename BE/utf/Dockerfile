@@ -1,16 +1,5 @@
-FROM openjdk:8-jdk-alpine as builder
-WORKDIR application
+FROM openjdk:8
+EXPOSE 8080
 ARG JAR_FILE=build/libs/*.jar
-COPY ${JAR_FILE} application.jar
-RUN java -Djarmode=layertools -jar application.jar extract
-
-FROM openjdk:8-jdk-alpine
-WORKDIR application
-ENV port 8080
-ENV spring.profiles.active local
-COPY --from=builder application/dependencies/ ./
-COPY --from=builder application/spring-boot-loader/ ./
-COPY --from=builder application/snapshot-dependencies/ ./
-COPY --from=builder application/application/ ./
-
-ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT ["java", "-jar", "/app.jar"]
