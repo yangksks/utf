@@ -11,4 +11,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query(value = "SELECT * FROM user WHERE social_login_type=1 AND social_id=:socialId", nativeQuery = true)
     User findByKakaoSocialId(@Param("socialId") long socialId);
 
+    @Query(value = "SELECT * FROM user WHERE social_login_type=2 AND social_id=:socialId", nativeQuery = true)
+    User findByNaverSocialId(@Param("socialId") String socialId);
+
 }

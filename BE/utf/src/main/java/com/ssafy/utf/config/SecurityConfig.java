@@ -10,6 +10,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests()
                 .antMatchers("/api/user/kakaoLogin").permitAll()
+                .antMatchers("/api/user/naverLogin").permitAll()
                 .anyRequest().authenticated();
+
+        httpSecurity.csrf().disable();
     }
 }
