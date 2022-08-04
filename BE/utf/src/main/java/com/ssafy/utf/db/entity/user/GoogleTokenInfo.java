@@ -6,19 +6,22 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.HashMap;
-
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
 @Setter
 @ToString
-public class KakaoUserInfo {
-    long id;
+public class GoogleTokenInfo {
+    @JsonProperty("access_token")
+    String accessToken;
 
-    String email;
+    @JsonProperty("expires_in")
+    int expiresIn;
 
-    @JsonProperty("kakao_account")
-    private void unpackKakaoAccount(HashMap<String, String> kakaoAccount) {
-        email = kakaoAccount.get("email");
-    }
+    @JsonProperty("refresh_token")
+    String refreshToken;
+
+    String scope;
+
+    @JsonProperty("token_type")
+    String tokenType;
 }

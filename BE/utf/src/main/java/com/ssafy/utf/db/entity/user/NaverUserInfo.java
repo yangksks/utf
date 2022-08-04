@@ -14,6 +14,7 @@ import java.util.HashMap;
 @ToString
 public class NaverUserInfo {
     String id;
+
     String email;
 
     @JsonProperty("response")
