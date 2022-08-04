@@ -43,3 +43,6 @@ out/
 
 # 빌드 시스템에서 자동 생성된 폴더
 !**/src/main/resources/static/
+
+# log
+*.log
