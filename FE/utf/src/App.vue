@@ -3,9 +3,20 @@
     <router-link to="/login">Login</router-link> |
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link>
+    <div v-if="isLogin">로그인 상태</div>
   </nav>
   <router-view />
 </template>
+<script>
+import store from "./store";
+export default {
+  data() {
+    return {
+      isLogin: store.state.userInfo == null ? false : true,
+    };
+  },
+};
+</script>
 
 <style>
 #app {

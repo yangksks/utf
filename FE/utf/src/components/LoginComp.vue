@@ -18,32 +18,6 @@
       src="@/assets/image/btn_google_signin_dark_normal_web@2x.png"
       alt="구글 로그인 버튼"
     />
-    <!-- <div
-      id="g_id_onload"
-      data-client_id="559017688233-mjteopl8jj7akcc85tp72dlhi1vol7r4.apps.googleusercontent.com"
-      data-login_uri="http://localhost:3000/redirect"
-      data-auto_prompt="false"
-    ></div>
-    <div
-      class="g_id_signin"
-      data-type="standard"
-      data-size="large"
-      data-theme="outline"
-      data-text="sign_in_with"
-      data-shape="rectangular"
-      data-logo_alignment="left"
-    ></div>
-    <div id="buttonDiv"></div> -->
-    <!-- <div>
-      <a
-        href="https://accounts.google.com/o/oauth2/v2/auth?client_id=559017688233-mjteopl8jj7akcc85tp72dlhi1vol7r4.apps.googleusercontent.com&
- scope=https%3A//www.googleapis.com/auth/drive.metadata.readonly&
- response_type=code&
- redirect_uri=http://localhost:3000/redirect
-"
-        >aaa</a
-      >
-    </div> -->
   </div>
 </template>
 <script>

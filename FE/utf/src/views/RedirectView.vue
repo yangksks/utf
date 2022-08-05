@@ -2,6 +2,8 @@
 
 <script>
 import axios from "axios";
+import store from "@/store/index.js";
+import router from "@/router/index.js";
 
 async function redirect() {
   const code = new URL(window.location.href).searchParams.get("code");
@@ -17,9 +19,17 @@ async function redirect() {
       })
       .then((res) => {
         console.log(res);
+        if (!res.data["userExist"]) {
+          store.dispatch("saveTempUserInfo", res.data);
+          router.push({ path: "/joinForm" });
+        } else {
+          store.dispatch("saveUserInfo", res.data);
+          router.push({ path: "/" });
+        }
       })
       .catch((err) => {
         console.log(err);
+        router.push({ path: "/login" });
       });
   }
   //네이버 로그인
@@ -33,9 +43,17 @@ async function redirect() {
       })
       .then((res) => {
         console.log(res);
+        if (!res.data["userExist"]) {
+          store.dispatch("saveTempUserInfo", res.data);
+          router.push({ path: "/joinForm" });
+        } else {
+          store.dispatch("saveUserInfo", res.data);
+          router.push({ path: "/" });
+        }
       })
       .catch((err) => {
         console.log(err);
+        router.push({ path: "/login" });
       });
   }
   //구글 로그인
@@ -48,9 +66,17 @@ async function redirect() {
       })
       .then((res) => {
         console.log(res);
+        if (!res.data["userExist"]) {
+          store.dispatch("saveTempUserInfo", res.data);
+          router.push({ path: "/joinForm" });
+        } else {
+          store.dispatch("saveUserInfo", res.data);
+          router.push({ path: "/" });
+        }
       })
       .catch((err) => {
         console.log(err);
+        router.push({ path: "/login" });
       });
   }
 }
