@@ -1,12 +1,11 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue";
-import LoginView from "../views/LoginView.vue";
-import RedirectView from "../views/RedirectView.vue";
-import JoinFormView from "../views/JoinFormView.vue";
+import LoginView from "@/views/LoginView.vue";
+import RedirectView from "@/views/RedirectView.vue";
+import JoinFormView from "@/views/JoinFormView.vue";
 
 const routes = [
   {
-    path: "/login",
+    path: "/",
     name: "login",
     component: LoginView,
   },
@@ -21,14 +20,9 @@ const routes = [
     component: RedirectView,
   },
   {
-    path: "/",
-    name: "home",
-    component: HomeView,
-  },
-  {
     path: "/lecture",
     name: "lecture",
-    component: () => import("@/views/lecture/LectureRoom.vue"),
+    component: () => import("@/views/LectureRoom.vue"),
   },
   {
     path: "/face",

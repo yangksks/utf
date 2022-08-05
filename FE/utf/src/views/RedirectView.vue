@@ -24,7 +24,7 @@ async function redirect() {
           router.push({ path: "/joinForm" });
         } else {
           store.dispatch("saveUserInfo", res.data);
-          router.push({ path: "/" });
+          router.push({ path: "/main" });
         }
       })
       .catch((err) => {
@@ -48,7 +48,7 @@ async function redirect() {
           router.push({ path: "/joinForm" });
         } else {
           store.dispatch("saveUserInfo", res.data);
-          router.push({ path: "/" });
+          router.push({ path: "/main" });
         }
       })
       .catch((err) => {
@@ -71,7 +71,7 @@ async function redirect() {
           router.push({ path: "/joinForm" });
         } else {
           store.dispatch("saveUserInfo", res.data);
-          router.push({ path: "/" });
+          router.push({ path: "/main" });
         }
       })
       .catch((err) => {
