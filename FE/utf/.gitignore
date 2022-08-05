@@ -6,6 +6,7 @@ node_modules
 # local env files
 .env.local
 .env.*.local
+.env
 
 # Log files
 npm-debug.log*
@@ -25,6 +26,3 @@ pnpm-debug.log*
 
 # node_modules
 node_modules/
-
-# 빌드 시스템에서 자동 생성된 폴더
-BE/utf/src/main/resources/static/
