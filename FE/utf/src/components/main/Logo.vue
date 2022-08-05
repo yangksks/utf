@@ -1,6 +1,6 @@
 <template>
   <div @click="goHome()">
-    <img src="../assets/UTFLogo.png" alt="logo" />
+    <img src="@/assets/UTFLogo.png" alt="logo" />
     <h3>UTF</h3>
   </div>
 </template>

@@ -4,7 +4,7 @@
 
 <script>
 // @ is an alias to /src
-import LoginComp from "@/components/LoginComp.vue";
+import LoginComp from "@/components/user/LoginComp.vue";
 
 export default {
   name: "LoginView",
