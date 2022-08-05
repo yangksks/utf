@@ -15,17 +15,26 @@
             <lecture-item></lecture-item>
             <div class="w-100" v-if="index % 4 == 0"></div>
           </b-col>
-          <div id="add-lecture-card">
-            <button>+</button>
-          </div>
+          <b-col sm="3" id="add-lecture-card">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="#000000"
+              viewBox="0 0 50 50"
+              width="80px"
+              height="80px"
+            >
+              <path
+                fill="none"
+                stroke="#000000"
+                stroke-miterlimit="10"
+                stroke-width="2"
+                d="M13 25L37 25M25 13L25 37M25 3A22 22 0 1 0 25 47 22 22 0 1 0 25 3z"
+              />
+            </svg>
+          </b-col>
         </b-row>
       </b-col>
     </b-row>
-    <!-- <div class="left">
-    </div>
-
-    <div class="right">
-    </div> -->
   </b-container>
 </template>
 
@@ -45,7 +54,7 @@ export default {
   },
   data() {
     return {
-      lectures: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+      lectures: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
     };
   },
   methods: {
