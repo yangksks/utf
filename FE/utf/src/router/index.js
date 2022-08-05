@@ -25,14 +25,9 @@ const routes = [
     component: () => import("@/views/LectureRoom.vue"),
   },
   {
-    path: "/face",
-    name: "face",
-    component: () => import("../views/FaceAPIView.vue"),
-  },
-  {
     path: "/main",
     name: "main",
-    component: () => import("../views/Main.vue"),
+    component: () => import("@/views/Main.vue"),
   },
 ];
 
