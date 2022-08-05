@@ -9,6 +9,16 @@
   </nav>
   <router-view />
 </template>
+<script>
+import store from "./store";
+export default {
+  data() {
+    return {
+      isLogin: store.state.userInfo == null ? false : true,
+    };
+  },
+};
+</script>
 
 <style>
 #app {
