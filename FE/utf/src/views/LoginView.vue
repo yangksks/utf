@@ -1,5 +1,5 @@
 <template>
-  <login-comp></login-comp>
+  <LoginComp></LoginComp>
 </template>
 
 <script>

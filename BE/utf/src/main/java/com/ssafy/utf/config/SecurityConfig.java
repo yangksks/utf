@@ -12,6 +12,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/user/kakaoLogin").permitAll()
                 .antMatchers("/api/user/naverLogin").permitAll()
                 .antMatchers("/api/user/googleLogin").permitAll()
+                .antMatchers("/api/user/join").permitAll()
                 .anyRequest().authenticated();
 
         httpSecurity.csrf().disable();
