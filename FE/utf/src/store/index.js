@@ -1,5 +1,6 @@
 import { createStore } from "vuex";
 import createVuexPersistedState from "vuex-persistedstate";
+import StatisticsStore from "./modules/StatisticsStore.js";
 
 export default createStore({
   plugins: [
@@ -32,5 +33,7 @@ export default createStore({
       context.commit("SAVE_USER_INFO", payload);
     },
   },
-  modules: {},
+  modules: {
+    StatisticsStore,
+  },
 });

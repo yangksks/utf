@@ -2,8 +2,10 @@
   <nav>
     <router-link to="/login">Login</router-link> |
     <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-    <div v-if="isLogin">로그인 상태</div>
+    <router-link to="/about">About</router-link> |
+    <router-link to="/face">Face</router-link> |
+    <router-link to="/openvidu">openvidu</router-link> |
+    <router-link to="/main">Main</router-link> |
   </nav>
   <router-view />
 </template>
