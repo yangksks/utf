@@ -1,8 +1,7 @@
 package com.ssafy.utf.api.controller;
 
-import com.ssafy.utf.api.service.GoogleUserService;
-import com.ssafy.utf.api.service.KakaoUserService;
-import com.ssafy.utf.api.service.NaverUserService;
+import com.ssafy.utf.api.request.UserJoinReq;
+import com.ssafy.utf.api.service.*;
 import com.ssafy.utf.db.entity.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +23,9 @@ public class UserController {
     @Autowired
     GoogleUserService googleUserService;
 
+    @Autowired
+    UserService userService;
+
     @PostMapping("/kakaoLogin")
     public ResponseEntity<Object> kakaoLogin(@RequestBody HashMap<String, Object> payload) {
         HashMap<String, String> data = (HashMap<String, String>) payload.get("data");
@@ -39,14 +41,14 @@ public class UserController {
             //가입 안했으면
             if (user == null) {
                 System.out.println("가입된 회원이 존재하지 않습니다.");
-                result.put("existingUser", false);
+                result.put("userExist", false);
                 result.put("socialLoginType", 1);
                 result.put("socialId", kakaoUserInfo.getId());
             }
             //가입 했으면
             else {
                 System.out.println("가입된 회원이 존재합니다.");
-                result.put("existingUser", true);
+                result.put("userExist", true);
                 result.put("userId", user.getUserId());
                 result.put("userName", user.getUserName());
                 result.put("email", user.getEmail());
@@ -77,14 +79,14 @@ public class UserController {
             //가입 안했으면
             if (user == null) {
                 System.out.println("가입된 회원이 존재하지 않습니다.");
-                result.put("existingUser", false);
+                result.put("userExist", false);
                 result.put("socialLoginType", 2);
                 result.put("socialId", naverUserInfo.getId());
             }
             //가입 했으면
             else {
                 System.out.println("가입된 회원이 존재합니다.");
-                result.put("existingUser", true);
+                result.put("userExist", true);
                 result.put("userId", user.getUserId());
                 result.put("userName", user.getUserName());
                 result.put("email", user.getEmail());
@@ -115,19 +117,41 @@ public class UserController {
             //가입 안했으면
             if (user == null) {
                 System.out.println("가입된 회원이 존재하지 않습니다.");
-                result.put("existingUser", false);
+                result.put("userExist", false);
                 result.put("socialLoginType", 3);
                 result.put("socialId", googleUserInfo.getId());
             }
             //가입 했으면
             else {
                 System.out.println("가입된 회원이 존재합니다.");
-                result.put("existingUser", true);
+                result.put("userExist", true);
                 result.put("userId", user.getUserId());
                 result.put("userName", user.getUserName());
                 result.put("email", user.getEmail());
                 result.put("phoneNumber", user.getPhoneNumber());
             }
+            status = HttpStatus.OK;
+        } catch (Exception e) {
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+            e.printStackTrace();
+        }
+
+        return ResponseEntity.status(status).body(result);
+    }
+
+    @PostMapping("/join")
+    public ResponseEntity<Object> join(@RequestBody UserJoinReq userJoinReq) {
+        System.out.println(userJoinReq);
+
+        HashMap<String, Object> result = new HashMap<>();
+        HttpStatus status = null;
+        try {
+            User user = userService.joinUser(userJoinReq);
+            result.put("userExist", true);
+            result.put("userId", user.getUserId());
+            result.put("userName", user.getUserName());
+            result.put("email", user.getEmail());
+            result.put("phoneNumber", user.getPhoneNumber());
             status = HttpStatus.OK;
         } catch (Exception e) {
             status = HttpStatus.INTERNAL_SERVER_ERROR;
