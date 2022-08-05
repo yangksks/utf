@@ -1,8 +1,10 @@
 import { createStore } from "vuex";
+import lectureStore from "@/store/modules/lectureStore.js";
 import createVuexPersistedState from "vuex-persistedstate";
 import StatisticsStore from "./modules/StatisticsStore.js";
 
 export default createStore({
+  modules: { lectureStore, StatisticsStore },
   plugins: [
     createVuexPersistedState({
       //동작 안함
@@ -32,8 +34,5 @@ export default createStore({
     saveUserInfo(context, payload) {
       context.commit("SAVE_USER_INFO", payload);
     },
-  },
-  modules: {
-    StatisticsStore,
   },
 });
