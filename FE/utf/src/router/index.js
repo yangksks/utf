@@ -28,6 +28,21 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
   },
+  {
+    path: "/face",
+    name: "face",
+    component: () => import("../views/FaceAPIView.vue"),
+  },
+  {
+    path: "/openvidu",
+    name: "openvidu",
+    component: () => import("../views/OpenViduTutorial.vue"),
+  },
+  {
+    path: "/main",
+    name: "main",
+    component: () => import("../views/Main.vue"),
+  },
 ];
 
 const router = createRouter({
