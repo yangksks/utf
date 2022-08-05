@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div>
-      <img src="../assets/UTFLogo.png" alt="logo" />
+      <img src="@/assets/UTFLogo.png" alt="logo" />
       <p>x</p>
     </div>
     <h3>자바 프로그래밍</h3>

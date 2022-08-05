@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import JoinFormComp from "@/components/JoinFormComp.vue";
+import JoinFormComp from "@/components/user/JoinFormComp.vue";
 import axios from "axios";
 import store from "@/store";
 import router from "@/router";
@@ -24,7 +24,7 @@ export default {
         .then((res) => {
           console.log(res);
           store.dispatch("saveUserInfo", res.data);
-          router.push({ path: "/" });
+          router.push({ path: "/main" });
         })
         .catch((err) => {
           console.log(err);
