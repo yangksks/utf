@@ -6,6 +6,7 @@
       :speaker="speaker"
     />
     <chat-components
+      v-if="publisher"
       :publisher="publisher"
       :subscribers="subscribers"
     ></chat-components>

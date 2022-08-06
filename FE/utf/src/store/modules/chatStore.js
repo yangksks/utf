@@ -4,14 +4,10 @@ const chatStore = {
     msgList: [],
   },
   mutations: {
-    PUSH_MSG: (state, msg) => {
-      state.msgList.push(msg);
+    PUSH_MSG_DATA: (state, payload) => {
+      state.msgList.push(payload);
     },
   },
-  actions: {
-    pushMessage: ({ commit }, msg) => {
-      commit("PUSH_MSG", msg);
-    },
-  },
+  actions: {},
 };
 export default chatStore;

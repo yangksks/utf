@@ -1,7 +1,7 @@
 <template>
-  <div v-if="publisher" class="chat">
-    <div class="chat__header">
-      <span class="chat__header__greetings">
+  <div class="chat">
+    <div class="chat-header">
+      <span class="chat-header-greetings">
         <!-- 안녕하세요. {{ userData.userName }}님! -->
         <!-- 안녕하세요. {{clientData}}님! -->
         안녕하세요. 헤더입니다.
@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapMutations } from "vuex";
 import ChatList from "@/components/chat/ChatList";
 import ChatForm from "@/components/chat/ChatForm";
 export default {
@@ -33,16 +33,24 @@ export default {
     ...mapState("chatStore", ["msgList"]),
   },
   created() {},
-  mounted() {},
+  mounted() {
+    this.receiveMessage();
+  },
   methods: {
-    ...mapActions("chatStore", ["pushMessage"]),
+    ...mapMutations("chatStore", {
+      pushMessage: "PUSH_MSG_DATA",
+    }),
     sendMessage(msg) {
       // submitMessage in ChatForm
-      console.log(this.publisher.session);
+      // console.log(this.publisher.session);
+      console.log("msg: ", msg);
+      console.log(this.msgList);
+      console.log(this.publisher);
+      console.log(this.subscribers);
       this.pushMessage({
-        info: {
-          name: "test", //username,
-          time: 0,
+        from: {
+          name: "test",
+          time: "00:00:00",
         },
         msg,
       });
@@ -69,12 +77,13 @@ export default {
         console.log(event.data); // Message
         console.log(event.from); // Connection object of the sender
         console.log(event.type); // The type of message ("my-chat")
+        const msg = event.data;
         this.pushMessage({
-          info: {
-            name: event.from,
-            time: 0,
+          from: {
+            name: event.from, //username,
+            time: "00:00:00",
           },
-          data: event.data,
+          msg,
         }); // save to vuex
         setTimeout(() => {
           const element = document.getElementById("chat-body");
@@ -93,7 +102,7 @@ export default {
   justify-content: space-between;
   background-color: #cccccc;
 }
-.chat__header {
+.chat-header {
   background: #ffffff;
   box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.05);
   border-radius: 24px 24px 0px 0px;
@@ -101,7 +110,7 @@ export default {
   font-size: 16px;
   font-weight: 700;
 }
-.chat__header__greetings {
+.chat-header-greetings {
   color: #292929;
 }
 </style>
