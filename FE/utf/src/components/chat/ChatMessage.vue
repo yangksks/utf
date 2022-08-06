@@ -13,17 +13,17 @@
       class="chat__yourmessage"
       :class="[isSame ? '' : 'chat__first']"
     >
-      <div class="chat__yourmessage__avartar">
+      <!-- <div class="chat__yourmessage__avartar">
         <img
           :src="avatar"
           alt=""
           v-if="!isSame"
           class="chat__yourmessage__img"
         />
-      </div>
+      </div> -->
       <div>
         <p class="chat__yourmessage__user" v-if="!isSame">
-          {{ msg.from.name }}
+          {{ msg.from.name + " " + msg.from.time }}
         </p>
         <div class="chat__yourmessage__p">
           <p class="chat__yourmessage__paragraph">
@@ -99,6 +99,7 @@ export default {
   object-fit: cover;
 }
 .chat__yourmessage__user {
+  text-align: left;
   font-size: 14px;
   font-weight: 700;
   color: #292929;
@@ -112,9 +113,9 @@ export default {
 }
 .chat__yourmessage__paragraph {
   margin: 0.4rem 1rem 0 0;
-  border-radius: 0px 20px 20px 20px;
+  border-radius: 10px 10px 10px 10px;
   background-color: #f3f3f3;
-  max-width: 180px;
+  /* max-width: 180px; */
   color: #414141;
   padding: 0.8rem;
   font-size: 14px;

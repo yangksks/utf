@@ -23,7 +23,7 @@ export default {
 
 <style>
 .chat-body {
-  padding: 2rem;
+  padding: 1rem;
   overflow: scroll;
   scroll-behavior: smooth;
 }
