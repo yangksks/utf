@@ -2,9 +2,10 @@ import { createStore } from "vuex";
 import lectureStore from "@/store/modules/lectureStore.js";
 import createVuexPersistedState from "vuex-persistedstate";
 import StatisticsStore from "./modules/StatisticsStore.js";
+import chatStore from "./modules/chatStore.js";
 
 export default createStore({
-  modules: { lectureStore, StatisticsStore },
+  modules: { lectureStore, StatisticsStore, chatStore },
   plugins: [
     createVuexPersistedState({
       //동작 안함

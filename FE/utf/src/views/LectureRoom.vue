@@ -5,14 +5,17 @@
       :subscribers="subscribers"
       :speaker="speaker"
     />
-    <chat-components></chat-components>
+    <chat-components
+      :publisher="publisher"
+      :subscribers="subscribers"
+    ></chat-components>
     <user-list-components></user-list-components>
     <control-panel @screenShare="screenShare"></control-panel>
   </div>
 </template>
 
 <script>
-import ChatComponents from "@/components/lecture/ChatComponents.vue";
+import ChatComponents from "@/components/chat/ChatComponents.vue";
 import ControlPanel from "@/components/lecture/ControlPanel.vue";
 import UserListComponents from "@/components/lecture/UserListComponents.vue";
 import VideoComponents from "@/components/lecture/VideoComponents.vue";
