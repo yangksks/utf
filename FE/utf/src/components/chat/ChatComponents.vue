@@ -42,18 +42,10 @@ export default {
     }),
     sendMessage(msg) {
       // submitMessage in ChatForm
-      // console.log(this.publisher.session);
       console.log("msg: ", msg);
-      console.log(this.msgList);
-      console.log(this.publisher);
-      console.log(this.subscribers);
-      this.pushMessage({
-        from: {
-          name: "test",
-          time: "00:00:00",
-        },
-        msg,
-      });
+      console.log("msgList: ", this.msgList);
+      // console.log(this.publisher);
+      // console.log(this.subscribers);
       this.publisher.session
         .signal({
           data: msg, // Any string (optional)
@@ -61,6 +53,13 @@ export default {
           // type: 'my-chat'             // The type of message (optional)
         })
         .then(() => {
+          this.pushMessage({
+            from: {
+              name: "user",
+              time: "00:00:00",
+            },
+            msg: msg,
+          });
           console.log("Message successfully sent");
         })
         .catch((error) => {
@@ -70,6 +69,7 @@ export default {
         // scroll 변경
         const element = document.getElementById("chat-body");
         element.scrollTop = element.scrollHeight;
+        element.scrollTo({ top: element.scrollHeight, behavior: "smooth" });
       }, 0);
     },
     receiveMessage() {
@@ -77,18 +77,23 @@ export default {
         console.log(event.data); // Message
         console.log(event.from); // Connection object of the sender
         console.log(event.type); // The type of message ("my-chat")
-        const msg = event.data;
-        this.pushMessage({
-          from: {
-            name: event.from, //username,
-            time: "00:00:00",
-          },
-          msg,
-        }); // save to vuex
-        setTimeout(() => {
-          const element = document.getElementById("chat-body");
-          element.scrollTop = element.scrollHeight;
-        }, 0);
+        if (
+          this.publisher.stream.connection.connectionID !=
+          event.from.connectionID
+        ) {
+          this.pushMessage({
+            from: {
+              name: event.from, //username,
+              time: "00:00:00",
+            },
+            msg: event.data,
+          }); // save to vuex
+          setTimeout(() => {
+            const element = document.getElementById("chat-body");
+            element.scrollTop = element.scrollHeight;
+            element.scrollTo({ top: element.scrollHeight, behavior: "smooth" });
+          }, 0);
+        }
       });
     },
   },
@@ -100,6 +105,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  max-height: 800px;
   background-color: #cccccc;
 }
 .chat-header {

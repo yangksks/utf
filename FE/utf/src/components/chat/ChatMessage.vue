@@ -21,18 +21,12 @@
           class="chat__yourmessage__img"
         />
       </div> -->
-      <div>
-        <p class="chat__yourmessage__user" v-if="!isSame">
-          {{ msg.from.name + " " + msg.from.time }}
-        </p>
-        <div class="chat__yourmessage__p">
-          <p class="chat__yourmessage__paragraph">
-            {{ msg.msg }}
-          </p>
-          <!-- <p class="chat__yourmessage__time">23:38</p> -->
-        </div>
+      <div class="chat-message-box">
+        <p class="chat-message-sender">{{ msg.from.name + " : " }}</p>
+        <p class="chat-message-content">{{ msg.msg }}</p>
       </div>
     </div>
+    <p class="chat-message-time">{{ msg.from.time }}</p>
   </div>
 </template>
 
@@ -65,6 +59,34 @@ export default {
 };
 </script>
 <style>
+.chat-message-sender {
+  font-weight: bold;
+  vertical-align: top;
+  min-width: 50px;
+}
+.chat-message-content {
+  font-weight: lighter;
+  text-align: justify;
+}
+.chat-message-time {
+  text-align: left;
+  margin: 0;
+  margin-left: 1rem;
+  font-size: 12px;
+  color: #9c9c9c;
+}
+.chat-message-box {
+  display: flex;
+  align-items: flex-start;
+  line-break: anywhere;
+  margin: 0.4rem 1rem 0 0;
+  border-radius: 10px 10px 10px 10px;
+  background-color: #f3f3f3;
+  /* max-width: 180px; */
+  color: #414141;
+  padding: 0.8rem;
+  font-size: 14px;
+}
 .chat__mymessage {
   display: flex;
   justify-content: right;
@@ -105,24 +127,5 @@ export default {
   color: #292929;
   margin-top: 0;
   margin-block-end: 0rem;
-}
-.chat__yourmessage__p {
-  display: flex;
-  align-items: flex-end;
-  line-break: anywhere;
-}
-.chat__yourmessage__paragraph {
-  margin: 0.4rem 1rem 0 0;
-  border-radius: 10px 10px 10px 10px;
-  background-color: #f3f3f3;
-  /* max-width: 180px; */
-  color: #414141;
-  padding: 0.8rem;
-  font-size: 14px;
-}
-.chat__yourmessage__time {
-  margin: 0;
-  font-size: 12px;
-  color: #9c9c9c;
 }
 </style>
