@@ -9,9 +9,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests()
-                .antMatchers("/api/user/kakaoLogin").permitAll()
-                .antMatchers("/api/user/naverLogin").permitAll()
-                .antMatchers("/api/user/googleLogin").permitAll()
+                .antMatchers("/api/user/socialLogin").permitAll()
                 .antMatchers("/api/user/join").permitAll()
                 .anyRequest().authenticated();
 

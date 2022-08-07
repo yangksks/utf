@@ -12,5 +12,5 @@ public interface KakaoUserService {
     KakaoUserInfo sendToken(String accessToken) throws Exception;
 
     //사용자 소셜id가 DB에 존재하는지 조회해서 회원가입 여부 판단. 존재하면 유저 정보, 존재하지 않으면 null 반환
-    User socialIdCheck(Long socialId);
+    User socialIdCheck(String socialId);
 }
