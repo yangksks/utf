@@ -61,10 +61,6 @@ export default {
       window.location.assign(getGoogle);
     }
     googleLoginBtn.onclick = googleLogin;
-
-    // let clientScript = document.createElement("script");
-    // clientScript.setAttribute("src", "https://accounts.google.com/gsi/client");
-    // document.head.appendChild(clientScript);
   },
 };
 </script>
