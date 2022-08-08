@@ -1,12 +1,5 @@
 <template>
   <div class="chat">
-    <div class="chat-header">
-      <span class="chat-header-greetings">
-        <!-- 안녕하세요. {{ userData.userName }}님! -->
-        <!-- 안녕하세요. {{clientData}}님! -->
-        안녕하세요. 헤더입니다.
-      </span>
-    </div>
     <chat-list :msgs="msgList"></chat-list>
     <chat-form @submitMessage="sendMessage"></chat-form>
   </div>
@@ -19,7 +12,10 @@ import ChatForm from "@/components/chat/ChatForm";
 export default {
   name: "ChatComponents",
   data() {
-    return {};
+    return {
+      username: this.publisher.session.connection.data.slice(15, -2),
+      timer: undefined,
+    };
   },
   components: {
     ChatList,
@@ -40,25 +36,50 @@ export default {
     ...mapMutations("chatStore", {
       pushMessage: "PUSH_MSG_DATA",
     }),
+    /* Send a general message */
     sendMessage(msg) {
-      // submitMessage in ChatForm
-      console.log("msg: ", msg);
-      console.log("msgList: ", this.msgList);
-      // console.log(this.publisher);
-      // console.log(this.subscribers);
+      this.sendMessageTemplate(msg, this.subscribers, "general");
+    },
+    /* Receive a message from current session */
+    receiveMessage() {
+      this.publisher.session.on("signal", (event) => {
+        if (
+          this.publisher.stream.connection.connectionId !=
+          event.from.connectionId
+        ) {
+          this.pushMessage({
+            from: {
+              name: event.from.data.slice(15, -2), //username,
+              time: this.getCurrentTime(),
+              type: "general",
+            },
+            msg: event.data,
+          }); // save to vuex
+          setTimeout(() => {
+            const element = document.getElementById("chat-body");
+            element.scrollTop = element.scrollHeight;
+          }, 100);
+        }
+      });
+    },
+    /* A template for sending a message
+     * Input: data(JSON: message), to(Array: target), type(String: message tag)
+     */
+    sendMessageTemplate(data, to, type) {
       this.publisher.session
         .signal({
-          data: msg, // Any string (optional)
-          to: this.subscribers, // Array of Connection objects (optional. Broadcast to everyone if empty)
-          // type: 'my-chat'             // The type of message (optional)
+          data: data, // Any string (optional)
+          to: to, // Array of Connection objects (optional. Broadcast to everyone if empty)
+          type: type, // The type of message (optional)
         })
         .then(() => {
           this.pushMessage({
             from: {
-              name: "user",
-              time: "00:00:00",
+              name: this.username,
+              time: this.getCurrentTime(),
+              type: type,
             },
-            msg: msg,
+            msg: data,
           });
           console.log("Message successfully sent");
         })
@@ -66,35 +87,13 @@ export default {
           console.error(error);
         });
       setTimeout(() => {
-        // scroll 변경
         const element = document.getElementById("chat-body");
         element.scrollTop = element.scrollHeight;
-        element.scrollTo({ top: element.scrollHeight, behavior: "smooth" });
-      }, 0);
+      }, 100);
     },
-    receiveMessage() {
-      this.publisher.session.on("signal", (event) => {
-        console.log(event.data); // Message
-        console.log(event.from); // Connection object of the sender
-        console.log(event.type); // The type of message ("my-chat")
-        if (
-          this.publisher.stream.connection.connectionID !=
-          event.from.connectionID
-        ) {
-          this.pushMessage({
-            from: {
-              name: event.from, //username,
-              time: "00:00:00",
-            },
-            msg: event.data,
-          }); // save to vuex
-          setTimeout(() => {
-            const element = document.getElementById("chat-body");
-            element.scrollTop = element.scrollHeight;
-            element.scrollTo({ top: element.scrollHeight, behavior: "smooth" });
-          }, 0);
-        }
-      });
+    /* Get a current time */
+    getCurrentTime() {
+      return new Date().toLocaleTimeString();
     },
   },
 };
@@ -105,18 +104,8 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  max-height: 800px;
-  background-color: #cccccc;
-}
-.chat-header {
-  background: #ffffff;
+  max-height: 600px;
   box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.05);
-  border-radius: 24px 24px 0px 0px;
-  padding: 1.8rem;
-  font-size: 16px;
-  font-weight: 700;
-}
-.chat-header-greetings {
-  color: #292929;
+  background: #f7f7f4;
 }
 </style>
