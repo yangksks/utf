@@ -7,7 +7,19 @@ const statisticsStore = {
     score: undefined,
   },
   getters: {},
-  mutations: {},
+  mutations: {
+    SETEMOTION: (state, payload) => {
+      let name = payload[0];
+      let data = payload[1];
+      state.currentEmotions[name] = data;
+
+      if (Object.keys(state.currentEmotions).length == 3) {
+        //각 방의 참가자수를 알아내서 3에 집어넣기
+        console.log(state.currentEmotions);
+        state.currentEmotions = {};
+      }
+    },
+  },
   actions: {
     setEmotion: (store, item) => {
       //item: [이름,감정,점수]
