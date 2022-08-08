@@ -13,7 +13,7 @@ import java.util.HashMap;
 @Setter
 @ToString
 public class KakaoUserInfo {
-    long id;
+    String id;
 
     String email;
 
