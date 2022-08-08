@@ -1,28 +1,31 @@
-// import axios from "axios";
+import axios from "axios";
 
 const statisticsStore = {
   namespaced: true,
   state: {
-    currentEmotions: {},
+    emotion: undefined,
+    score: undefined,
   },
   getters: {},
   mutations: {
-    SETEMOTION: (state, payload) => {
-      let name = payload[0];
-      let data = payload[1];
-      state.currentEmotions[name] = data;
-
-      if (Object.keys(state.currentEmotions).length == 3) {
-        //각 방의 참가자수를 알아내서 3에 집어넣기
-        console.log(state.currentEmotions);
-        state.currentEmotions = {};
-      }
+    SET_EMOTION: (state, payload) => {
+      console.log("mutation", payload);
+      state.emotion = payload[0];
+      state.score = payload[1];
+      axios
+        .post(`http://localhost:8081/api/statistics/commit`, state.emotion)
+        .then(console.log("성공 ㅅㅅㅅ"))
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
   actions: {
-    SETEMOTION: (store, item) => {
-      //item [이름,{감정:점수}] 형태의 배열
-      store.commit("SETEMOTION", item);
+    setEmotion: ({ commit }, item) => {
+      //item: [감정,점수]
+      commit("SET_EMOTION", item);
+      // 이 문장 넣으면 다음 에러발생
+      // Uncaught (in promise) TypeError: Converting circular structure to JSON
     },
   },
 };
