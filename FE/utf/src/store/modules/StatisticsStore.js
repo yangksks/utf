@@ -27,7 +27,7 @@ const statisticsStore = {
           console.log(err);
         });
     },
-  }
+  },
 };
 
 export default statisticsStore;
