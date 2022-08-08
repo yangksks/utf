@@ -1,18 +1,18 @@
 <template>
   <div class="user-video" v-if="streamManager">
     <p class="client-name">{{ clientData }}</p>
-    <ov-video :stream-manager="streamManager" />
+    <my-ov-video :stream-manager="streamManager" :name="this.clientData" />
   </div>
 </template>
 
 <script>
-import OvVideo from "./OvVideo";
+import MyOvVideo from "./MyOvVideo.vue";
 
 export default {
   name: "UserVideo",
 
   components: {
-    OvVideo,
+    MyOvVideo,
   },
 
   props: {
