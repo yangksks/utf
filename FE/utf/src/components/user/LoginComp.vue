@@ -1,23 +1,41 @@
 <template>
-  <div>
-    <img
-      id="kakaoLoginBtn"
-      class="btn"
-      src="@/assets/image/kakao_login_medium_wide.png"
-      alt="카카오 로그인 버튼"
-    /><br />
-    <img
-      id="naverLoginBtn"
-      class="btn"
-      src="@/assets/image/btnG_완성형.png"
-      alt="네이버 로그인 버튼"
-    /><br />
-    <img
-      id="googleLoginBtn"
-      class="btn"
-      src="@/assets/image/btn_google_signin_dark_normal_web@2x.png"
-      alt="구글 로그인 버튼"
-    />
+  <div class="container">
+    <div class="row">
+      <div class="col-3 align-self-center">
+        <img
+          src="@/assets/UTFLogo-removebg.png"
+          alt="로고"
+          style="margin-bottom: 50px"
+        /><br />
+        <img
+          id="kakaoLoginBtn"
+          class="loginBtn"
+          src="@/assets/image/kakao_login_medium_wide.png"
+          alt="카카오 로그인 버튼"
+          style="margin-bottom: 3px"
+        /><br />
+        <img
+          id="naverLoginBtn"
+          class="loginBtn"
+          src="@/assets/image/btnG_완성형.png"
+          alt="네이버 로그인 버튼"
+          style="margin-bottom: 3px"
+        /><br />
+        <img
+          id="googleLoginBtn"
+          class="loginBtn"
+          src="@/assets/image/btn_google_signin_dark_normal_web@2x.png"
+          alt="구글 로그인 버튼"
+        />
+      </div>
+      <div class="col-9">
+        <img
+          src="@/assets/image/photo-1456513080510-7bf3a84b82f8.jpg"
+          alt=""
+          style="height: 100%"
+        />
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -32,14 +50,7 @@ const getNaver = `https://nid.naver.com/oauth2.0/authorize?response_type=code&cl
 
 const GOOGLE_CLIENT_ID = process.env.VUE_APP_GOOGLE_CLIENT_ID;
 const GOOGLE_REDIRECT_URI = process.env.VUE_APP_GOOGLE_REDIRECT_URI;
-const getGoogle = `https://accounts.google.com/o/oauth2/v2/auth?
-scope=https%3A//www.googleapis.com/auth/drive.metadata.readonly&
-access_type=offline&
-include_granted_scopes=true&
-response_type=code&
-state=state_parameter_passthrough_value&
-redirect_uri=${GOOGLE_REDIRECT_URI}&
-client_id=${GOOGLE_CLIENT_ID}`;
+const getGoogle = `https://accounts.google.com/o/oauth2/v2/auth?scope=https%3A//www.googleapis.com/auth/drive.metadata.readonly&access_type=offline&include_granted_scopes=true&response_type=code&state=state_parameter_passthrough_value&redirect_uri=${GOOGLE_REDIRECT_URI}&client_id=${GOOGLE_CLIENT_ID}`;
 
 export default {
   name: "LoginComp",
@@ -66,9 +77,9 @@ export default {
 </script>
 
 <style scoped>
-.btn {
+.loginBtn {
   width: 300px;
-  /* height: 50px; */
+  height: 60px;
   cursor: pointer;
 }
 </style>
