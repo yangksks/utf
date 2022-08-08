@@ -7,14 +7,7 @@ const statisticsStore = {
     score: undefined,
   },
   getters: {},
-  mutations: {
-    SET_EMOTION: (state, payload) => {
-      console.log("mutation", payload);
-      state.emotion = payload[0];
-      state.score = payload[1];
-      console.log("dfscdb", state.emotion, state.score);
-    },
-  },
+  mutations: {},
   actions: {
     setEmotion: (store, item) => {
       //item: [이름,감정,점수]
