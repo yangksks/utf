@@ -1,32 +1,18 @@
 <template>
-  <div>
-    <div
-      v-if="msg.from.name === 'DevplaCalledMe'"
-      class="chat__mymessage"
-      :class="[isSame ? '' : 'chat__first']"
-    >
-      <!-- <p class="chat__yourmessage__time">23:38</p> -->
-      <p class="chat__mymessage__paragraph">{{ msg.msg }}</p>
-    </div>
-    <div
-      v-else
-      class="chat__yourmessage"
-      :class="[isSame ? '' : 'chat__first']"
-    >
-      <!-- <div class="chat__yourmessage__avartar">
-        <img
-          :src="avatar"
-          alt=""
-          v-if="!isSame"
-          class="chat__yourmessage__img"
-        />
-      </div> -->
-      <div class="chat-message-box">
-        <p class="chat-message-sender">{{ msg.from.name + " : " }}</p>
+  <div class="message-box">
+    <div v-if="msg.from.type === 'general'" class="chat-message-box-outer">
+      <div class="chat-message-box-inner">
+        <p class="chat-message-sender">{{ msg.from.name + ": " }}</p>
         <p class="chat-message-content">{{ msg.msg }}</p>
       </div>
+      <p class="chat-message-time">{{ msg.from.time }}</p>
     </div>
-    <p class="chat-message-time">{{ msg.from.time }}</p>
+    <div v-if="msg.from.type === 'alert'" class="alert-message-box-outer">
+      <div class="chat-message-box-inner">
+        <p class="alert-message-content">{{ msg.msg }}</p>
+      </div>
+      <p class="chat-message-time">{{ msg.from.time }}</p>
+    </div>
   </div>
 </template>
 
@@ -37,7 +23,6 @@ export default {
   data() {
     return {
       isSame: false,
-      //   avatar: require("../assets/avatar.svg"),
     };
   },
   methods: {
@@ -50,42 +35,61 @@ export default {
         return false;
       }
     },
-    // created() {
-    //   this.isSame = this.isSamePerson(this.msg, this.prev);
-    //   // if (this.msg?.from.avatar) {
-    //   //   this.avatar = this.msg?.from.avatar;
-    //   // }
+    created() {
+      this.isSame = this.isSamePerson(this.msg, this.prev);
+    },
   },
 };
 </script>
 <style>
 .chat-message-sender {
   font-weight: bold;
+  text-align: justify;
   vertical-align: top;
   min-width: 50px;
+  margin-bottom: 0.5rem;
 }
 .chat-message-content {
   font-weight: lighter;
   text-align: justify;
+  margin-bottom: 0.5rem;
+  line-break: anywhere;
 }
 .chat-message-time {
+  flex-direction: column;
   text-align: left;
   margin: 0;
-  margin-left: 1rem;
   font-size: 12px;
   color: #9c9c9c;
 }
-.chat-message-box {
+.chat-message-box-inner {
   display: flex;
   align-items: flex-start;
-  line-break: anywhere;
-  margin: 0.4rem 1rem 0 0;
-  border-radius: 10px 10px 10px 10px;
+  white-space: pre-wrap;
+}
+.chat-message-box-outer {
+  border-radius: 15px 15px 15px 15px;
   background-color: #f3f3f3;
   /* max-width: 180px; */
   color: #414141;
   padding: 0.8rem;
   font-size: 14px;
+  width: 100%;
+}
+.alert-message-content {
+  font-weight: bold;
+  text-align: justify;
+  margin-bottom: 0.5rem;
+  line-break: anywhere;
+}
+.alert-message-box-outer {
+  border-radius: 15px 15px 15px 15px;
+  background-color: rgba(0, 0, 0, 0.75);
+  /* max-width: 180px; */
+  color: white;
+  padding: 0.8rem;
+  font-size: 14px;
+  width: 100%;
 }
 .chat__mymessage {
   display: flex;
@@ -104,28 +108,15 @@ export default {
   padding: 0.8rem;
   font-size: 14px;
 }
-.chat__first {
-  margin-top: 2rem;
+.message-box {
+  margin-top: 1rem;
 }
-.chat__yourmessage {
-  display: flex;
-}
-.chat__yourmessage__avartar {
-  width: 40px;
-  margin-right: 1rem;
-}
-.chat__yourmessage__img {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-.chat__yourmessage__user {
+/* .chat__yourmessage__user {
   text-align: left;
   font-size: 14px;
   font-weight: 700;
   color: #292929;
   margin-top: 0;
   margin-block-end: 0rem;
-}
+} */
 </style>
