@@ -8,5 +8,9 @@ import lombok.ToString;
 @Setter
 @ToString
 public class UserUpdateReq {
+    long userId;
 
+    String userName;
+
+    String email;
 }

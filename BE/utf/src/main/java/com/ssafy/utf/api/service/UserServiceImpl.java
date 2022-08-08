@@ -1,6 +1,7 @@
 package com.ssafy.utf.api.service;
 
 import com.ssafy.utf.api.request.UserJoinReq;
+import com.ssafy.utf.api.request.UserUpdateReq;
 import com.ssafy.utf.db.entity.user.User;
 import com.ssafy.utf.db.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,5 +20,14 @@ public class UserServiceImpl implements UserService {
         user.setSocialId(userJoinReq.getSocialId());
         user.setEmail(userJoinReq.getEmail());
         return userRepository.save(user);
+    }
+
+    @Override
+    public User updateUser(UserUpdateReq userUpdateReq) {
+        User user = userRepository.findById(userUpdateReq.getUserId());
+        user.setUserName(userUpdateReq.getUserName());
+        user.setEmail(userUpdateReq.getEmail());
+        userRepository.save(user);
+        return user;
     }
 }
