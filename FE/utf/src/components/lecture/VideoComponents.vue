@@ -1,7 +1,7 @@
 <template>
   <div id="video-components">
     <div id="screen-share"></div>
-    <user-video
+    <my-video
       :stream-manager="publisher"
       :class="{ highlight: speaker == 'me' }"
     />
@@ -16,12 +16,14 @@
 
 <script>
 import UserVideo from "@/components/video/UserVideo";
+import MyVideo from "@/components/video/MyVideo.vue";
 
 export default {
   name: "VideoComponents",
 
   components: {
     UserVideo,
+    MyVideo,
   },
   props: {
     publisher: Object,
