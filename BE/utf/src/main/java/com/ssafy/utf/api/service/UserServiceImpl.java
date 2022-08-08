@@ -17,6 +17,7 @@ public class UserServiceImpl implements UserService {
         user.setUserName(userJoinReq.getUserName());
         user.setSocialLoginType(userJoinReq.getSocialLoginType());
         user.setSocialId(userJoinReq.getSocialId());
+        user.setEmail(userJoinReq.getEmail());
         return userRepository.save(user);
     }
 }

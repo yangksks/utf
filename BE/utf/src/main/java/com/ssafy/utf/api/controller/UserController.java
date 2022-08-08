@@ -38,20 +38,24 @@ public class UserController {
         try {
             User user = null;
             String socialId = null;
+            String email = null;
             if (socialLoginType == 1) {
                 KakaoTokenInfo kakaoTokenInfo = kakaoUserService.sendCode(code);
                 KakaoUserInfo kakaoUserInfo = kakaoUserService.sendToken(kakaoTokenInfo.getAccessToken());
                 socialId = kakaoUserInfo.getId();
+                email = kakaoUserInfo.getEmail();
                 user = kakaoUserService.socialIdCheck(socialId);
             } else if (socialLoginType == 2) {
                 NaverTokenInfo naverTokenInfo = naverUserService.sendCode(code, state);
                 NaverUserInfo naverUserInfo = naverUserService.sendToken(naverTokenInfo.getAccessToken());
                 socialId = naverUserInfo.getId();
+                email = naverUserInfo.getEmail();
                 user = naverUserService.socialIdCheck(socialId);
             } else if (socialLoginType == 3) {
                 GoogleTokenInfo googleTokenInfo = googleUserService.sendCode(code);
                 GoogleUserInfo googleUserInfo = googleUserService.sendToken(googleTokenInfo.getAccessToken());
                 socialId = googleUserInfo.getId();
+                email = googleUserInfo.getEmail();
                 user = googleUserService.socialIdCheck(socialId);
             }
 
@@ -61,6 +65,7 @@ public class UserController {
                 result.put("userExist", false);
                 result.put("socialLoginType", socialLoginType);
                 result.put("socialId", socialId);
+                result.put("email", email);
             }
             //가입 했으면
             else {

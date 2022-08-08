@@ -7,12 +7,6 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class UserJoinReq {
-    String userName;
+public class UserUpdateReq {
 
-    int socialLoginType;
-
-    String socialId;
-
-    String email;
 }
