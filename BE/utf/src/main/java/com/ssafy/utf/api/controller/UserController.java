@@ -122,10 +122,19 @@ public class UserController {
         }
         return ResponseEntity.status(status).body(result);
     }
-//
-//    @DeleteMapping("/{userId}")
-//    public ResponseEntity<Object> deleteUser() {
-//
-//    }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Object> deleteUser(@PathVariable("userId") long userId) {
+        HashMap<String, Object> result = new HashMap<>();
+        HttpStatus status = null;
+        try {
+            userService.deleteUser(userId);
+            status = HttpStatus.OK;
+        } catch (Exception e) {
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+            e.printStackTrace();
+        }
+        return ResponseEntity.status(status).body(result);
+    }
 
 }

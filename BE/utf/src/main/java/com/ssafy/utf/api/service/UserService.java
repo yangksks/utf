@@ -8,4 +8,6 @@ public interface UserService {
     User joinUser(UserJoinReq userJoinReq);
 
     User updateUser(UserUpdateReq userUpdateReq);
+
+    void deleteUser(long userId);
 }
