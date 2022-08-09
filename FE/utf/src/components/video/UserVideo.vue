@@ -24,7 +24,7 @@ export default {
   computed: {
     clientData() {
       const { clientData } = this.getConnectionData();
-      this.getFaceEmotionPerTime(); // 얘를 여기 넣는게 맞나...
+      // this.getFaceEmotionPerTime(); // 얘를 여기 넣는게 맞나...
       return clientData;
     },
   },

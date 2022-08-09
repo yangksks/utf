@@ -7,7 +7,12 @@
     />
     <chat-components></chat-components>
     <user-list-components></user-list-components>
-    <control-panel @screenShare="screenShare"></control-panel>
+    <control-panel
+      @screenShare="screenShare"
+      @recordingStart="recordingStart"
+      @recordingEnd="recordingEnd"
+      :recording="recording"
+    ></control-panel>
   </div>
 </template>
 
@@ -21,7 +26,8 @@ import { OpenVidu } from "openvidu-browser";
 import { mapActions } from "vuex";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
-const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
+const OPENVIDU_SERVER_URL = "http://i7a701.p.ssafy.io:5443";
+// const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 
 export default {
@@ -41,6 +47,8 @@ export default {
       publisher: undefined,
       subscribers: [],
       speaker: undefined,
+      recording: false,
+      RECORDING_ID: undefined,
 
       mySessionId: "SessionA",
       myUserName: "학생" + Math.floor(Math.random() * 100),
@@ -48,6 +56,56 @@ export default {
   },
   methods: {
     ...mapActions("lectureStore", ["setPublisher"]),
+
+    recordingEnd() {
+      this.recording = false;
+      axios
+        .post(
+          `${OPENVIDU_SERVER_URL}/openvidu/api/recordings/stop/${this.RECORDING_ID}`,
+          {},
+          {
+            auth: {
+              username: "OPENVIDUAPP",
+              password: OPENVIDU_SERVER_SECRET,
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => console.log(error));
+    },
+
+    recordingStart() {
+      this.recording = true;
+      axios
+        .post(
+          `${OPENVIDU_SERVER_URL}/openvidu/api/recordings/start`,
+          JSON.stringify({
+            session: this.mySessionId,
+            name: "testRecording",
+            hasAudio: false,
+            hasVideo: true,
+            outputMode: "COMPOSED",
+            recordingLayout: "BEST_FIT",
+            resolution: "1280x720",
+            frameRate: 25,
+            shmSize: 536870912,
+            ignoreFailedStreams: false,
+          }),
+          {
+            auth: {
+              username: "OPENVIDUAPP",
+              password: OPENVIDU_SERVER_SECRET,
+            },
+          }
+        )
+        .then(({ data }) => {
+          this.RECORDING_ID = data.id;
+          console.log("레코딩 id", this.RECORDING_ID);
+        })
+        .catch((error) => console.log(error));
+    },
 
     joinSession() {
       this.OVCamera = new OpenVidu();
