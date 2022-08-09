@@ -24,7 +24,7 @@ function loginRequest(requestURL, socialLoginType, code, state) {
         })
         .catch((err) => {
             console.log(err);
-            router.push({ path: "/login" });
+            router.push({ path: "/" });
         });
 }
 
@@ -43,7 +43,7 @@ function getName(name) {
         })
         .catch((err) => {
             console.log(err);
-            router.push({ path: "/login" });
+            router.push({ path: "/" });
         });
 }
 
