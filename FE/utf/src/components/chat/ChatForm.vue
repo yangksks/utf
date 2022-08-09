@@ -5,6 +5,7 @@
       type="text"
       placeholder="메세지를 입력하세요."
       v-model.trim="msg"
+      spellcheck="false"
       @keyup.enter="submitMessage"
     />
     <div @click="submitMessage" class="form-submit">
@@ -53,8 +54,10 @@ export default {
   justify-content: space-between;
   padding: 1.4rem;
   background: #ffffff;
-  border-radius: 30px 30px 24px 24px;
+  border-radius: 12px 12px 12px 12px;
   box-shadow: 0px -5px 30px rgba(0, 0, 0, 0.05);
+  border: 1px solid #999999;
+  height: 100px;
 }
 .form-input {
   border: none;

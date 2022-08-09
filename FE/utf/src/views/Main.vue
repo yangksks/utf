@@ -15,22 +15,39 @@
             <lecture-item></lecture-item>
             <div class="w-100" v-if="index % 4 == 0"></div>
           </b-col>
-          <b-col sm="3" id="add-lecture-card">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="#000000"
-              viewBox="0 0 50 50"
-              width="80px"
-              height="80px"
-            >
-              <path
-                fill="none"
-                stroke="#000000"
-                stroke-miterlimit="10"
-                stroke-width="2"
-                d="M13 25L37 25M25 13L25 37M25 3A22 22 0 1 0 25 47 22 22 0 1 0 25 3z"
-              />
-            </svg>
+          <b-col
+            sm="3"
+            v-bind:class="flipped ? 'flip-container flipped' : 'flip-container'"
+          >
+            <div class="flipper">
+              <div class="front">
+                <svg
+                  class="btn-plus frontFlipBtn"
+                  @click="flipped = true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="#000000"
+                  viewBox="0 0 50 50"
+                  width="80px"
+                  height="80px"
+                >
+                  <path
+                    fill="none"
+                    stroke="#000000"
+                    stroke-miterlimit="10"
+                    stroke-width="2"
+                    d="M13 25L37 25M25 13L25 37M25 3A22 22 0 1 0 25 47 22 22 0 1 0 25 3z"
+                  />
+                </svg>
+              </div>
+              <div class="back">
+                <label for="addLectureForm">강의명</label>
+                <input type="text" id="addLectureForm" />
+                <button class="backFlipBtn">개설</button>
+                <button class="backFlipBtn" @click="flipped = false">
+                  취소
+                </button>
+              </div>
+            </div>
           </b-col>
         </b-row>
       </b-col>
@@ -55,6 +72,7 @@ export default {
   data() {
     return {
       lectures: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+      flipped: false,
     };
   },
   methods: {
@@ -64,6 +82,8 @@ export default {
 </script>
 
 <style>
+@import "./main.css";
+
 .left {
   background-color: aqua;
 }
