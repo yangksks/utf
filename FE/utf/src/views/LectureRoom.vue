@@ -10,7 +10,7 @@
       :publisher="publisher"
       :subscribers="subscribers"
     ></chat-components>
-    <user-list-components></user-list-components>
+    <user-list-components :subscribers="subscribers"></user-list-components>
     <control-panel @screenShare="screenShare"></control-panel>
   </div>
 </template>
