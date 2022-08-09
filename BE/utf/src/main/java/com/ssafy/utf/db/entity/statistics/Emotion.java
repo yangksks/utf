@@ -19,6 +19,6 @@ public class Emotion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long emotionId;
     private String name;
-    private String emotionFiltered;
+    private String emotion;
     private Double score;
 }
