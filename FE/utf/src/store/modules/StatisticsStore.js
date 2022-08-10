@@ -18,14 +18,14 @@ const statisticsStore = {
   },
   actions: {
     setEmotion: (store, item) => {
-      //item: [이름,감정,점수]
+      //item: [강의실id, 이름,감정,점수]
       api
         .post(
-          `/statistics/current`,
+          `/statistics/current/${item[0]}`,
           JSON.stringify({
-            name: item[0],
-            emotion: item[1],
-            score: item[2],
+            name: item[1],
+            emotion: item[2],
+            score: item[3],
           })
         )
         // eslint-disable-next-line
@@ -36,9 +36,10 @@ const statisticsStore = {
     },
     setUnderstanding: (context) => {
       api
-        .get(`/statistics/current`)
+        .get(`/statistics/current/1`)
         .then((res) => {
           try {
+            console.log(res.data);
             context.commit("SET_UNDERSTANDING", res.data);
           } catch (error) {
             //do-nothing

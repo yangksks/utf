@@ -42,7 +42,7 @@ export default {
       // this.emotion.push(Object.keys(expressionFiltered)[0]); //가장 높은 점수의 감정 저장
       let emotion = Object.keys(expressionFiltered)[0] || "neutral";
       let score = expressionFiltered[emotion] || 0.9;
-      const arr = [this.name, emotion, score];
+      const arr = [1, this.name, emotion, score]; //1 강의실 id로 바꿔주기
       this.setEmotion(arr);
     };
     //시간당(5초마다) 감정 얻는 함수

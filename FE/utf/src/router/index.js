@@ -20,7 +20,7 @@ const routes = [
     component: RedirectView,
   },
   {
-    path: "/lecture",
+    path: "/lecture/:id",
     name: "lecture",
     component: () => import("@/views/LectureRoom.vue"),
   },

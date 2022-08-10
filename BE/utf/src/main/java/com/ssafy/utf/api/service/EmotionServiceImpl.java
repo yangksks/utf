@@ -3,6 +3,9 @@ package com.ssafy.utf.api.service;
 import com.ssafy.utf.db.entity.statistics.Emotion;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 @Service
 public class EmotionServiceImpl implements EmotionService{
     @Override
@@ -30,5 +33,10 @@ public class EmotionServiceImpl implements EmotionService{
             if(e.getScore() > 0.99) return 0;
             else return 1;
         }
+    }
+
+    @Override
+    public int insertLecture(HashMap<Integer, ArrayList<Integer>> map) {
+        return 0;
     }
 }
