@@ -7,6 +7,8 @@
     <button>강의종료</button>
     <button v-if="!isMissed" @click="missed">자리비움</button>
     <button v-if="isMissed" @click="comeback">복귀</button>
+    <button @click="comeback">채팅</button>
+    <button @click="comeback">참가자</button>
   </div>
 </template>
 
