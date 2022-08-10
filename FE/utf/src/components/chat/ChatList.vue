@@ -28,7 +28,8 @@ export default {
   scroll-behavior: smooth;
   background: #ffffff;
   /* box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.05); */
-  height: 500px;
+  height: 100%;
+  max-height: 100%;
   border-radius: 12px 12px 0px 0px;
 }
 /* .chat-body::-webkit-scrollbar {
