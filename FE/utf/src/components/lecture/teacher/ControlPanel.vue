@@ -3,7 +3,8 @@
     <button @click="audioToggle">마이크</button>
     <button @click="videoToggle">비디오</button>
     <button @click="screenShare">화면공유</button>
-    <button>수업시작</button>
+    <button v-if="!recording" @click="recordingStart">수업시작</button>
+    <button v-if="recording" @click="recordingEnd">수업종료</button>
     <button>강의종료</button>
     <button v-if="!isMissed" @click="missed">자리비움</button>
     <button v-if="isMissed" @click="comeback">복귀</button>
@@ -15,8 +16,8 @@
 <script>
 import { mapState, mapMutations } from "vuex";
 export default {
-  name: "control-panel",
-  props: [],
+  name: "ControlPanel",
+  props: { recording: Boolean },
   data() {
     return {
       video: true,
@@ -42,6 +43,13 @@ export default {
     },
     screenShare() {
       this.$emit("screenShare");
+    },
+
+    recordingStart() {
+      this.$emit("recordingStart");
+    },
+    recordingEnd() {
+      this.$emit("recordingEnd");
     },
     /* Set timer when user absent */
     missed() {

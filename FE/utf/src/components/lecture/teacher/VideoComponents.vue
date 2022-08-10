@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import UserVideo from "@/components/video/UserVideo";
+import UserVideo from "@/components/lecture/UserVideo";
 
 export default {
   name: "VideoComponents",
