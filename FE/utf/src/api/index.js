@@ -28,4 +28,14 @@ function loginRequest(requestURL, socialLoginType, code, state) {
         });
 }
 
-export { loginRequest };
+// axios 객체 생성
+function apiInstance() {
+  const instance = axios.create({
+    baseURL: "http://localhost:8081/api",
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
+  return instance;
+}
+export { loginRequest, apiInstance };
