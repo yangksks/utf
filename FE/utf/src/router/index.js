@@ -5,7 +5,7 @@ import JoinFormView from "@/views/JoinFormView.vue";
 
 const routes = [
   {
-    path: "/",
+    path: "/login",
     name: "login",
     component: LoginView,
   },
