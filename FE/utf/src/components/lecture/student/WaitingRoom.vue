@@ -30,6 +30,19 @@
         </div>
       </div>
     </b-container>
+
+    <b-modal id="wait" v-model="isWait" hide-footer>
+      <div class="wait-modal">
+        <h2>입장 대기중</h2>
+        <b-button
+          class="mt-3 cancel w-100"
+          variant="danger"
+          block
+          @click="isWait = false"
+          >취소하기</b-button
+        >
+      </div>
+    </b-modal>
   </div>
 </template>
 
@@ -53,11 +66,13 @@ export default {
       publishAudio: true,
       publishVideo: true,
       myName: "",
+      isWait: false,
     };
   },
   methods: {
     joinLecture() {
       this.$emit("joinLecture", this.myName);
+      // this.isWait = true; 접속대기기능
     },
   },
 };
@@ -87,5 +102,16 @@ export default {
   background-color: #2b80ff;
   width: 70px;
   color: #ffffff;
+}
+
+.cancel {
+  background-color: #ff4f5a;
+  color: #ffffff;
+  margin-top: 16rem;
+}
+
+.wait-modal {
+  height: 350px;
+  text-align: center;
 }
 </style>

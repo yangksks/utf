@@ -50,7 +50,7 @@ export default {
       speaker: undefined,
 
       mySessionId: "SessionA",
-      myUserName: "학생" + Math.floor(Math.random() * 100),
+      myUserName: "강사",
     };
   },
   methods: {
@@ -286,7 +286,9 @@ export default {
         axios
           .post(
             `${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`,
-            {},
+            JSON.stringify({
+              role: "MODERATOR",
+            }),
             {
               auth: {
                 username: "OPENVIDUAPP",

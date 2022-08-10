@@ -19,12 +19,11 @@ export default {
       publisher: undefined,
       mySessionId: "SessionA",
       myName: undefined,
-
-      isWait: false,
+      subscribers: [],
     };
   },
   methods: {
-    joinSession() {
+    createPublisher() {
       this.OVCamera = new OpenVidu();
       this.sessionCamera = this.OVCamera.initSession();
 
@@ -42,11 +41,10 @@ export default {
 
     joinLecture(name) {
       this.myName = name;
-      this.isWait = true;
     },
   },
   mounted() {
-    this.joinSession();
+    this.createPublisher();
   },
 };
 </script>

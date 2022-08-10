@@ -1,6 +1,6 @@
 <template>
   <div class="lecture-room">
-    <teacher-components v-if="User" />
+    <teacher-components v-if="userInfo" />
     <student-components v-else />
   </div>
 </template>
@@ -17,7 +17,7 @@ export default {
   },
   data() {
     return {
-      User: "",
+      userInfo: "1",
     };
   },
 };
