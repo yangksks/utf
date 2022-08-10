@@ -2,7 +2,7 @@ const { defineConfig } = require("@vue/cli-service");
 module.exports = defineConfig({
   transpileDependencies: true,
   //npm run build 타겟 디렉토리
-  outputDir: "../../BE/utf/src/main/resources/static",
+  // outputDir: "../../BE/utf/src/main/resources/static",
 
   //포트 다르기때문에 프록시 설정
   devServer: {
