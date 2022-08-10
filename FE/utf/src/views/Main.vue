@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import Logo from "@/components/main/Logo.vue";
+import Logo from "@/components/common/Logo.vue";
 import Profile from "@/components/main/Profile.vue";
 import RecetlyLecture from "@/components/main/RecentlyLecture.vue";
 import LectureItem from "@/components/main/LectureItem.vue";

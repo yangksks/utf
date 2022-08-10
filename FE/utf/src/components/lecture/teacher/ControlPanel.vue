@@ -12,7 +12,7 @@
 <script>
 import { mapState } from "vuex";
 export default {
-  name: "control-panel",
+  name: "ControlPanel",
   props: { recording: Boolean },
   data() {
     return {
