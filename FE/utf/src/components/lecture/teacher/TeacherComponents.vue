@@ -5,8 +5,12 @@
       :subscribers="subscribers"
       :speaker="speaker"
     />
-    <chat-components></chat-components>
-    <user-list-components></user-list-components>
+    <chat-components
+      v-if="publisher"
+      :publisher="publisher"
+      :subscribers="subscribers"
+    ></chat-components>
+    <user-list-components :subscribers="subscribers"></user-list-components>
     <control-panel
       @screenShare="screenShare"
       @recordingStart="recordingStart"
@@ -17,7 +21,7 @@
 </template>
 
 <script>
-import ChatComponents from "@/components/lecture/ChatComponents.vue";
+import ChatComponents from "@/components/chat/ChatComponents.vue";
 import ControlPanel from "@/components/lecture/teacher/ControlPanel.vue";
 import UserListComponents from "@/components/lecture/UserListComponents.vue";
 import VideoComponents from "@/components/lecture/teacher/VideoComponents.vue";
