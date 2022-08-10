@@ -1,5 +1,12 @@
 <template>
-  <apexchart ref="chart" type="pie" :series="series" :options="chartOptions" />
+  <apexchart
+    ref="chart"
+    width="150"
+    height="150"
+    type="pie"
+    :series="series"
+    :options="chartOptions"
+  />
 </template>
 
 <script>
@@ -15,18 +22,15 @@ export default {
       series: [0, 0, 0],
       chartOptions: {
         chart: {
-          width: "100%",
           type: "pie",
         },
         labels: ["이해함", "중립", "이해못함"],
+        legend: {
+          show: false,
+        },
         responsive: [
           {
             breakpoint: 480,
-            options: {
-              chart: {
-                width: "100%",
-              },
-            },
           },
         ],
       },

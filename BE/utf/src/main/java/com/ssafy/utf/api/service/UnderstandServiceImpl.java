@@ -1,13 +1,16 @@
 package com.ssafy.utf.api.service;
 
 import com.ssafy.utf.db.entity.statistics.Emotion;
+import com.ssafy.utf.db.entity.statistics.UnderstandStatistics;
+import com.ssafy.utf.db.repository.UnderstandRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 @Service
-public class EmotionServiceImpl implements EmotionService{
+public class UnderstandServiceImpl implements UnderstandService {
+
+    @Autowired
+    private UnderstandRepository understandRepository;
     @Override
     public int getUnderstanding(Emotion e) {
         String emotion = e.getEmotion();
@@ -35,8 +38,9 @@ public class EmotionServiceImpl implements EmotionService{
         }
     }
 
+
     @Override
-    public int insertLecture(HashMap<Integer, ArrayList<Integer>> map) {
-        return 0;
+    public void insertLecture(UnderstandStatistics us) {
+        understandRepository.save(us);
     }
 }

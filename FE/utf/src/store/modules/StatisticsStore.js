@@ -39,7 +39,6 @@ const statisticsStore = {
         .get(`/statistics/current/1`)
         .then((res) => {
           try {
-            console.log(res.data);
             context.commit("SET_UNDERSTANDING", res.data);
           } catch (error) {
             //do-nothing

@@ -1,9 +1,8 @@
 package com.ssafy.utf.api.controller;
 
-import com.ssafy.utf.api.service.EmotionService;
+import com.ssafy.utf.api.service.UnderstandService;
 import com.ssafy.utf.db.entity.statistics.Emotion;
-import net.minidev.json.JSONArray;
-import net.minidev.json.JSONObject;
+import com.ssafy.utf.db.entity.statistics.UnderstandStatistics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,14 +17,14 @@ import java.util.HashMap;
 public class StatisticsController {
 
     @Autowired
-    EmotionService emotionService;
+    UnderstandService understandService;
 
     private HashMap<String,HashMap<String,ArrayList<Integer>>> lectureRoomEmotions = new HashMap<>();
 
     @PostMapping("/current/{lectureRoomId}") //현재 감정정보 받는 함수
     public ResponseEntity<Emotion> getCurrentEmotions(@RequestBody Emotion emotion, @PathVariable String lectureRoomId) {
         String name = emotion.getName();
-        int understanding = emotionService.getUnderstanding(emotion); // -1, 0, 1로 구분
+        int understanding = understandService.getUnderstanding(emotion); // -1, 0, 1로 구분
 
         if(lectureRoomEmotions.containsKey(lectureRoomId)){ //원래 있는 강의실 id
             if(lectureRoomEmotions.get(lectureRoomId).containsKey(name)){ //기존에 있던 학생
@@ -101,11 +100,43 @@ public class StatisticsController {
 
     @PostMapping("/end/{lectureRoomId}")
     public ResponseEntity<String> endLecture(@PathVariable String lectureRoomId){ //강의 종료하고 DB올리기
+        HashMap<Integer, ArrayList<Integer>> aa = new HashMap<>();
+        ArrayList<Integer> f = new ArrayList<>();
+        ArrayList<Integer> n = new ArrayList<>();
+        ArrayList<Integer> t = new ArrayList<>();
+        f.add(2);
+        f.add(1);
+        f.add(1);
+
+        n.add(2);
+        n.add(2);
+        n.add(2);
+
+        t.add(1);
+        t.add(2);
+        t.add(2);
+
+        aa.put(-1,f);
+        aa.put(0,n);
+        aa.put(1,t);
+
+        ratios.put("1", aa);
+
         HashMap<Integer, ArrayList<Integer>> recordRatio = ratios.get(lectureRoomId);
+        ArrayList<Integer> not = recordRatio.get(-1);
+        ArrayList<Integer> neutral = recordRatio.get(0);
+        ArrayList<Integer> un = recordRatio.get(1);
+
         ratios.remove(lectureRoomId);
 
-        System.out.println(recordRatio.toString());
-        emotionService.insertLecture(recordRatio);
+        UnderstandStatistics us = new UnderstandStatistics();
+        us.setLecture_room_id(1);
+        us.setTime("2022-08-10 09:48:20");
+        us.setUnderstand(un);
+        us.setNeutral(neutral);
+        us.setNotUnderstand(not);
+
+        understandService.insertLecture(us);
         return new ResponseEntity<String>("SUCCESS",HttpStatus.OK);
     }
 }

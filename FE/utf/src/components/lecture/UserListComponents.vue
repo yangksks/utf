@@ -1,7 +1,7 @@
 <template>
   <div class="user-list-components">
     <div class="statistics-info">
-      <span>이해도 정보가 위치할 곳입니다.</span>
+      <understanding-chart />
     </div>
     <div class="userlist-info">
       <p class="userlist-header">
@@ -19,12 +19,15 @@
 
 <script>
 import UserInfo from "@/components/lecture/UserInfo";
+import UnderstandingChart from "@/components/lecture/UnderstandingChart.vue";
+
 export default {
   props: {
     subscribers: Array,
   },
   components: {
     UserInfo,
+    UnderstandingChart,
   },
   computed: {
     orderedUsers: function () {
