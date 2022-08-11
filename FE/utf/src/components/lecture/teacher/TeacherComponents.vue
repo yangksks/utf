@@ -1,5 +1,13 @@
 <template>
-  <div class="teacher-components">
+  <div
+    class="teacher-components"
+    :class="{
+      'both-item': thema == 'both',
+      'no-chat': thema == 'noChat',
+      'no-participant': thema == 'noParticipant',
+      'neither-item': thema == 'neither',
+    }"
+  >
     <video-components
       :publisher="publisher"
       :subscribers="subscribers"
@@ -15,6 +23,7 @@
       @screenShare="screenShare"
       @recordingStart="recordingStart"
       @recordingEnd="recordingEnd"
+      @reSize="reSize"
       :recording="recording"
     ></control-panel>
   </div>
@@ -52,7 +61,7 @@ export default {
       sessionScreen: undefined,
       subscribers: [],
       speaker: undefined,
-
+      thema: "both",
       mySessionId: "SessionA",
       myUserName: "강사",
     };
@@ -305,6 +314,13 @@ export default {
           .catch((error) => reject(error.response));
       });
     },
+
+    reSize(chat, participant) {
+      if (chat && participant) this.thema = "both";
+      else if (!chat && participant) this.thema = "noChat";
+      else if (chat && !participant) this.thema = "noParticipant";
+      else this.thema = "neither";
+    },
   },
 
   mounted() {
@@ -316,9 +332,21 @@ export default {
 <style>
 .teacher-components {
   display: grid;
-  grid-template-columns: 3fr 1fr 1fr;
+  /* grid-template-columns: 3fr 1fr 1fr; */
   grid-template-rows: 1fr 70px;
   background: #c1c1c1;
   height: 100vh;
+}
+.both-item {
+  grid-template-columns: 3fr 1fr 1fr;
+}
+.no-chat {
+  grid-template-columns: 4fr 0fr 1fr;
+}
+.no-participant {
+  grid-template-columns: 4fr 1fr 0fr;
+}
+.neither-item {
+  grid-template-columns: 5fr 0fr 0fr;
 }
 </style>

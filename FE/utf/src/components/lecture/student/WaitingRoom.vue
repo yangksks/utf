@@ -99,7 +99,7 @@ export default {
 }
 
 .btn {
-  background-color: #2b80ff;
+  background-color: #565e64;
   width: 70px;
   color: #ffffff;
 }
