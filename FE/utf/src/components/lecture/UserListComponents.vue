@@ -46,7 +46,6 @@ export default {
   max-height: 100%;
   border-radius: 12px 12px 12px 12px;
   box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.05);
-  background: #f7f7f4;
   margin: 5px 5px 5px 5px;
   overflow-x: hidden;
 }
