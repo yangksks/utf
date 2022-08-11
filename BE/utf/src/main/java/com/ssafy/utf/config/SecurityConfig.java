@@ -13,6 +13,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/user/join").permitAll()
                 .antMatchers("/api/statistics/current/*").permitAll()
                 .antMatchers("/api/statistics/end/*").permitAll()
+                .antMatchers("/api/statistics/record/understand/*").permitAll()
+                .antMatchers("/api/statistics/focus/current/*").permitAll()
                 .anyRequest().authenticated();
 
         httpSecurity.csrf().disable();

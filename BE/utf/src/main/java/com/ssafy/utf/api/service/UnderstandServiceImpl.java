@@ -1,16 +1,18 @@
 package com.ssafy.utf.api.service;
 
 import com.ssafy.utf.db.entity.statistics.Emotion;
-import com.ssafy.utf.db.entity.statistics.UnderstandStatistics;
-import com.ssafy.utf.db.repository.UnderstandRepository;
+import com.ssafy.utf.db.entity.statistics.Statistics;
+import com.ssafy.utf.db.repository.StatisticsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 
 @Service
 public class UnderstandServiceImpl implements UnderstandService {
 
     @Autowired
-    private UnderstandRepository understandRepository;
+    private StatisticsRepository understandRepository;
     @Override
     public int getUnderstanding(Emotion e) {
         String emotion = e.getEmotion();
@@ -40,7 +42,48 @@ public class UnderstandServiceImpl implements UnderstandService {
 
 
     @Override
-    public void insertLecture(UnderstandStatistics us) {
-        understandRepository.save(us);
+    public void insertLecture(Statistics st) {
+        understandRepository.save(st);
+    }
+
+    @Override
+    public ArrayList<Integer> getRecordedUnderstand(long understandStatisticsId) {
+        String str = understandRepository.findUnderstandByUnderstandStatisticsId(understandStatisticsId);
+
+        int len = str.length();
+        String[] temp = str.substring(1,len-1).split(",");
+
+        ArrayList<Integer> recordUnderstand = new ArrayList<>();
+        for(String s: temp){
+            recordUnderstand.add(Integer.parseInt(s.trim()));
+        }
+        return recordUnderstand;
+    }
+
+    @Override
+    public ArrayList<Integer> getRecordedNeutral(long understandStatisticsId) {
+        String str = understandRepository.findNeutralByUnderstandStatisticsId(understandStatisticsId);
+
+        int len = str.length();
+        String[] temp = str.substring(1,len-1).split(",");
+
+        ArrayList<Integer> recordNeutral = new ArrayList<>();
+        for(String s: temp){
+            recordNeutral.add(Integer.parseInt(s.trim()));
+        }
+        return recordNeutral;
+    }
+
+    @Override
+    public ArrayList<Integer> getRecordedNotUnderstand(long understandStatisticsId) {
+        String str = understandRepository.findNotUnderstandByUnderstandStatisticsId(understandStatisticsId);
+        int len = str.length();
+        String[] temp = str.substring(1,len-1).split(",");
+
+        ArrayList<Integer> recordNotUnderstand = new ArrayList<>();
+        for(String s: temp){
+            recordNotUnderstand.add(Integer.parseInt(s.trim()));
+        }
+        return recordNotUnderstand;
     }
 }
