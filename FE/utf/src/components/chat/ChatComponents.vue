@@ -109,5 +109,6 @@ export default {
   background: #f7f7f4;
   margin: 5px 5px 5px 5px;
   overflow-x: hidden;
+  border-radius: 12px 12px 12px 12px;
 }
 </style>
