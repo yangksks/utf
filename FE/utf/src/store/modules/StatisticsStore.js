@@ -5,15 +5,22 @@ const statisticsStore = {
   namespaced: true,
   state: {
     currentUnderstanding: undefined, //현재 이해도 정보
+    recordedUnderstanding: undefined,
   },
   getters: {
     getCurrentUnderstanding: (state) => {
       return state.currentUnderstanding;
     },
+    getRecordedUnderstanding: (state) => {
+      return state.recordedUnderstanding;
+    },
   },
   mutations: {
     SET_UNDERSTANDING: (state, payload) => {
       state.currentUnderstanding = payload;
+    },
+    SET_RECORD_UNDERSTANDING: (state, payload) => {
+      state.recordedUnderstanding = payload;
     },
   },
   actions: {
@@ -34,15 +41,25 @@ const statisticsStore = {
           console.log(err);
         });
     },
-    setUnderstanding: (context) => {
+    setUnderstanding: (store) => {
       api
         .get(`/statistics/current/1`)
         .then((res) => {
           try {
-            context.commit("SET_UNDERSTANDING", res.data);
+            store.commit("SET_UNDERSTANDING", res.data);
           } catch (error) {
             //do-nothing
           }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    setRecordUnderstanding: (store) => {
+      api
+        .get(`/statistics/record/understand/1`)
+        .then((res) => {
+          store.commit("SET_RECORD_UNDERSTANDING", res.data);
         })
         .catch((err) => {
           console.log(err);
