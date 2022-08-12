@@ -1,4 +1,3 @@
-import { log } from "console";
 <template>
   <div class="student-components">
     <div class="student-lecture" v-if="maintainer && isWait">
@@ -6,6 +5,7 @@ import { log } from "console";
         :maintainer="maintainer"
         :subscribers="subscribers"
         :lastPage="lastPage"
+        :screen="screen"
       />
       <!-- <chat-components
           v-if="publisher"
@@ -47,13 +47,14 @@ export default {
     return {
       OVCamera: undefined,
       sessionCamera: undefined,
-      mySessionId: "SessionA",
+      mySessionId: "Session_A",
 
       publisher: undefined,
       subscribers: [],
       maintainer: undefined,
-      lastPage: 1,
+      screen: undefined,
 
+      lastPage: 1,
       isWait: false,
     };
   },
@@ -65,7 +66,11 @@ export default {
       this.sessionCamera.on("streamCreated", ({ stream }) => {
         const subscriber = this.sessionCamera.subscribe(stream);
 
-        if (JSON.parse(subscriber.stream.connection.data).role == "teacher") {
+        if (stream.typeOfVideo == "SCREEN") {
+          this.screen = subscriber;
+        } else if (
+          JSON.parse(subscriber.stream.connection.data).role == "teacher"
+        ) {
           this.sessionCamera.publish(this.publisher);
           this.subscribers.push(this.publisher);
           this.maintainer = subscriber;
@@ -77,6 +82,9 @@ export default {
       });
 
       this.sessionCamera.on("streamDestroyed", ({ stream }) => {
+        if (stream.typeOfVideo == "SCREEN") {
+          this.screen = undefined;
+        }
         const index = this.subscribers.indexOf(stream.streamManager, 0);
         if (index >= 0) {
           this.subscribers.splice(index, 1);
@@ -115,9 +123,6 @@ export default {
       this.getToken(this.mySessionId).then((token) => {
         this.sessionCamera
           .connect(token, { clientData: name })
-          .then(() => {
-            if (name == "teacher") this.sessionCamera.publish(this.publisher);
-          })
           .catch((error) => {
             console.log(
               "There was an error connecting to the session:",
