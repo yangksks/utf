@@ -13,12 +13,11 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Emotion {
+public class Focus {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long emotionId;
+    private long focusId;
     private String name;
-    private String emotion;
-    private Double score;
+    private Boolean isFocus;
 }
