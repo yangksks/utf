@@ -5,22 +5,22 @@ const statisticsStore = {
   namespaced: true,
   state: {
     currentUnderstanding: undefined, //현재 이해도 정보
-    recordedUnderstanding: undefined,
+    recordedStatistics: undefined, //녹화강의 집중도,이해도 통계
   },
   getters: {
     getCurrentUnderstanding: (state) => {
       return state.currentUnderstanding;
     },
-    getRecordedUnderstanding: (state) => {
-      return state.recordedUnderstanding;
+    getRecordedStatistics: (state) => {
+      return state.recordedStatistics;
     },
   },
   mutations: {
     SET_UNDERSTANDING: (state, payload) => {
       state.currentUnderstanding = payload;
     },
-    SET_RECORD_UNDERSTANDING: (state, payload) => {
-      state.recordedUnderstanding = payload;
+    SET_RECORD_STATISTICS: (state, payload) => {
+      state.recordedStatistics = payload;
     },
   },
   actions: {
@@ -55,11 +55,11 @@ const statisticsStore = {
           console.log(err);
         });
     },
-    setRecordUnderstanding: (store) => {
+    setRecordStatistics: (store) => {
       api
         .get(`/statistics/record/understand/1`)
         .then((res) => {
-          store.commit("SET_RECORD_UNDERSTANDING", res.data);
+          store.commit("SET_RECORD_STATISTICS", res.data);
         })
         .catch((err) => {
           console.log(err);

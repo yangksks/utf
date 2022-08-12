@@ -43,7 +43,6 @@ export default {
       setInterval(() => {
         this.setUnderstanding();
         let obj = this.getCurrentUnderstanding();
-        console.log(obj);
         let newChart = [obj[1], obj[0], obj[-1]];
         this.series = newChart;
       }, 5000);

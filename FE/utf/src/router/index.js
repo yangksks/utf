@@ -29,6 +29,11 @@ const routes = [
     name: "main",
     component: () => import("@/views/Main.vue"),
   },
+  {
+    path: "/test",
+    name: "test",
+    component: () => import("@/views/sss.vue"),
+  },
 ];
 
 const router = createRouter({

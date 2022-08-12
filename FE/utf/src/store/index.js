@@ -3,9 +3,10 @@ import lectureStore from "@/store/modules/lectureStore.js";
 import createVuexPersistedState from "vuex-persistedstate";
 import StatisticsStore from "./modules/StatisticsStore.js";
 import chatStore from "./modules/chatStore.js";
+import focusStore from "./modules/focusStore.js";
 
 export default createStore({
-  modules: { lectureStore, StatisticsStore, chatStore },
+  modules: { lectureStore, StatisticsStore, chatStore, focusStore },
   plugins: [
     createVuexPersistedState({
       //동작 안함
