@@ -45,5 +45,4 @@ out/
 **/src/main/resources/static/
 
 # log
-*.log
-*.log.*
+ssafy-web.log*

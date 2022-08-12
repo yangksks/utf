@@ -9,8 +9,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests()
-                .antMatchers("/api/user/socialLogin").permitAll()
-                .antMatchers("/api/user/join").permitAll()
+                .antMatchers("/api/user/*").permitAll()
                 .antMatchers("/api/statistics/current/*").permitAll()
                 .antMatchers("/api/statistics/end/*").permitAll()
                 .antMatchers("/api/statistics/record/understand/*").permitAll()
