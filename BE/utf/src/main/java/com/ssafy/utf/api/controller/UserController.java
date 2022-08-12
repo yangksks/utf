@@ -107,7 +107,9 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<Object> updateUser(UserUpdateReq userUpdateReq) {
+    public ResponseEntity<Object> updateUser(@PathVariable("userId") long userId, @RequestBody UserUpdateReq userUpdateReq) {
+        userUpdateReq.setUserId(userId);
+
         HashMap<String, Object> result = new HashMap<>();
         HttpStatus status = null;
         try {

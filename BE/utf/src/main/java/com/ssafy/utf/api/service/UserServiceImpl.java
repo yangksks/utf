@@ -24,10 +24,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(UserUpdateReq userUpdateReq) {
-        User user = userRepository.findById(userUpdateReq.getUserId());
-        user.setUserName(userUpdateReq.getUserName());
-        user.setEmail(userUpdateReq.getEmail());
-        userRepository.save(user);
+        long userId = userUpdateReq.getUserId();
+        String userName = userUpdateReq.getUserName();
+        String email = userUpdateReq.getEmail();
+        userRepository.updateUser(userId, userName, email);
+        User user = userRepository.findById(userId);
         return user;
     }
 
