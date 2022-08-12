@@ -41,6 +41,8 @@ export default {
   position: relative;
   border-radius: 20px;
   overflow: hidden;
+  display: inline-block;
+  width: auto;
 }
 .client-name {
   position: absolute;

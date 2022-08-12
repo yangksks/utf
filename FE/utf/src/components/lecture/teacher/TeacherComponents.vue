@@ -34,13 +34,14 @@ import ChatComponents from "@/components/chat/ChatComponents.vue";
 import ControlPanel from "@/components/lecture/teacher/ControlPanel.vue";
 import UserListComponents from "@/components/lecture/UserListComponents.vue";
 import VideoComponents from "@/components/lecture/teacher/VideoComponents.vue";
-import axios from "axios";
 import { OpenVidu } from "openvidu-browser";
 import { mapActions } from "vuex";
-
-axios.defaults.headers.post["Content-Type"] = "application/json";
-const OPENVIDU_SERVER_URL = "http://i7a701.p.ssafy.io:5443";
-const OPENVIDU_SERVER_SECRET = "MY_SECRET";
+import {
+  createTokenApi,
+  createSessionApi,
+  recordingStartApi,
+  recordingStopApi,
+} from "@/api/openvidu.js";
 
 export default {
   name: "TeacherComponents",
@@ -61,8 +62,10 @@ export default {
       sessionScreen: undefined,
       subscribers: [],
       speaker: undefined,
+
       thema: "both",
       mySessionId: "SessionA",
+
       myUserName: "강사",
     };
   },
@@ -71,52 +74,25 @@ export default {
 
     recordingEnd() {
       this.recording = false;
-      axios
-        .post(
-          `${OPENVIDU_SERVER_URL}/openvidu/api/recordings/stop/${this.RECORDING_ID}`,
-          {},
-          {
-            auth: {
-              username: "OPENVIDUAPP",
-              password: OPENVIDU_SERVER_SECRET,
-            },
-          }
-        )
-        .then((response) => {
+      recordingStopApi(
+        this.RECORDING_ID,
+        (response) => {
           console.log(response);
-        })
-        .catch((error) => console.log(error));
+        },
+        (error) => console.log(error)
+      );
     },
 
     recordingStart() {
       this.recording = true;
-      axios
-        .post(
-          `${OPENVIDU_SERVER_URL}/openvidu/api/recordings/start`,
-          JSON.stringify({
-            session: this.mySessionId,
-            name: "testRecording",
-            hasAudio: false,
-            hasVideo: true,
-            outputMode: "COMPOSED",
-            recordingLayout: "BEST_FIT",
-            resolution: "1280x720",
-            frameRate: 25,
-            shmSize: 536870912,
-            ignoreFailedStreams: false,
-          }),
-          {
-            auth: {
-              username: "OPENVIDUAPP",
-              password: OPENVIDU_SERVER_SECRET,
-            },
-          }
-        )
-        .then(({ data }) => {
+      recordingStartApi(
+        this.mySessionId,
+        ({ data }) => {
           this.RECORDING_ID = data.id;
           console.log("레코딩 id", this.RECORDING_ID);
-        })
-        .catch((error) => console.log(error));
+        },
+        (error) => console.log(error)
+      );
     },
 
     joinSession() {
@@ -157,9 +133,9 @@ export default {
         console.warn(exception);
       });
 
-      this.getToken(this.mySessionId).then((token) => {
+      this.getToken(this.mySessionId, "MODERATOR").then((token) => {
         this.sessionCamera
-          .connect(token, { clientData: this.myUserName })
+          .connect(token, { clientData: this.myUserName, role: "teacher" })
           .then(() => {
             // --- Get your own camera stream with the desired properties ---
             let publisher = this.OVCamera.initPublisher(undefined, {
@@ -194,7 +170,7 @@ export default {
           });
       });
 
-      this.getToken(this.mySessionId).then((tokenScreen) => {
+      this.getToken(this.mySessionId, "PUBLISHER").then((tokenScreen) => {
         this.sessionScreen
           .connect(tokenScreen)
           .then(() => {
@@ -251,67 +227,36 @@ export default {
       window.removeEventListener("beforeunload", this.leaveSession);
     },
 
-    getToken(mySessionId) {
+    getToken(mySessionId, role) {
       return this.createSession(mySessionId).then((sessionId) =>
-        this.createToken(sessionId)
+        this.createToken(sessionId, role)
       );
     },
 
-    createSession(sessionId) {
+    createSession(sessionId, role) {
       return new Promise((resolve, reject) => {
-        axios
-          .post(
-            `${OPENVIDU_SERVER_URL}/openvidu/api/sessions`,
-            JSON.stringify({
-              customSessionId: sessionId,
-            }),
-            {
-              auth: {
-                username: "OPENVIDUAPP",
-                password: OPENVIDU_SERVER_SECRET,
-              },
-            }
-          )
-          .then((response) => response.data)
-          .then((data) => resolve(data.id))
-          .catch((error) => {
+        createSessionApi(
+          sessionId,
+          role,
+          ({ data }) => resolve(data.id),
+          (error) => {
             if (error.response.status === 409) {
               resolve(sessionId);
             } else {
-              console.warn(
-                `No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}`
-              );
-              if (
-                window.confirm(
-                  `No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}\n\nClick OK to navigate and accept it. If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${OPENVIDU_SERVER_URL}"`
-                )
-              ) {
-                location.assign(`${OPENVIDU_SERVER_URL}/accept-certificate`);
-              }
               reject(error.response);
             }
-          });
+          }
+        );
       });
     },
 
     createToken(sessionId) {
       return new Promise((resolve, reject) => {
-        axios
-          .post(
-            `${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`,
-            JSON.stringify({
-              role: "MODERATOR",
-            }),
-            {
-              auth: {
-                username: "OPENVIDUAPP",
-                password: OPENVIDU_SERVER_SECRET,
-              },
-            }
-          )
-          .then((response) => response.data)
-          .then((data) => resolve(data.token))
-          .catch((error) => reject(error.response));
+        createTokenApi(
+          sessionId,
+          ({ data }) => resolve(data.token),
+          (error) => reject(error.response)
+        );
       });
     },
 
