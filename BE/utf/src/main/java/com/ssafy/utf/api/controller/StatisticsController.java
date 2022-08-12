@@ -1,6 +1,6 @@
 package com.ssafy.utf.api.controller;
 
-import com.ssafy.utf.api.service.UnderstandService;
+import com.ssafy.utf.api.service.StatisticsService;
 import com.ssafy.utf.db.entity.statistics.Emotion;
 import com.ssafy.utf.db.entity.statistics.Focus;
 import com.ssafy.utf.db.entity.statistics.Statistics;
@@ -9,7 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 @RestController
@@ -18,7 +20,7 @@ import java.util.HashMap;
 public class StatisticsController {
 
     @Autowired
-    UnderstandService understandService;
+    StatisticsService statisticsService;
 
     private HashMap<String,HashMap<String,ArrayList<Integer>>> lectureRoomUnderstanding = new HashMap<>();
     private HashMap<String,HashMap<String,ArrayList<Integer>>> lectureRoomFocus = new HashMap<>();
@@ -26,7 +28,7 @@ public class StatisticsController {
     @PostMapping("/current/{lectureRoomId}") //현재 감정정보 받는 함수
     public ResponseEntity<Emotion> getCurrentEmotions(@RequestBody Emotion emotion, @PathVariable String lectureRoomId) {
         String name = emotion.getName();
-        int understanding = understandService.getUnderstanding(emotion); // -1, 0, 1로 구분
+        int understanding = statisticsService.getUnderstanding(emotion); // -1, 0, 1로 구분
 
         if(lectureRoomUnderstanding.containsKey(lectureRoomId)){ //원래 있는 강의실 id
             if(lectureRoomUnderstanding.get(lectureRoomId).containsKey(name)){ //기존에 있던 학생
@@ -102,42 +104,8 @@ public class StatisticsController {
 
     @PostMapping("/end/{lectureRoomId}")
     public ResponseEntity<String> endLecture(@PathVariable String lectureRoomId){ //강의 종료하고 DB올리기
-//        HashMap<Integer, ArrayList<Integer>> aa = new HashMap<>();
-//        ArrayList<Integer> f = new ArrayList<>();
-//        ArrayList<Integer> n = new ArrayList<>();
-//        ArrayList<Integer> t = new ArrayList<>();
-//        ArrayList<Integer> ft = new ArrayList<>();
-//        ArrayList<Integer> ff = new ArrayList<>();
-//
-//        f.add(2);
-//        f.add(1);
-//        f.add(1);
-//
-//        n.add(2);
-//        n.add(2);
-//        n.add(2);
-//
-//        t.add(1);
-//        t.add(2);
-//        t.add(2);
-//
-//        ft.add(3);
-//        ft.add(4);
-//        ft.add(4);
-//
-//        ff.add(2);
-//        ff.add(1);
-//        ff.add(1);
-//
-//        aa.put(-1,f);
-//        aa.put(0,n);
-//        aa.put(1,t);
-//        aa.put(-2,ff);
-//        aa.put(2,ft);
-//
-//        ratios.put("1", aa);
 
-        HashMap<Integer, ArrayList<Integer>> recordRatio = ratios.get(lectureRoomId);
+        HashMap<Integer, ArrayList<Integer>> recordRatio = ratios.get(lectureRoomId); //강의의 통계 가져오기
         ArrayList<Integer> notUnderstand = recordRatio.get(-1);
         ArrayList<Integer> neutral = recordRatio.get(0);
         ArrayList<Integer> understand = recordRatio.get(1);
@@ -145,31 +113,37 @@ public class StatisticsController {
         ArrayList<Integer> focus = recordRatio.get(2);
 
         ratios.remove(lectureRoomId);
+        Date now = new Date();
+        SimpleDateFormat datetime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //현재시각 DATETIME 형식으로
 
         Statistics st = new Statistics();
         st.setLecture_room_id(1);
-        st.setTime("2022-08-10 09:48:20");
+        st.setTime(datetime.toString());
         st.setUnderstand(understand);
         st.setNeutral(neutral);
         st.setNotUnderstand(notUnderstand);
         st.setNotFocus(notFocus);
         st.setFocus(focus);
 
-        understandService.insertLecture(st);
+        statisticsService.insertLecture(st); // DB저장
         return new ResponseEntity<String>("SUCCESS",HttpStatus.OK);
     }
 
-    @GetMapping("/record/understand/{understand_statistics_id}")
-    public ResponseEntity<HashMap<Integer,ArrayList<Integer>>> getRecordedUnderstand(@PathVariable long understand_statistics_id){
+    @GetMapping("/record/understand/{statistics_id}")
+    public ResponseEntity<HashMap<Integer,ArrayList<Integer>>> getRecordedUnderstand(@PathVariable long statistics_id){
         HashMap<Integer,ArrayList<Integer>> map = new HashMap<>();
 
-        ArrayList<Integer> recordUnderstand = understandService.getRecordedUnderstand(understand_statistics_id);
-        ArrayList<Integer> recordNeutral = understandService.getRecordedNeutral(understand_statistics_id);
-        ArrayList<Integer> recordNotUnderstand = understandService.getRecordedNotUnderstand(understand_statistics_id);
+        ArrayList<Integer> recordUnderstand = statisticsService.getRecordedUnderstand(statistics_id);
+        ArrayList<Integer> recordNeutral = statisticsService.getRecordedNeutral(statistics_id);
+        ArrayList<Integer> recordNotUnderstand = statisticsService.getRecordedNotUnderstand(statistics_id);
+        ArrayList<Integer> recordFocus = statisticsService.getRecordedFocus(statistics_id);
+        ArrayList<Integer> recordNotFocus = statisticsService.getRecordedNotFocus(statistics_id);
 
+        map.put(-2, recordNotFocus);
         map.put(-1,recordNotUnderstand);
         map.put(0,recordNeutral);
         map.put(1,recordUnderstand);
+        map.put(2, recordFocus);
 
         return new ResponseEntity<HashMap<Integer,ArrayList<Integer>>>(map, HttpStatus.OK);
     }
@@ -239,7 +213,7 @@ public class StatisticsController {
             ratios.put(lectureRoomId, newRatio);
         }
 
-        HashMap<Integer, Integer> front = new HashMap<>(); // test용
+        HashMap<Integer, Integer> front = new HashMap<>(); // front로 넘겨줄 것
         front.put(-2,notFocus);
         front.put(2,focus);
 

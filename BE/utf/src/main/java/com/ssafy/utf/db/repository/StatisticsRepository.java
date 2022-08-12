@@ -9,11 +9,17 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface StatisticsRepository extends JpaRepository<Statistics, String> {
     @Query(value = "SELECT understand FROM statistics WHERE statistics_id = :statisticsId", nativeQuery = true)
-    String findUnderstandByUnderstandStatisticsId(@Param("statisticsId") long statisticsId);
+    String findUnderstandByStatisticsId(@Param("statisticsId") long statisticsId);
 
     @Query(value = "SELECT neutral FROM statistics WHERE statistics_id = :statisticsId", nativeQuery = true)
-    String findNeutralByUnderstandStatisticsId(@Param("statisticsId") long statisticsId);
+    String findNeutralByStatisticsId(@Param("statisticsId") long statisticsId);
 
     @Query(value = "SELECT not_understand FROM statistics WHERE statistics_id = :statisticsId", nativeQuery = true)
-    String findNotUnderstandByUnderstandStatisticsId(@Param("statisticsId") long statisticsId);
+    String findNotUnderstandByStatisticsId(@Param("statisticsId") long statisticsId);
+
+    @Query(value = "SELECT focus FROM statistics WHERE statistics_id = :statisticsId", nativeQuery = true)
+    String findFocusByStatisticsId(@Param("statisticsId") long statisticsId);
+
+    @Query(value = "SELECT not_focus FROM statistics WHERE statistics_id = :statisticsId", nativeQuery = true)
+    String findNotFocusByStatisticsId(@Param("statisticsId") long statisticsId);
 }
