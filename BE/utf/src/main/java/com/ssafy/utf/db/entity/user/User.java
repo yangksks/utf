@@ -21,8 +21,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long userId;
     String userName;
-    String phoneNumber;
     String email;
     int socialLoginType;
     String socialId;
+    String refreshToken;
 }
