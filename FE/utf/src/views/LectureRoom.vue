@@ -17,7 +17,7 @@ export default {
   },
   data() {
     return {
-      userInfo: "1",
+      userInfo: "",
     };
   },
 };
