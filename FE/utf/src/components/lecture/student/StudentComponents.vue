@@ -47,7 +47,7 @@ export default {
     return {
       OVCamera: undefined,
       sessionCamera: undefined,
-      mySessionId: "SessionB",
+      mySessionId: "SessionA",
 
       publisher: undefined,
       subscribers: [],

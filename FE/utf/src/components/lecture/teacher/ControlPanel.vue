@@ -1,8 +1,6 @@
 <template>
   <div class="control-panel" v-if="publisher">
     <div class="menu-1">
-      <!-- <button @click="audioToggle">마이크</button>
-      <button @click="videoToggle">비디오</button> -->
       <audio-button
         pill
         :size="buttonSize"
@@ -19,8 +17,8 @@
         <b-skeleton-icons>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="buttonSize"
-            height="buttonSize"
+            :width="buttonSize"
+            :height="buttonSize"
             fill="currentColor"
             class="bi bi-box-arrow-up"
             viewBox="-2 0 20 20"
@@ -66,8 +64,8 @@
         <b-skeleton-icons>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="buttonSize"
-            height="buttonSize"
+            :width="buttonSize"
+            :height="buttonSize"
             fill="red"
             class="bi bi-circle-fill"
             viewBox="0 0 16 16"
@@ -85,8 +83,8 @@
         <b-skeleton-icons>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="buttonSize"
-            height="buttonSize"
+            :width="buttonSize"
+            :height="buttonSize"
             fill="red"
             class="bi bi-square-fill"
             viewBox="-8 -8 32 32"
@@ -101,8 +99,8 @@
         <b-skeleton-icons>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="buttonSize"
-            height="buttonSize"
+            :width="buttonSize"
+            :height="buttonSize"
             fill="currentColor"
             class="bi bi-box-arrow-right"
             viewBox="-4 -2 20 20"
@@ -164,8 +162,8 @@
         <b-skeleton-icons>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="buttonSize"
-            height="buttonSize"
+            :width="buttonSize"
+            :height="buttonSize"
             fill="currentColor"
             class="bi bi-chat-left-dots-fill"
             viewBox="0 0 16 16"
@@ -185,8 +183,8 @@
         <b-skeleton-icons>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="buttonSize"
-            height="buttonSize"
+            :width="buttonSize"
+            :height="buttonSize"
             fill="currentColor"
             class="bi bi-people-fill"
             viewBox="0 0 16 16"
@@ -212,7 +210,7 @@ import AudioButton from "@/components/common/AudioButton";
 import CamButton from "@/components/common/CamButton";
 export default {
   name: "ControlPanel",
-  props: { recording: Boolean },
+  props: { recording: Boolean, publisher: Object },
   components: {
     AudioButton,
     CamButton,
