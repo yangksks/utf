@@ -1,20 +1,16 @@
+<!-- eslint-disable prettier/prettier -->
 <template>
-  <div>
-    <ul>
-      <li
-        v-for="(lecture, index) in this.recentLecture"
-        :key="index"
-        @click="goLecture(lecture)"
-      >
-        {{ lecture }}
-      </li>
-    </ul>
+  <div :class="{ recentList: !darkMode, recentListDark: darkMode }" v-for="(lecture, index) in this.recentLecture" :key="index" class="buttons" @click="goLecture(lecture)">
+    {{ lecture }}
   </div>
 </template>
 
 <script>
 export default {
   name: "RecetlyLecture",
+  props: {
+    darkMode: Boolean,
+  },
   computed: {
     recentLecture() {
       return [1, 2, 3, 4, 5];
@@ -29,12 +25,16 @@ export default {
 </script>
 
 <style scoped>
-ul {
-  list-style: none;
-}
-li {
-  background-color: aliceblue;
+.recentList {
+  background-color: #ffffff;
   margin: 10px;
-  border-radius: 20px;
+  border-radius: 10px;
+  border: #c1c1c1 solid 1px;
+}
+.recentListDark {
+  background-color: #202026;
+  margin: 10px;
+  border-radius: 10px;
+  border: #3e3e3e solid 1px;
 }
 </style>

@@ -4,9 +4,7 @@
 
 <script>
 import JoinFormComp from "@/components/user/JoinFormComp.vue";
-import axios from "axios";
-import store from "@/store";
-import router from "@/router";
+import { getName } from "@/api/index.js";
 
 export default {
   name: "LoginView",
@@ -14,23 +12,7 @@ export default {
     JoinFormComp,
   },
   methods: {
-    getName(name) {
-      axios
-        .post(`http://localhost:8080/api/user/join`, {
-          userName: name,
-          socialLoginType: store.state.tempUserInfo["socialLoginType"],
-          socialId: store.state.tempUserInfo["socialId"],
-        })
-        .then((res) => {
-          console.log(res);
-          store.dispatch("saveUserInfo", res.data);
-          router.push({ path: "/main" });
-        })
-        .catch((err) => {
-          console.log(err);
-          router.push({ path: "/login" });
-        });
-    },
+    getName,
   },
 };
 </script>

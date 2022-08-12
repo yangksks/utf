@@ -1,8 +1,12 @@
+<!-- eslint-disable prettier/prettier -->
 <template>
-  <img src="@/assets/UTFLogo.png" alt="logo" @click="goHome()" />
+  <div @click="goHome()">
+    <img src="@/assets/UTFLogo-removebg.png" alt="logo" class="buttons" />
+  </div>
 </template>
 
 <script>
+/* eslint-disable prettier/prettier */
 export default {
   name: "LogoComponent",
   methods: {
