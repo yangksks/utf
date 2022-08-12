@@ -65,9 +65,7 @@ export default {
       this.sessionCamera.on("streamCreated", ({ stream }) => {
         const subscriber = this.sessionCamera.subscribe(stream);
 
-        if (
-          JSON.parse(subscriber.stream.connection.data).clientData == "teacher"
-        ) {
+        if (JSON.parse(subscriber.stream.connection.data).role == "teacher") {
           this.sessionCamera.publish(this.publisher);
           this.subscribers.push(this.publisher);
           this.maintainer = subscriber;

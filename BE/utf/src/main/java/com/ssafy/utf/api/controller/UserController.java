@@ -1,6 +1,7 @@
 package com.ssafy.utf.api.controller;
 
 import com.ssafy.utf.api.request.UserJoinReq;
+import com.ssafy.utf.api.request.UserUpdateReq;
 import com.ssafy.utf.api.service.*;
 import com.ssafy.utf.db.entity.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,20 +39,24 @@ public class UserController {
         try {
             User user = null;
             String socialId = null;
+            String email = null;
             if (socialLoginType == 1) {
                 KakaoTokenInfo kakaoTokenInfo = kakaoUserService.sendCode(code);
                 KakaoUserInfo kakaoUserInfo = kakaoUserService.sendToken(kakaoTokenInfo.getAccessToken());
                 socialId = kakaoUserInfo.getId();
+                email = kakaoUserInfo.getEmail();
                 user = kakaoUserService.socialIdCheck(socialId);
             } else if (socialLoginType == 2) {
                 NaverTokenInfo naverTokenInfo = naverUserService.sendCode(code, state);
                 NaverUserInfo naverUserInfo = naverUserService.sendToken(naverTokenInfo.getAccessToken());
                 socialId = naverUserInfo.getId();
+                email = naverUserInfo.getEmail();
                 user = naverUserService.socialIdCheck(socialId);
             } else if (socialLoginType == 3) {
                 GoogleTokenInfo googleTokenInfo = googleUserService.sendCode(code);
                 GoogleUserInfo googleUserInfo = googleUserService.sendToken(googleTokenInfo.getAccessToken());
                 socialId = googleUserInfo.getId();
+                email = googleUserInfo.getEmail();
                 user = googleUserService.socialIdCheck(socialId);
             }
 
@@ -61,6 +66,7 @@ public class UserController {
                 result.put("userExist", false);
                 result.put("socialLoginType", socialLoginType);
                 result.put("socialId", socialId);
+                result.put("email", email);
             }
             //가입 했으면
             else {
@@ -69,7 +75,6 @@ public class UserController {
                 result.put("userId", user.getUserId());
                 result.put("userName", user.getUserName());
                 result.put("email", user.getEmail());
-                result.put("phoneNumber", user.getPhoneNumber());
             }
             status = HttpStatus.OK;
         } catch (Exception e) {
@@ -92,7 +97,6 @@ public class UserController {
             result.put("userId", user.getUserId());
             result.put("userName", user.getUserName());
             result.put("email", user.getEmail());
-            result.put("phoneNumber", user.getPhoneNumber());
             status = HttpStatus.OK;
         } catch (Exception e) {
             status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -101,20 +105,38 @@ public class UserController {
 
         return ResponseEntity.status(status).body(result);
     }
-//
-//    @PostMapping("/userInfo")
-//    public ResponseEntity<Object> uesrInfo() {
-//
-//    }
-//
-//    @PutMapping("/{userId}")
-//    public ResponseEntity<Object> updateUser(UserReq userReq) {
-//
-//    }
-//
-//    @DeleteMapping("/{userId}")
-//    public ResponseEntity<Object> deleteUser() {
-//
-//    }
+
+    @PutMapping("/{userId}")
+    public ResponseEntity<Object> updateUser(@PathVariable("userId") long userId, @RequestBody UserUpdateReq userUpdateReq) {
+        userUpdateReq.setUserId(userId);
+
+        HashMap<String, Object> result = new HashMap<>();
+        HttpStatus status = null;
+        try {
+            User user = userService.updateUser(userUpdateReq);
+            result.put("userId", user.getUserId());
+            result.put("userName", user.getUserName());
+            result.put("email", user.getEmail());
+            status = HttpStatus.OK;
+        } catch (Exception e) {
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+            e.printStackTrace();
+        }
+        return ResponseEntity.status(status).body(result);
+    }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Object> deleteUser(@PathVariable("userId") long userId) {
+        HashMap<String, Object> result = new HashMap<>();
+        HttpStatus status = null;
+        try {
+            userService.deleteUser(userId);
+            status = HttpStatus.OK;
+        } catch (Exception e) {
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+            e.printStackTrace();
+        }
+        return ResponseEntity.status(status).body(result);
+    }
 
 }

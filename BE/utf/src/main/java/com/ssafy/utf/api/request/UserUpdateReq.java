@@ -7,12 +7,10 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class UserJoinReq {
+public class UserUpdateReq {
+    long userId;
+
     String userName;
-
-    int socialLoginType;
-
-    String socialId;
 
     String email;
 }

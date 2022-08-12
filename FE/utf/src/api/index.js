@@ -48,8 +48,62 @@ function loginRequest(requestURL, socialLoginType, code, state) {
         })
         .catch((err) => {
             console.log(err);
-            router.push({ path: "/login" });
+            router.push({ path: "/" });
         });
 }
 
-export { loginRequest,apiInstance,openviduInstance };
+function getName(name) {
+    axios
+        .post(`http://localhost:8080/api/user/join`, {
+            userName: name,
+            socialLoginType: store.state.tempUserInfo["socialLoginType"],
+            socialId: store.state.tempUserInfo["socialId"],
+            email: store.state.tempUserInfo["email"],
+        })
+        .then((res) => {
+            console.log(res);
+            store.dispatch("saveUserInfo", res.data);
+            router.push({ path: "/main" });
+        })
+        .catch((err) => {
+            console.log(err);
+            router.push({ path: "/" });
+        });
+}
+function deleteUserRequest(userId) {
+    axios
+        .delete(`http://localhost:8080/api/user/${userId}`)
+        .then((res) => {
+            console.log(res);
+            router.push({ path: "/" });
+        })
+        .catch((err) => {
+            console.log(err);
+            router.push({ path: "/" });
+        });
+}
+async function updateUserRequest(userId, userName, email) {
+    await axios
+        .put(`http://localhost:8080/api/user/${userId}`, {
+            userName: userName,
+            email: email
+        })
+        .then((res) => {
+            console.log(res);
+            store.dispatch("saveUserInfo", res.data);
+            router.push({ path: "/main" });
+        })
+        .catch((err) => {
+            console.log(err);
+            router.push({ path: "/" });
+        });
+}
+
+export {
+    loginRequest,
+    getName,
+    deleteUserRequest,
+    updateUserRequest,
+    apiInstance,
+    openviduInstance
+};

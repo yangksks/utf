@@ -1,24 +1,45 @@
+<!-- eslint-disable prettier/prettier -->
 <template>
-  <div class="card">
+  <div :class="{ card: !darkMode, cardDark: darkMode }">
     <div>
-      <img src="@/assets/UTFLogo.png" alt="logo" />
-      <p>x</p>
+      <img src="@/assets/UTFLogo-removebg.png" alt="logo" style="width: 80%" />
+      <!-- Button trigger modal -->
+      <i class="bi bi-x" data-bs-toggle="modal" data-bs-target="#exampleModal" style="vertical-align: top; margin: 5px; font-size: 30px" @click="emitIndex(index)"></i>
+      <!-- <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#exampleModal" aria-label="Close" style="vertical-align: top; margin: 5px" @click="emitIndex(index)"></button> -->
     </div>
-    <h3>자바 프로그래밍</h3>
-    <button>통계</button>
+    <div>자바 프로그래밍</div>
+    <div style="text-align: center"><button type="button" class="btn btn-success" style="width: 45%">통계 보기</button></div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    index: Number,
+    darkMode: Boolean,
+  },
+  methods: {
+    emitIndex(index) {
+      console.log("index : " + index);
+      this.$emit("emitIndex", index);
+    },
+  },
+};
 </script>
 
 <style scoped>
 .card {
-  border: 1px solid gray;
-  border-radius: 15px;
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  border: 1px solid #c1c1c1;
+  border-radius: 20px;
 }
-p {
-  float: right;
+.cardDark {
+  width: 100%;
+  height: 100%;
+  background-color: #202026;
+  border: 1px solid #3e3e3e;
+  border-radius: 20px;
 }
 </style>

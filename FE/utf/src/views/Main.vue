@@ -1,82 +1,135 @@
+<!-- eslint-disable prettier/prettier -->
 <template>
-  <b-container>
-    <b-row>
-      <b-col sm="3" class="left">
-        <logo />
-        <profile />
-
-        <h2>Recently</h2>
-        <recetly-lecture />
-      </b-col>
-      <b-col sm="9" class="right">
-        <h2>Class</h2>
-        <b-row class="cards">
-          <b-col sm="3" v-for="(lecture, index) in lectures" :key="index">
-            <lecture-item></lecture-item>
-            <div class="w-100" v-if="index % 4 == 0"></div>
-          </b-col>
-          <b-col
-            sm="3"
-            v-bind:class="flipped ? 'flip-container flipped' : 'flip-container'"
-          >
-            <div class="flipper">
-              <div class="front">
-                <svg
-                  class="btn-plus frontFlipBtn"
-                  @click="flipped = true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="#000000"
-                  viewBox="0 0 50 50"
-                  width="80px"
-                  height="80px"
-                >
-                  <path
-                    fill="none"
-                    stroke="#000000"
-                    stroke-miterlimit="10"
-                    stroke-width="2"
-                    d="M13 25L37 25M25 13L25 37M25 3A22 22 0 1 0 25 47 22 22 0 1 0 25 3z"
-                  />
-                </svg>
+  <div :class="{ background: !darkMode, backgroundDark: darkMode }">
+    <b-container style="padding-top: 40px">
+      <b-row style="min-height: 800px">
+        <b-col sm="3" :class="{ left: !darkMode, leftDark: darkMode }">
+          <logo />
+          <profile :class="{ displayNone: hideProfile }" @setting="toggle" @logout="logout" v-bind:darkMode="darkMode" />
+          <profile-setting :class="{ displayNone: hideProfileSetting }" @cancle="toggle" @toggle="toggle" v-bind:darkMode="darkMode" />
+          <h2>Recently</h2>
+          <recetly-lecture v-bind:darkMode="darkMode" />
+          <label for="toggle" class="toggleSwitch" style="position: absolute; left: 300px; bottom: 50px">
+            <span class="toggleButton"></span>
+          </label>
+        </b-col>
+        <b-col sm="9" :class="{ right: !darkMode, rightDark: darkMode }">
+          <h2>Class</h2>
+          <b-row class="cards">
+            <b-col sm="3" v-for="(lecture, index) in lectures" :key="index" style="margin-bottom: 20px">
+              <lecture-item class="buttons" @mouseover="mouseOverLec(index)" @mouseout="mouseOutLec(index)" @emitIndex="saveIndex(index)" :class="{ 'opacity-50': lectures[index] }" v-bind:index="index" v-bind:darkMode="darkMode"></lecture-item>
+              <!-- Modal -->
+              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel" style="color: black">강의를 삭제 하시겠습니까?</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="deleteLecture(deleteIndex)">삭제</button>
+                      <button type="button" class="btn btn-secondaty" data-bs-dismiss="modal">취소</button>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="back">
-                <label for="addLectureForm">강의명</label>
-                <input type="text" id="addLectureForm" />
-                <button class="backFlipBtn">개설</button>
-                <button class="backFlipBtn" @click="flipped = false">
-                  취소
-                </button>
-              </div>
-            </div>
-          </b-col>
-        </b-row>
-      </b-col>
-    </b-row>
-  </b-container>
+              <div class="w-100" v-if="index % 4 == 0"></div>
+            </b-col>
+            <b-col sm="3">
+              <add-lecture
+                style="margin-bottom: 20px"
+                @mouseover="mouseOverAdd()"
+                @mouseout="mouseOutAdd()"
+                @registLecture="registLecture"
+                @addBtnFlip="
+                  () => {
+                    addBtnFliped = !addBtnFliped;
+                  }
+                "
+                :class="{ 'opacity-50': addBtn && !addBtnFliped }"
+                v-bind:darkMode="darkMode"
+              />
+            </b-col>
+          </b-row>
+        </b-col>
+      </b-row>
+    </b-container>
+  </div>
 </template>
 
 <script>
+/* eslint-disable prettier/prettier */
 import Logo from "@/components/common/Logo.vue";
 import Profile from "@/components/main/Profile.vue";
+import ProfileSetting from "@/components/main/ProfileSetting.vue";
 import RecetlyLecture from "@/components/main/RecentlyLecture.vue";
 import LectureItem from "@/components/main/LectureItem.vue";
+import store from "@/store";
+import router from "@/router";
+import AddLecture from "@/components/main/AddLecture.vue";
 
 export default {
   name: "MainVue",
   components: {
     Logo,
     Profile,
+    ProfileSetting,
     RecetlyLecture,
     LectureItem,
+    AddLecture,
   },
   data() {
     return {
-      lectures: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
-      flipped: false,
+      lectures: [false, false, false, false, false, false],
+      addBtn: false,
+      addBtnFliped: false,
+      deleteIndex: -1,
+      hideProfile: false,
+      hideProfileSetting: true,
+      darkMode: false,
+    };
+  },
+  mounted() {
+    const $toggle = document.querySelector(".toggleSwitch");
+
+    $toggle.onclick = () => {
+      this.darkMode = !this.darkMode;
+      $toggle.classList.toggle("active");
     };
   },
   methods: {
     getLectruesByUserId() {},
+    toggle() {
+      this.hideProfile = !this.hideProfile;
+      this.hideProfileSetting = !this.hideProfileSetting;
+    },
+    logout() {
+      store.replaceState = {};
+      sessionStorage.clear();
+      router.push({ path: "/" });
+    },
+    mouseOverLec(index) {
+      this.lectures[index] = true;
+    },
+    mouseOutLec(index) {
+      this.lectures[index] = false;
+    },
+    mouseOverAdd() {
+      this.addBtn = true;
+    },
+    mouseOutAdd() {
+      this.addBtn = false;
+    },
+    registLecture() {
+      this.lectures.push(false);
+    },
+    saveIndex(index) {
+      this.deleteIndex = index;
+    },
+    deleteLecture(index) {
+      console.log(index);
+      this.lectures.splice(index, 1);
+    },
   },
 };
 </script>
@@ -84,14 +137,78 @@ export default {
 <style>
 @import "./main.css";
 
+.background {
+  background-color: #f7f7f4;
+  color: #000000;
+}
+.backgroundDark {
+  background-color: #17171b;
+  color: white;
+}
 .left {
-  background-color: aqua;
+  background-color: #f7f7f4;
+  border-right: #c1c1c1 solid 1px;
+}
+.leftDark {
+  background-color: #17171b;
+  border-right: #3e3e3e solid 1px;
 }
 .right {
-  background-color: bisque;
+  background-color: #f7f7f4;
 }
-#add-lecture-card {
-  border: 1px solid gray;
-  border-radius: 15px;
+.rightDark {
+  background-color: #17171b;
+}
+.buttons {
+  cursor: pointer;
+}
+.displayNone {
+  display: none;
+}
+.profileBox {
+  background-color: #ffffff;
+  border-radius: 20px;
+  border: solid #c1c1c1 1px;
+}
+.profileBoxDark {
+  background-color: #202026;
+  border-radius: 20px;
+  border: solid #3e3e3e 1px;
+}
+.toggleSwitch {
+  width: 3rem;
+  height: 1.5rem;
+  display: block;
+  position: relative;
+  border-radius: 1rem;
+  background-color: #fff;
+  box-shadow: 0 0 0.1rem 3px rgba(0 0 0 / 15%);
+  cursor: pointer;
+}
+
+.toggleSwitch .toggleButton {
+  width: 1.3rem;
+  height: 1.3rem;
+  position: absolute;
+  top: 50%;
+  left: 0.1rem;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: #000000;
+}
+
+/* 체크박스가 체크되면 변경 이벤트 */
+.toggleSwitch.active {
+  background: #000000;
+}
+
+.toggleSwitch.active .toggleButton {
+  left: calc(100% - 1.4rem);
+  background: #fff;
+}
+
+.toggleSwitch,
+.toggleButton {
+  transition: all 0.2s ease-in;
 }
 </style>
