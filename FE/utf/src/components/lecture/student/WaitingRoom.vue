@@ -1,10 +1,10 @@
 <template>
-  <div class="waiting-room">
+  <div class="waiting-room" v-if="streamManager">
     <b-container fluid style="height: 100px"
       ><logo class="h-100"
     /></b-container>
     <b-container class="waiting-room-container bg-light">
-      <div class="position-relative" v-if="streamManager">
+      <div class="position-relative">
         <ov-video :stream-manager="streamManager" class="webcam" />
         <div class="buttons w-100">
           <audio-button
@@ -22,27 +22,31 @@
         </div>
       </div>
       <div class="input-group mt-2 w-25 mx-auto">
-        <b-form-input v-model="myName" placeholder="Enter your name" />
+        <b-form-input
+          v-model="myName"
+          placeholder="Enter your name"
+          :disabled="isWait"
+        />
         <div class="input-group-append mx-2">
-          <b-button :disabled="myName" variant="primary" @click="joinLecture"
+          <b-button
+            class="wait-btn"
+            :disabled="myName"
+            variant="danger"
+            v-if="isWait"
+            @click="waitStop"
+            >대기중..</b-button
+          >
+          <b-button
+            class="ok-btn"
+            :disabled="myName"
+            variant="primary"
+            @click="waitStart"
+            v-else
             >입장</b-button
           >
         </div>
       </div>
     </b-container>
-
-    <b-modal id="wait" v-model="isWait" hide-footer>
-      <div class="wait-modal">
-        <h2>입장 대기중</h2>
-        <b-button
-          class="mt-3 cancel w-100"
-          variant="danger"
-          block
-          @click="isWait = false"
-          >취소하기</b-button
-        >
-      </div>
-    </b-modal>
   </div>
 </template>
 
@@ -70,17 +74,20 @@ export default {
     };
   },
   methods: {
-    joinLecture() {
+    waitStart() {
       this.$emit("joinLecture", this.myName);
-      // this.isWait = true; 접속대기기능
+      this.isWait = true;
+    },
+    waitStop() {
+      this.$emit("waitStop");
+      this.isWait = false;
     },
   },
 };
 </script>
 
-<style>
+<style scoped>
 .waiting-room {
-  background: #c1c1c1;
   height: 100vh;
 }
 
@@ -98,20 +105,19 @@ export default {
   bottom: 1vh;
 }
 
-.btn {
-  background-color: #565e64;
-  width: 70px;
+.ok-btn {
+  background-color: #2b80ff;
+  width: 90px;
   color: #ffffff;
 }
 
-.cancel {
+.wait-btn {
   background-color: #ff4f5a;
+  width: 90px;
   color: #ffffff;
-  margin-top: 16rem;
 }
 
-.wait-modal {
-  height: 350px;
-  text-align: center;
+.position-relative {
+  min-height: 480px;
 }
 </style>

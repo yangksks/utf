@@ -3,6 +3,30 @@ import axios from "axios";
 import store from "@/store/index.js";
 import router from "@/router/index.js";
 
+var API_BASE_URL ="http://localhost:8081"
+var OPENVIDU_BASE_URL ="http://i7a701.p.ssafy.io:5443"
+
+// axios 객체 생성
+function apiInstance() {
+    const instance = axios.create({
+      baseURL: API_BASE_URL,
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+    return instance;
+  }
+
+  function openviduInstance() {
+    const instance = axios.create({
+      baseURL: OPENVIDU_BASE_URL,
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+    return instance;
+  }
+
 function loginRequest(requestURL, socialLoginType, code, state) {
     axios
         .post(requestURL, {
@@ -74,9 +98,12 @@ async function updateUserRequest(userId, userName, email) {
             router.push({ path: "/" });
         });
 }
+
 export {
     loginRequest,
     getName,
     deleteUserRequest,
     updateUserRequest,
+    apiInstance,
+    openviduInstance
 };
