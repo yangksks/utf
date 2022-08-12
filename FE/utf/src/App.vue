@@ -1,15 +1,10 @@
+<!-- eslint-disable prettier/prettier -->
 <template>
   <router-view />
 </template>
 <script>
-import store from "./store";
-export default {
-  data() {
-    return {
-      isLogin: store.state.userInfo == null ? false : true,
-    };
-  },
-};
+/* eslint-disable prettier/prettier */
+export default {};
 </script>
 
 <style>

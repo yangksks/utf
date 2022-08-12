@@ -1,6 +1,10 @@
-<template>redirect</template>
+<!-- eslint-disable prettier/prettier -->
+<template>
+  <div></div>
+</template>
 
 <script>
+/* eslint-disable prettier/prettier */
 import { loginRequest } from "@/api/index.js";
 
 function redirect() {
@@ -20,12 +24,7 @@ function redirect() {
   else if (code && state && scope) {
     socialLoginType = 3;
   }
-  loginRequest(
-    `http://localhost:8080/api/user/socialLogin`,
-    socialLoginType,
-    code,
-    state
-  );
+  loginRequest(`http://localhost:8080/api/user/socialLogin`, socialLoginType, code, state);
 }
 
 export default {

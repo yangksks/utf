@@ -1,39 +1,15 @@
+<!-- eslint-disable prettier/prettier -->
 <template>
   <div class="container">
     <div class="row">
       <div class="col-3 align-self-center">
-        <img
-          src="@/assets/UTFLogo-removebg.png"
-          alt="로고"
-          style="margin-bottom: 50px"
-        /><br />
-        <img
-          id="kakaoLoginBtn"
-          class="loginBtn"
-          src="@/assets/image/kakao_login_medium_wide.png"
-          alt="카카오 로그인 버튼"
-          style="margin-bottom: 3px"
-        /><br />
-        <img
-          id="naverLoginBtn"
-          class="loginBtn"
-          src="@/assets/image/btnG_완성형.png"
-          alt="네이버 로그인 버튼"
-          style="margin-bottom: 3px"
-        /><br />
-        <img
-          id="googleLoginBtn"
-          class="loginBtn"
-          src="@/assets/image/btn_google_signin_dark_normal_web@2x.png"
-          alt="구글 로그인 버튼"
-        />
+        <img src="@/assets/UTFLogo-removebg.png" alt="로고" style="margin-bottom: 50px" /><br />
+        <img id="kakaoLoginBtn" class="loginBtn" src="@/assets/image/kakao_login_medium_wide.png" alt="카카오 로그인 버튼" style="margin-bottom: 3px" /><br />
+        <img id="naverLoginBtn" class="loginBtn" src="@/assets/image/btnG_완성형.png" alt="네이버 로그인 버튼" style="margin-bottom: 3px" /><br />
+        <img id="googleLoginBtn" class="loginBtn" src="@/assets/image/btn_google_signin_dark_normal_web@2x.png" alt="구글 로그인 버튼" />
       </div>
       <div class="col-9">
-        <img
-          src="@/assets/image/photo-1456513080510-7bf3a84b82f8.jpg"
-          alt=""
-          style="height: 100%"
-        />
+        <img src="@/assets/image/photo-1456513080510-7bf3a84b82f8.jpg" alt="" style="height: 100%" />
       </div>
     </div>
   </div>

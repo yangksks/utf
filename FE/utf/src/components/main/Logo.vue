@@ -1,16 +1,17 @@
+<!-- eslint-disable prettier/prettier -->
 <template>
   <div @click="goHome()">
-    <img src="@/assets/UTFLogo.png" alt="logo" />
-    <h3>UTF</h3>
+    <img src="@/assets/UTFLogo-removebg.png" alt="logo" class="buttons" />
   </div>
 </template>
 
 <script>
+/* eslint-disable prettier/prettier */
 export default {
   name: "LogoComponent",
   methods: {
     goHome() {
-      this.$router.push("/home");
+      this.$router.push("/main");
     },
   },
 };
