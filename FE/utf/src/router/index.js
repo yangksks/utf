@@ -5,7 +5,7 @@ import JoinFormView from "@/views/JoinFormView.vue";
 
 const routes = [
   {
-    path: "/login",
+    path: "/",
     name: "login",
     component: LoginView,
   },
@@ -20,7 +20,7 @@ const routes = [
     component: RedirectView,
   },
   {
-    path: "/",
+    path: "/lecture",
     name: "lecture",
     component: () => import("@/views/LectureRoom.vue"),
   },
