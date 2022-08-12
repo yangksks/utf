@@ -59,7 +59,7 @@
 
 <script>
 /* eslint-disable prettier/prettier */
-import Logo from "@/components/main/Logo.vue";
+import Logo from "@/components/common/Logo.vue";
 import Profile from "@/components/main/Profile.vue";
 import ProfileSetting from "@/components/main/ProfileSetting.vue";
 import RecetlyLecture from "@/components/main/RecentlyLecture.vue";

@@ -6,6 +6,7 @@
 </template>
 
 <script>
+// docker run -p 4443:4443 --rm -e OPENVIDU_SECRET=MY_SECRET openvidu/openvidu-server-kms:2.22.0
 import { mapState, mapMutations } from "vuex";
 import ChatList from "@/components/chat/ChatList";
 import ChatForm from "@/components/chat/ChatForm";
@@ -104,8 +105,10 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  max-height: 600px;
   box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.05);
   background: #f7f7f4;
+  margin: 5px 5px 5px 5px;
+  overflow-x: hidden;
+  border-radius: 12px 12px 12px 12px;
 }
 </style>
