@@ -2,16 +2,18 @@
 <template>
   <div :class="{ background: !darkMode, backgroundDark: darkMode }">
     <b-container style="padding-top: 40px">
-      <b-row style="min-height: 800px">
+      <b-row style="min-height: 100vh">
         <b-col sm="3" :class="{ left: !darkMode, leftDark: darkMode }">
-          <logo />
+          <logo class="mb-3"/>
           <profile :class="{ displayNone: hideProfile }" @setting="toggle" @logout="logout" v-bind:darkMode="darkMode" />
-          <profile-setting :class="{ displayNone: hideProfileSetting }" @cancle="toggle" @toggle="toggle" v-bind:darkMode="darkMode" />
-          <h2>Recently</h2>
+          <profile-setting :class="{ displayNone: hideProfileSetting }" @cancel="toggle" @toggle="toggle" v-bind:darkMode="darkMode" />
+          <h2 class="mt-3">Recently</h2>
           <recetly-lecture v-bind:darkMode="darkMode" />
-          <label for="toggle" class="toggleSwitch" style="position: absolute; left: 300px; bottom: 50px">
-            <span class="toggleButton"></span>
-          </label>
+          <div class="darkModeSwitch">
+            <label for="toggle" class="toggleSwitch" style="position: absolute; left: 300px; bottom: 50px">
+              <span class="toggleButton"></span>
+            </label>
+          </div>
         </b-col>
         <b-col sm="9" :class="{ right: !darkMode, rightDark: darkMode }">
           <h2>Class</h2>

@@ -14,6 +14,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/statistics/end/*").permitAll()
                 .antMatchers("/api/statistics/record/understand/*").permitAll()
                 .antMatchers("/api/statistics/focus/current/*").permitAll()
+                .antMatchers("/api/statistics/recent/*").permitAll()
                 .anyRequest().authenticated();
 
         httpSecurity.csrf().disable();
