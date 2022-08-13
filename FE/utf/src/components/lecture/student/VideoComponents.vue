@@ -16,7 +16,8 @@
       >
     </div>
     <div class="teacher-video">
-      <user-video class="teacher" :stream-manager="maintainer" />
+      <user-video class="teacher" :stream-manager="screen" v-if="screen" />
+      <user-video class="teacher" :stream-manager="maintainer" v-else />
     </div>
   </div>
 </template>
@@ -35,6 +36,7 @@ export default {
   props: {
     subscribers: Object,
     maintainer: Object,
+    screen: Object,
     lastPage: Number,
   },
   data() {
