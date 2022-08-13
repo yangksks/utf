@@ -1,6 +1,8 @@
 package com.ssafy.utf.api.service;
 
+import com.ssafy.utf.db.entity.LectureRoom;
 import com.ssafy.utf.db.entity.statistics.Emotion;
+import com.ssafy.utf.db.entity.statistics.RecentLecture;
 import com.ssafy.utf.db.entity.statistics.Statistics;
 import com.ssafy.utf.db.repository.StatisticsRepository;
 import org.springframework.beans.factory.annotation.Autowired;

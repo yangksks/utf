@@ -8,8 +8,7 @@
         <img id="naverLoginBtn" class="loginBtn mb-2" src="@/assets/image/btnG_완성형.png" alt="네이버 로그인 버튼" /><br />
         <img id="googleLoginBtn" class="loginBtn" src="@/assets/image/btn_google_signin_dark_normal_web@2x.png" alt="구글 로그인 버튼" />
       </b-col>
-      <b-col sm="8">
-        <img src="@/assets/image/photo-1456513080510-7bf3a84b82f8.jpg" alt="" id="loginBg"/>
+      <b-col sm="8" class="loginBg">
       </b-col>
     </b-row>
   </b-container>
@@ -58,8 +57,10 @@ export default {
   height: 60px;
   cursor: pointer;
 }
-#loginBg {
-  width: 100%;
-  height: 112%;
+.loginBg {
+  height: 100vh;
+  background-image: url("@/assets/image/photo-1456513080510-7bf3a84b82f8.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 </style>
