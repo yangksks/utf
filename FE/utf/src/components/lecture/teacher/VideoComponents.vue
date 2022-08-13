@@ -1,6 +1,5 @@
 <template>
   <div id="video-components">
-    <div id="screen-share"></div>
     <user-video
       :stream-manager="publisher"
       :class="{ highlight: speaker == 'me' }"

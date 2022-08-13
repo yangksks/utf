@@ -1,13 +1,5 @@
 <template>
-  <div
-    class="teacher-components"
-    :class="{
-      'both-item': thema == 'both',
-      'no-chat': thema == 'noChat',
-      'no-participant': thema == 'noParticipant',
-      'neither-item': thema == 'neither',
-    }"
-  >
+  <div class="teacher-components">
     <video-components
       :publisher="publisher"
       :subscribers="subscribers"
@@ -20,28 +12,29 @@
     ></chat-components>
     <user-list-components :subscribers="subscribers"></user-list-components>
     <control-panel
+      :publisher="publisher"
+      :recording="recording"
       @screenShare="screenShare"
       @recordingStart="recordingStart"
       @recordingEnd="recordingEnd"
-      @reSize="reSize"
-      :recording="recording"
+      @stopShare="stopShare"
+      @leaveSession="leaveSession"
     ></control-panel>
   </div>
 </template>
-
 <script>
 import ChatComponents from "@/components/chat/ChatComponents.vue";
 import ControlPanel from "@/components/lecture/teacher/ControlPanel.vue";
 import UserListComponents from "@/components/lecture/UserListComponents.vue";
 import VideoComponents from "@/components/lecture/teacher/VideoComponents.vue";
 import { OpenVidu } from "openvidu-browser";
-import { mapActions } from "vuex";
 import {
   createTokenApi,
   createSessionApi,
   recordingStartApi,
   recordingStopApi,
 } from "@/api/openvidu.js";
+import store from "@/store";
 
 export default {
   name: "TeacherComponents",
@@ -56,6 +49,7 @@ export default {
       OVCamera: undefined,
       OVScreen: undefined,
       publisher: undefined,
+      publisherScreen: undefined,
       recording: false,
       recordingId: undefined,
       sessionCamera: undefined,
@@ -63,38 +57,11 @@ export default {
       subscribers: [],
       speaker: undefined,
 
-      thema: "both",
-      mySessionId: "SessionA",
-
-      myUserName: "강사",
+      mySessionId: "Session_A",
+      myUserName: store.state.userInfo["userName"],
     };
   },
   methods: {
-    ...mapActions("lectureStore", ["setPublisher"]),
-
-    recordingEnd() {
-      this.recording = false;
-      recordingStopApi(
-        this.RECORDING_ID,
-        (response) => {
-          console.log(response);
-        },
-        (error) => console.log(error)
-      );
-    },
-
-    recordingStart() {
-      this.recording = true;
-      recordingStartApi(
-        this.mySessionId,
-        ({ data }) => {
-          this.RECORDING_ID = data.id;
-          console.log("레코딩 id", this.RECORDING_ID);
-        },
-        (error) => console.log(error)
-      );
-    },
-
     joinSession() {
       this.OVCamera = new OpenVidu();
       this.OVScreen = new OpenVidu();
@@ -102,24 +69,17 @@ export default {
       this.sessionScreen = this.OVScreen.initSession();
 
       this.sessionCamera.on("streamCreated", ({ stream }) => {
-        if (stream.typeOfVideo == "CAMERA") {
-          const subscriber = this.sessionCamera.subscribe(stream);
-          subscriber.on("publisherStartSpeaking", ({ streamId }) => {
-            this.speaker = streamId;
-          });
-          subscriber.on("publisherStopSpeaking", () => {
-            this.speaker = null;
-          });
+        const subscriber = this.sessionCamera.subscribe(stream);
 
-          this.subscribers.push(subscriber);
-        }
-      });
+        if (stream.typeOfVideo == "SCREEN") return;
 
-      this.sessionScreen.on("streamCreated", ({ stream }) => {
-        if (stream.typeOfVideo == "SCREEN") {
-          // screen-share ID의 엘리먼트에 공유된 화면을 뿌립니다
-          this.sessionScreen.subscribe(stream, "screen-share");
-        }
+        subscriber.on("publisherStartSpeaking", ({ streamId }) => {
+          this.speaker = streamId;
+        });
+        subscriber.on("publisherStopSpeaking", () => {
+          this.speaker = null;
+        });
+        this.subscribers.push(subscriber);
       });
 
       this.sessionCamera.on("streamDestroyed", ({ stream }) => {
@@ -128,12 +88,11 @@ export default {
           this.subscribers.splice(index, 1);
         }
       });
-
       this.sessionCamera.on("exception", ({ exception }) => {
         console.warn(exception);
       });
 
-      this.getToken(this.mySessionId, "MODERATOR").then((token) => {
+      this.getToken(this.mySessionId).then((token) => {
         this.sessionCamera
           .connect(token, { clientData: this.myUserName, role: "teacher" })
           .then(() => {
@@ -157,27 +116,10 @@ export default {
             });
 
             this.publisher = publisher;
-
             this.sessionCamera.publish(this.publisher);
-            this.setPublisher(this.publisher);
           })
           .catch((error) => {
             console.log(
-              "There was an error connecting to the session:",
-              error.code,
-              error.message
-            );
-          });
-      });
-
-      this.getToken(this.mySessionId, "PUBLISHER").then((tokenScreen) => {
-        this.sessionScreen
-          .connect(tokenScreen)
-          .then(() => {
-            console.log("Session screen connected");
-          })
-          .catch((error) => {
-            console.warn(
               "There was an error connecting to the session:",
               error.code,
               error.message
@@ -189,33 +131,72 @@ export default {
     },
 
     screenShare() {
-      let publisherScreen = this.OVScreen.initPublisher("container-screens", {
-        videoSource: "screen",
-        publishAudio: false,
-      });
+      this.getToken(this.mySessionId).then((token) => {
+        this.sessionScreen
+          .connect(token, { clientData: this.myUserName })
+          .then(() => {
+            this.publisherScreen = this.OVScreen.initPublisher(undefined, {
+              videoSource: "screen",
+              publishAudio: false,
+            });
 
-      publisherScreen.once("accessAllowed", () => {
-        publisherScreen.stream
-          .getMediaStream()
-          .getVideoTracks()[0]
-          .addEventListener("ended", () => {
-            this.sessionScreen.unpublish(publisherScreen);
-            console.log('User pressed the "Stop sharing" button');
+            this.publisherScreen.once("accessAllowed", () => {
+              this.publisherScreen.stream
+                .getMediaStream()
+                .getVideoTracks()[0]
+                .addEventListener("ended", () => {
+                  this.sessionScreen.unpublish(this.publisherScreen);
+                });
+
+              this.sessionScreen.publish(this.publisherScreen);
+            });
+            this.publisherScreen.on("videoElementCreated", function (event) {
+              event.element["muted"] = true;
+            });
+            this.publisherScreen.once("accessDenied", () => {
+              console.warn("ScreenShare: Access Denied");
+            });
+          })
+          .catch((error) => {
+            console.log(
+              "There was an error connecting to the session:",
+              error.code,
+              error.message
+            );
           });
-        this.sessionScreen.publish(publisherScreen);
-      });
-
-      publisherScreen.on("videoElementCreated", function (event) {
-        event.element["muted"] = true;
-      });
-      publisherScreen.once("accessDenied", () => {
-        console.warn("ScreenShare: Access Denied");
       });
     },
 
+    stopShare() {
+      this.sessionScreen.unpublish(this.publisherScreen);
+    },
+
+    recordingStart() {
+      this.recording = true;
+      recordingStartApi(
+        this.mySessionId,
+        ({ data }) => {
+          this.RECORDING_ID = data.id;
+          console.log("레코딩 id", this.RECORDING_ID);
+        },
+        (error) => console.log(error)
+      );
+    },
+
+    recordingEnd() {
+      this.recording = false;
+      recordingStopApi(
+        this.RECORDING_ID,
+        (response) => {
+          console.log(response);
+        },
+        (error) => console.log(error)
+      );
+    },
+
     leaveSession() {
-      // --- Leave the session by calling 'disconnect' method over the Session object ---
       if (this.sessionCamera) this.sessionCamera.disconnect();
+      if (this.sessionScreen) this.sessionScreen.disconnect();
 
       this.sessionCamera = undefined;
       this.sessionScreen = undefined;
@@ -224,20 +205,20 @@ export default {
       this.OVCamera = undefined;
       this.speaker = undefined;
 
+      this.$router.push("/main");
       window.removeEventListener("beforeunload", this.leaveSession);
     },
 
-    getToken(mySessionId, role) {
+    getToken(mySessionId) {
       return this.createSession(mySessionId).then((sessionId) =>
-        this.createToken(sessionId, role)
+        this.createToken(sessionId)
       );
     },
 
-    createSession(sessionId, role) {
+    createSession(sessionId) {
       return new Promise((resolve, reject) => {
         createSessionApi(
           sessionId,
-          role,
           ({ data }) => resolve(data.id),
           (error) => {
             if (error.response.status === 409) {
@@ -254,17 +235,11 @@ export default {
       return new Promise((resolve, reject) => {
         createTokenApi(
           sessionId,
+          "MODERATOR",
           ({ data }) => resolve(data.token),
           (error) => reject(error.response)
         );
       });
-    },
-
-    reSize(chat, participant) {
-      if (chat && participant) this.thema = "both";
-      else if (!chat && participant) this.thema = "noChat";
-      else if (chat && !participant) this.thema = "noParticipant";
-      else this.thema = "neither";
     },
   },
 
@@ -273,25 +248,12 @@ export default {
   },
 };
 </script>
-
 <style>
 .teacher-components {
   display: grid;
-  /* grid-template-columns: 3fr 1fr 1fr; */
+  grid-template-columns: 3fr 1fr 1fr;
   grid-template-rows: 1fr 70px;
   background: #c1c1c1;
   height: 100vh;
-}
-.both-item {
-  grid-template-columns: 3fr 1fr 1fr;
-}
-.no-chat {
-  grid-template-columns: 4fr 0fr 1fr;
-}
-.no-participant {
-  grid-template-columns: 4fr 1fr 0fr;
-}
-.neither-item {
-  grid-template-columns: 5fr 0fr 0fr;
 }
 </style>

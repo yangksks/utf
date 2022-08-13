@@ -1,4 +1,3 @@
-import { log } from "console";
 <template>
   <div class="student-components">
     <div class="student-lecture" v-if="maintainer && isWait">
@@ -6,14 +5,23 @@ import { log } from "console";
         :maintainer="maintainer"
         :subscribers="subscribers"
         :lastPage="lastPage"
+        :screen="screen"
       />
-      <!-- <chat-components
-          v-if="publisher"
-          :publisher="publisher"
-          :subscribers="subscribers"
-        ></chat-components> -->
-      <user-list-components :subscribers="subscribers"></user-list-components>
-      <control-panel></control-panel>
+      <chat-components
+        v-if="publisher && isChat"
+        :publisher="publisher"
+        :subscribers="subscribers"
+      ></chat-components>
+      <user-list-components
+        :subscribers="subscribers"
+        v-else
+      ></user-list-components>
+      <control-panel
+        :publisher="publisher"
+        :recording="recording"
+        @reSize="reSize"
+        @leaveSession="leaveSession"
+      ></control-panel>
     </div>
     <waiting-room
       :stream-manager="publisher"
@@ -26,8 +34,8 @@ import { log } from "console";
 
 <script>
 import WaitingRoom from "@/components/lecture/student/WaitingRoom.vue";
-// import ChatComponents from "@/components/chat/ChatComponents.vue";
-import ControlPanel from "@/components/lecture/teacher/ControlPanel.vue";
+import ChatComponents from "@/components/chat/ChatComponents.vue";
+import ControlPanel from "@/components/lecture/student/ControlPanel.vue";
 import UserListComponents from "@/components/lecture/UserListComponents.vue";
 import VideoComponents from "@/components/lecture/student/VideoComponents.vue";
 import { OpenVidu } from "openvidu-browser";
@@ -38,7 +46,7 @@ export default {
   components: {
     WaitingRoom,
     VideoComponents,
-    // ChatComponents,
+    ChatComponents,
     ControlPanel,
     UserListComponents,
   },
@@ -47,14 +55,16 @@ export default {
     return {
       OVCamera: undefined,
       sessionCamera: undefined,
-      mySessionId: "SessionB",
+      mySessionId: "Session_A",
 
       publisher: undefined,
       subscribers: [],
       maintainer: undefined,
-      lastPage: 1,
+      screen: undefined,
 
+      lastPage: 1,
       isWait: false,
+      isChat: true,
     };
   },
   methods: {
@@ -65,7 +75,11 @@ export default {
       this.sessionCamera.on("streamCreated", ({ stream }) => {
         const subscriber = this.sessionCamera.subscribe(stream);
 
-        if (JSON.parse(subscriber.stream.connection.data).role == "teacher") {
+        if (stream.typeOfVideo == "SCREEN") {
+          this.screen = subscriber;
+        } else if (
+          JSON.parse(subscriber.stream.connection.data).role == "teacher"
+        ) {
           this.sessionCamera.publish(this.publisher);
           this.subscribers.push(this.publisher);
           this.maintainer = subscriber;
@@ -77,6 +91,12 @@ export default {
       });
 
       this.sessionCamera.on("streamDestroyed", ({ stream }) => {
+        if (stream.typeOfVideo == "SCREEN") {
+          this.screen = undefined;
+        } else if (stream.streamId == this.maintainer.stream.streamId) {
+          this.leaveSession();
+        }
+
         const index = this.subscribers.indexOf(stream.streamManager, 0);
         if (index >= 0) {
           this.subscribers.splice(index, 1);
@@ -115,9 +135,6 @@ export default {
       this.getToken(this.mySessionId).then((token) => {
         this.sessionCamera
           .connect(token, { clientData: name })
-          .then(() => {
-            if (name == "teacher") this.sessionCamera.publish(this.publisher);
-          })
           .catch((error) => {
             console.log(
               "There was an error connecting to the session:",
@@ -132,6 +149,10 @@ export default {
 
     disconect() {},
 
+    reSize(chat) {
+      this.isChat = chat;
+    },
+
     leaveSession() {
       if (this.sessionCamera) this.sessionCamera.disconnect();
 
@@ -141,6 +162,8 @@ export default {
       this.subscribers = [];
       this.OVCamera = undefined;
       this.speaker = undefined;
+
+      this.$router.push("/exit");
 
       window.removeEventListener("beforeunload", this.leaveSession);
     },
