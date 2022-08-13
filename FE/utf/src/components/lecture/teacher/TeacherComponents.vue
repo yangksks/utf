@@ -251,6 +251,7 @@ export default {
 <style>
 .teacher-components {
   display: grid;
+  grid-template-columns: 3fr 1fr 1fr;
   grid-template-rows: 1fr 70px;
   background: #c1c1c1;
   height: 100vh;

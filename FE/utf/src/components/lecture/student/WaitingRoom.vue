@@ -47,6 +47,17 @@
         </div>
       </div>
     </b-container>
+
+    <div>
+      <apexchart
+        ref="chart"
+        width="150"
+        height="150"
+        type="pie"
+        :series="series"
+        :options="chartOptions"
+      />
+    </div>
   </div>
 </template>
 
@@ -55,6 +66,9 @@ import Logo from "@/components/common/Logo.vue";
 import OvVideo from "@/components/lecture/OvVideo.vue";
 import CamButton from "@/components/common/CamButton.vue";
 import AudioButton from "@/components/common/AudioButton.vue";
+// import webgazer from "webgazer";
+// import { mapActions, mapGetters } from "vuex";
+// import VueApexCharts from "vue3-apexcharts";
 
 export default {
   name: "WaitingRoom",
@@ -63,15 +77,36 @@ export default {
     CamButton,
     Logo,
     OvVideo,
+    // apexchart: VueApexCharts,
   },
   props: { streamManager: Object },
   data() {
     return {
       myName: "",
       isWait: false,
+      x: 0,
+      y: 0,
+      isFocus: true,
+      series: [0, 0],
+      chartOptions: {
+        chart: {
+          type: "pie",
+        },
+        labels: ["집중o", "집중x"],
+        legend: {
+          show: false,
+        },
+        responsive: [
+          {
+            breakpoint: 480,
+          },
+        ],
+      },
     };
   },
   methods: {
+    //   ...mapActions("focusStore", ["sendMyFocus", "setFocusing"]),
+    //   ...mapGetters("focusStore", ["getFocusRatio"]),
     waitStart() {
       this.$emit("joinLecture", this.myName);
       this.isWait = true;
@@ -80,7 +115,49 @@ export default {
       this.$emit("waitStop");
       this.isWait = false;
     },
+    //   eyeTrackingBegin() {
+    //     webgazer
+    //       // eslint-disable-next-line
+    //       .setGazeListener(function (data, elapsedTime) {
+    //         if (data == null) {
+    //           return;
+    //         }
+    //       })
+    //       .begin();
+    //   },
+    //   sendFocus() {
+    //     webgazer.getCurrentPrediction().then((res) => {
+    //       if (res.x < 200 || 900 < res.x || res.y < 200 || 900 < res.y) {
+    //         this.isFocus = false;
+    //         this.x = res.x;
+    //         this.y = res.y;
+    //       } else {
+    //         this.isFocus = true;
+    //         this.x = res.x;
+    //         this.y = res.y;
+    //       }
+    //     });
+    //     this.sendMyFocus(["sfd", this.isFocus]);
+    //   },
+    //   setChart() {
+    //     setInterval(() => {
+    //       this.setFocusing();
+    //       let obj = this.getFocusRatio();
+    //       let newChart = [obj[2], obj[-2]];
+    //       this.series = newChart;
+    //     }, 5000);
+    //   },
   },
+  // mounted() {
+  //   this.eyeTrackingBegin();
+  //   const setFocusFunc = () => {
+  //     setInterval(() => {
+  //       this.sendFocus();
+  //     }, 5000);
+  //   };
+  //   setFocusFunc();
+  //   this.setChart();
+  // },
 };
 </script>
 

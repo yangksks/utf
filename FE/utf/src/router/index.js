@@ -20,7 +20,7 @@ const routes = [
     component: RedirectView,
   },
   {
-    path: "/lecture",
+    path: "/lecture/:id",
     name: "lecture",
     component: () => import("@/views/LectureRoom.vue"),
   },
@@ -33,6 +33,11 @@ const routes = [
     path: "/exit",
     name: "exit",
     component: () => import("@/views/ExitRoom.vue"),
+  },
+  {
+    path: "/test",
+    name: "test",
+    component: () => import("@/views/sss.vue"),
   },
 ];
 
