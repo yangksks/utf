@@ -30,6 +30,11 @@ const routes = [
     component: () => import("@/views/Main.vue"),
   },
   {
+    path: "/exit",
+    name: "exit",
+    component: () => import("@/views/ExitRoom.vue"),
+  },
+  {
     path: "/test",
     name: "test",
     component: () => import("@/views/sss.vue"),
