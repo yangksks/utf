@@ -7,13 +7,21 @@
         :lastPage="lastPage"
         :screen="screen"
       />
-      <!-- <chat-components
-          v-if="publisher"
-          :publisher="publisher"
-          :subscribers="subscribers"
-        ></chat-components> -->
-      <user-list-components :subscribers="subscribers"></user-list-components>
-      <control-panel></control-panel>
+      <chat-components
+        v-if="publisher && isChat"
+        :publisher="publisher"
+        :subscribers="subscribers"
+      ></chat-components>
+      <user-list-components
+        :subscribers="subscribers"
+        v-else
+      ></user-list-components>
+      <control-panel
+        :publisher="publisher"
+        :recording="recording"
+        @reSize="reSize"
+        @leaveSession="leaveSession"
+      ></control-panel>
     </div>
     <waiting-room
       :stream-manager="publisher"
@@ -26,8 +34,8 @@
 
 <script>
 import WaitingRoom from "@/components/lecture/student/WaitingRoom.vue";
-// import ChatComponents from "@/components/chat/ChatComponents.vue";
-import ControlPanel from "@/components/lecture/teacher/ControlPanel.vue";
+import ChatComponents from "@/components/chat/ChatComponents.vue";
+import ControlPanel from "@/components/lecture/student/ControlPanel.vue";
 import UserListComponents from "@/components/lecture/UserListComponents.vue";
 import VideoComponents from "@/components/lecture/student/VideoComponents.vue";
 import { OpenVidu } from "openvidu-browser";
@@ -38,7 +46,7 @@ export default {
   components: {
     WaitingRoom,
     VideoComponents,
-    // ChatComponents,
+    ChatComponents,
     ControlPanel,
     UserListComponents,
   },
@@ -56,6 +64,7 @@ export default {
 
       lastPage: 1,
       isWait: false,
+      isChat: true,
     };
   },
   methods: {
@@ -84,7 +93,10 @@ export default {
       this.sessionCamera.on("streamDestroyed", ({ stream }) => {
         if (stream.typeOfVideo == "SCREEN") {
           this.screen = undefined;
+        } else if (stream.streamId == this.maintainer.stream.streamId) {
+          this.leaveSession();
         }
+
         const index = this.subscribers.indexOf(stream.streamManager, 0);
         if (index >= 0) {
           this.subscribers.splice(index, 1);
@@ -137,6 +149,10 @@ export default {
 
     disconect() {},
 
+    reSize(chat) {
+      this.isChat = chat;
+    },
+
     leaveSession() {
       if (this.sessionCamera) this.sessionCamera.disconnect();
 
@@ -146,6 +162,8 @@ export default {
       this.subscribers = [];
       this.OVCamera = undefined;
       this.speaker = undefined;
+
+      this.$router.push("/exit");
 
       window.removeEventListener("beforeunload", this.leaveSession);
     },

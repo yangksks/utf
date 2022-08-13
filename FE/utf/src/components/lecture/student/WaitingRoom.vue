@@ -67,8 +67,6 @@ export default {
   props: { streamManager: Object },
   data() {
     return {
-      publishAudio: true,
-      publishVideo: true,
       myName: "",
       isWait: false,
     };

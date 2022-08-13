@@ -29,6 +29,11 @@ const routes = [
     name: "main",
     component: () => import("@/views/Main.vue"),
   },
+  {
+    path: "/exit",
+    name: "exit",
+    component: () => import("@/views/ExitRoom.vue"),
+  },
 ];
 
 const router = createRouter({
