@@ -1,10 +1,13 @@
 package com.ssafy.utf.db.repository;
 
+import com.ssafy.utf.db.entity.LectureRoom;
 import com.ssafy.utf.db.entity.statistics.Statistics;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.ArrayList;
 
 @Repository
 public interface StatisticsRepository extends JpaRepository<Statistics, String> {

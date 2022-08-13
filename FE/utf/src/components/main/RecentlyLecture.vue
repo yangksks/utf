@@ -1,25 +1,38 @@
-<!-- eslint-disable prettier/prettier -->
 <template>
-  <div :class="{ recentList: !darkMode, recentListDark: darkMode }" v-for="(lecture, index) in this.recentLecture" :key="index" class="buttons" @click="goLecture(lecture)">
-    {{ lecture }}
+  <div
+    :class="{ recentList: !darkMode, recentListDark: darkMode }"
+    v-for="(lecture, index) in this.recentLectures"
+    :key="index"
+    class="buttons"
+    @click="goLecture(lecture)"
+  >
+    {{ lecture.title }}<br />
+    {{ lecture.startTime }}
   </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "RecetlyLecture",
   props: {
     darkMode: Boolean,
   },
-  computed: {
-    recentLecture() {
-      return [1, 2, 3, 4, 5];
-    },
+  data() {
+    return {
+      recentLectures: [],
+    };
   },
   methods: {
+    ...mapActions("StatisticsStore", ["setRecently"]),
+    ...mapGetters("StatisticsStore", ["getRecentLectures"]),
     goLecture(lecture) {
       console.log(lecture);
     },
+  },
+  mounted() {
+    this.setRecently(4);
+    this.recentLectures = this.getRecentLectures();
   },
 };
 </script>

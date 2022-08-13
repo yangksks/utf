@@ -1,8 +1,10 @@
 package com.ssafy.utf.api.controller;
 
+import com.ssafy.utf.api.service.LectureRoomService;
 import com.ssafy.utf.api.service.StatisticsService;
 import com.ssafy.utf.db.entity.statistics.Emotion;
 import com.ssafy.utf.db.entity.statistics.Focus;
+import com.ssafy.utf.db.entity.statistics.RecentLecture;
 import com.ssafy.utf.db.entity.statistics.Statistics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,8 @@ public class StatisticsController {
 
     @Autowired
     StatisticsService statisticsService;
+    @Autowired
+    LectureRoomService lectureRoomService;
 
     private HashMap<String,HashMap<String,ArrayList<Integer>>> lectureRoomUnderstanding = new HashMap<>();
     private HashMap<String,HashMap<String,ArrayList<Integer>>> lectureRoomFocus = new HashMap<>();
@@ -218,5 +222,10 @@ public class StatisticsController {
         front.put(2,focus);
 
         return new ResponseEntity<HashMap<Integer,Integer>>(front, HttpStatus.OK);
+    }
+    @GetMapping("/recent/{userId}")
+    public ResponseEntity<ArrayList<RecentLecture>> getRecentlyLectures(@PathVariable long userId){
+        ArrayList<RecentLecture> recentLecture = lectureRoomService.getRecentLectures(userId);
+        return new ResponseEntity<ArrayList<RecentLecture>>(recentLecture, HttpStatus.OK);
     }
 }

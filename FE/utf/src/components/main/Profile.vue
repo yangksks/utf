@@ -1,18 +1,22 @@
 <!-- eslint-disable prettier/prettier -->
 <template>
-  <div class="container">
+  <b-container>
     <div :class="{ profileBox: !darkMode, profileBoxDark: darkMode }">
-      <div class="row">
-        <div class="col-10">
+      <b-row class="row">
+        <b-col sm="10" class="welcomeMsg">
           <div>{{ userName }} 강사님 환영합니다</div>
-        </div>
-        <div class="col-2">
-          <i class="bi bi-gear buttons" id="settingBtn"></i>
-          <i class="bi bi-box-arrow-right buttons" id="logoutBtn"></i>
-        </div>
-      </div>
+        </b-col>
+        <b-col sm="2" class="btnGroup">
+          <div class="settingBtnWrap">
+            <i class="bi bi-gear buttons" id="settingBtn" @click="updateProfile()"></i>
+          </div>
+          <div class="logoutBtnWrap">
+            <i class="bi bi-box-arrow-right buttons" id="logoutBtn" @click="logout()"></i>
+          </div>
+        </b-col>
+      </b-row>
     </div>
-  </div>
+  </b-container>
 </template>
 
 <script>
@@ -29,19 +33,33 @@ export default {
       userName: store.state.userInfo["userName"],
     };
   },
-  mounted() {
-    const settingBtn = document.querySelector("#settingBtn");
-    settingBtn.onclick = () => {
+  methods: {
+    updateProfile() {
       this.$emit("setting");
-    };
-
-    const logoutBtn = document.querySelector("#logoutBtn");
-    logoutBtn.onclick = () => {
-      this.$emit("logout");
-    };
+    },
+    logout() {
+      let flag = confirm("로그아웃 하시겠습니까??");
+      if(flag){
+        this.$emit("logout");
+      }
+    }
   },
 };
 </script>
 
 <style scoped>
+.row {
+  width: 100%;
+}
+.welcomeMsg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.settingBtnWrap {
+  margin-top: 18px;
+}
+.logoutBtnWrap {
+  margin-top: 0px;
+}
 </style>
