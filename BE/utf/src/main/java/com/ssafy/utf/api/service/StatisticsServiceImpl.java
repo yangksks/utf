@@ -1,8 +1,6 @@
 package com.ssafy.utf.api.service;
 
-import com.ssafy.utf.db.entity.LectureRoom;
 import com.ssafy.utf.db.entity.statistics.Emotion;
-import com.ssafy.utf.db.entity.statistics.RecentLecture;
 import com.ssafy.utf.db.entity.statistics.Statistics;
 import com.ssafy.utf.db.repository.StatisticsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,40 +57,40 @@ public class StatisticsServiceImpl implements StatisticsService {
         return to;
     }
     @Override
-    public ArrayList<Integer> getRecordedUnderstand(long statisticsId) {
-        String str = statisticsRepository.findUnderstandByStatisticsId(statisticsId);
+    public ArrayList<Integer> getRecordedUnderstand(long video_id) {
+        String str = statisticsRepository.findUnderstandByVideoId(video_id);
 
         ArrayList<Integer> recordUnderstand = StringToArrayList(str);
         return recordUnderstand;
     }
 
     @Override
-    public ArrayList<Integer> getRecordedNeutral(long statisticsId) {
-        String str = statisticsRepository.findNeutralByStatisticsId(statisticsId);
+    public ArrayList<Integer> getRecordedNeutral(long video_id) {
+        String str = statisticsRepository.findNeutralByVideoId(video_id);
 
         ArrayList<Integer> recordNeutral = StringToArrayList(str);
         return recordNeutral;
     }
 
     @Override
-    public ArrayList<Integer> getRecordedNotUnderstand(long statisticsId) {
-        String str = statisticsRepository.findNotUnderstandByStatisticsId(statisticsId);
+    public ArrayList<Integer> getRecordedNotUnderstand(long video_id) {
+        String str = statisticsRepository.findNotUnderstandByVideoId(video_id);
 
         ArrayList<Integer> recordNotUnderstand = StringToArrayList(str);
         return recordNotUnderstand;
     }
 
     @Override
-    public ArrayList<Integer> getRecordedFocus(long statisticsId) {
-        String str = statisticsRepository.findFocusByStatisticsId(statisticsId);
+    public ArrayList<Integer> getRecordedFocus(long video_id) {
+        String str = statisticsRepository.findFocusByVideoId(video_id);
 
         ArrayList<Integer> recordFocus = StringToArrayList(str);
         return recordFocus;
     }
 
     @Override
-    public ArrayList<Integer> getRecordedNotFocus(long statisticsId) {
-        String str = statisticsRepository.findNotFocusByStatisticsId(statisticsId);
+    public ArrayList<Integer> getRecordedNotFocus(long video_id) {
+        String str = statisticsRepository.findNotFocusByVideoId(video_id);
 
         ArrayList<Integer> recordNotFocus = StringToArrayList(str);
         return recordNotFocus;

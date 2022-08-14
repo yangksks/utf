@@ -7,7 +7,7 @@
       <i class="bi bi-x" data-bs-toggle="modal" data-bs-target="#exampleModal" style="vertical-align: top; margin: 5px; font-size: 30px" @click="emitIndex(index)"></i>
       <!-- <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#exampleModal" aria-label="Close" style="vertical-align: top; margin: 5px" @click="emitIndex(index)"></button> -->
     </div>
-    <div>자바 프로그래밍</div>
+    <div>{{ this.lectureRoom.title }}</div>
     <div style="text-align: center"><button type="button" class="btn btn-success" style="width: 45%">통계 보기</button></div>
   </div>
 </template>
@@ -17,6 +17,7 @@ export default {
   props: {
     index: Number,
     darkMode: Boolean,
+    lectureRoom: Object,
   },
   methods: {
     emitIndex(index) {

@@ -1,7 +1,9 @@
 package com.ssafy.utf.api.controller;
 
 import com.ssafy.utf.api.service.LectureRoomService;
+import com.ssafy.utf.api.service.LectureService;
 import com.ssafy.utf.api.service.StatisticsService;
+import com.ssafy.utf.db.entity.Lecture;
 import com.ssafy.utf.db.entity.statistics.Emotion;
 import com.ssafy.utf.db.entity.statistics.Focus;
 import com.ssafy.utf.db.entity.statistics.RecentLecture;
@@ -23,8 +25,6 @@ public class StatisticsController {
 
     @Autowired
     StatisticsService statisticsService;
-    @Autowired
-    LectureRoomService lectureRoomService;
 
     private HashMap<String,HashMap<String,ArrayList<Integer>>> lectureRoomUnderstanding = new HashMap<>();
     private HashMap<String,HashMap<String,ArrayList<Integer>>> lectureRoomFocus = new HashMap<>();
@@ -133,15 +133,15 @@ public class StatisticsController {
         return new ResponseEntity<String>("SUCCESS",HttpStatus.OK);
     }
 
-    @GetMapping("/record/understand/{statistics_id}")
-    public ResponseEntity<HashMap<Integer,ArrayList<Integer>>> getRecordedUnderstand(@PathVariable long statistics_id){
+    @GetMapping("/record/{video_id}")
+    public ResponseEntity<HashMap<Integer,ArrayList<Integer>>> getRecordedUnderstand(@PathVariable long video_id){
         HashMap<Integer,ArrayList<Integer>> map = new HashMap<>();
 
-        ArrayList<Integer> recordUnderstand = statisticsService.getRecordedUnderstand(statistics_id);
-        ArrayList<Integer> recordNeutral = statisticsService.getRecordedNeutral(statistics_id);
-        ArrayList<Integer> recordNotUnderstand = statisticsService.getRecordedNotUnderstand(statistics_id);
-        ArrayList<Integer> recordFocus = statisticsService.getRecordedFocus(statistics_id);
-        ArrayList<Integer> recordNotFocus = statisticsService.getRecordedNotFocus(statistics_id);
+        ArrayList<Integer> recordUnderstand = statisticsService.getRecordedUnderstand(video_id);
+        ArrayList<Integer> recordNeutral = statisticsService.getRecordedNeutral(video_id);
+        ArrayList<Integer> recordNotUnderstand = statisticsService.getRecordedNotUnderstand(video_id);
+        ArrayList<Integer> recordFocus = statisticsService.getRecordedFocus(video_id);
+        ArrayList<Integer> recordNotFocus = statisticsService.getRecordedNotFocus(video_id);
 
         map.put(-2, recordNotFocus);
         map.put(-1,recordNotUnderstand);
@@ -223,9 +223,5 @@ public class StatisticsController {
 
         return new ResponseEntity<HashMap<Integer,Integer>>(front, HttpStatus.OK);
     }
-    @GetMapping("/recent/{userId}")
-    public ResponseEntity<ArrayList<RecentLecture>> getRecentlyLectures(@PathVariable long userId){
-        ArrayList<RecentLecture> recentLecture = lectureRoomService.getRecentLectures(userId);
-        return new ResponseEntity<ArrayList<RecentLecture>>(recentLecture, HttpStatus.OK);
-    }
+
 }

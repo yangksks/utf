@@ -18,8 +18,8 @@
         <b-col sm="9" :class="{ right: !darkMode, rightDark: darkMode }">
           <h2>Class</h2>
           <b-row class="cards">
-            <b-col sm="3" v-for="(lecture, index) in lectures" :key="index" style="margin-bottom: 20px">
-              <lecture-item class="buttons" @mouseover="mouseOverLec(index)" @mouseout="mouseOutLec(index)" @emitIndex="saveIndex(index)" :class="{ 'opacity-50': lectures[index] }" v-bind:index="index" v-bind:darkMode="darkMode"></lecture-item>
+            <b-col sm="3" v-for="(lectureRoom, index) in lectureRooms" :key="index" style="margin-bottom: 20px">
+              <lecture-item class="buttons" :lectureRoom="lectureRoom" @click="goLectureRoom(lectureRoom.lectureRoomId)" @emitIndex="saveIndex(index)" :class="{ 'opacity-50': lectureRooms[index] }" v-bind:index="index" v-bind:darkMode="darkMode"></lecture-item>
               <!-- Modal -->
               <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -69,6 +69,7 @@ import LectureItem from "@/components/main/LectureItem.vue";
 import store from "@/store";
 import router from "@/router";
 import AddLecture from "@/components/main/AddLecture.vue";
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: "MainVue",
@@ -82,7 +83,6 @@ export default {
   },
   data() {
     return {
-      lectures: [false, false, false, false, false, false],
       addBtn: false,
       addBtnFliped: false,
       deleteIndex: -1,
@@ -91,7 +91,13 @@ export default {
       darkMode: false,
     };
   },
+  computed: {
+    lectureRooms() {
+      return this.getLectureRooms();
+    }
+  },
   mounted() {
+    this.setLectureRooms(4); //userId로 바꿔줘야함
     const $toggle = document.querySelector(".toggleSwitch");
 
     $toggle.onclick = () => {
@@ -100,7 +106,11 @@ export default {
     };
   },
   methods: {
-    getLectruesByUserId() {},
+    ...mapActions("StatisticsStore",["setLectureRooms"]),
+    ...mapGetters("StatisticsStore",["getLectureRooms"]),
+    goLectureRoom(lectureRoomId){
+      this.$router.push(`/lectureRoom/${lectureRoomId}`)
+    },
     toggle() {
       this.hideProfile = !this.hideProfile;
       this.hideProfileSetting = !this.hideProfileSetting;
@@ -111,10 +121,10 @@ export default {
       router.push({ path: "/" });
     },
     mouseOverLec(index) {
-      this.lectures[index] = true;
+      this.lectureRooms[index] = true;
     },
     mouseOutLec(index) {
-      this.lectures[index] = false;
+      this.lectureRooms[index] = false;
     },
     mouseOverAdd() {
       this.addBtn = true;
@@ -123,14 +133,14 @@ export default {
       this.addBtn = false;
     },
     registLecture() {
-      this.lectures.push(false);
+      this.lectureRooms.push(false);
     },
     saveIndex(index) {
       this.deleteIndex = index;
     },
     deleteLecture(index) {
       console.log(index);
-      this.lectures.splice(index, 1);
+      this.lectureRooms.splice(index, 1);
     },
   },
 };

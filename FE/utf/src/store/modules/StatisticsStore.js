@@ -6,7 +6,10 @@ const statisticsStore = {
   state: {
     currentUnderstanding: undefined, //현재 이해도 정보
     recordedStatistics: undefined, //녹화강의 집중도,이해도 통계
-    recentLectures: undefined,
+    recentLectures: undefined, //최근 강의 목록
+    lectureRooms: undefined, //강의실 목록
+    lectures: undefined, //강의실 들어왔을 때 강의들
+    lecture: undefined, //강의 1개
   },
   getters: {
     getCurrentUnderstanding: (state) => {
@@ -17,6 +20,15 @@ const statisticsStore = {
     },
     getRecentLectures: (state) => {
       return state.recentLectures;
+    },
+    getLectureRooms: (state) => {
+      return state.lectureRooms;
+    },
+    getLectures: (state) => {
+      return state.lectures;
+    },
+    getLecture: (state) => {
+      return state.lecture;
     },
   },
   mutations: {
@@ -29,13 +41,22 @@ const statisticsStore = {
     SET_RECENTLY: (state, payload) => {
       state.recentLectures = payload;
     },
+    SET_LECTURES: (state, payload) => {
+      state.lectures = payload;
+    },
+    SET_LECTURE_ONE: (state, payload) => {
+      state.lecture = payload;
+    },
+    SET_LECTUREROOMS: (state, payload) => {
+      state.lectureRooms = payload;
+    },
   },
   actions: {
     setEmotion: (store, item) => {
       //item: [강의실id, 이름,감정,점수]
       api
         .post(
-          `api/statistics/current/${item[0]}`,
+          `/api/statistics/current/${item[0]}`,
           JSON.stringify({
             name: item[1],
             emotion: item[2],
@@ -50,7 +71,7 @@ const statisticsStore = {
     },
     setUnderstanding: (store) => {
       api
-        .get(`api/statistics/current/1`)
+        .get(`/api/statistics/current/1`)
         .then((res) => {
           try {
             store.commit("SET_UNDERSTANDING", res.data);
@@ -62,9 +83,9 @@ const statisticsStore = {
           console.log(err);
         });
     },
-    setRecordStatistics: (store) => {
+    setRecordStatistics: (store, videoId) => {
       api
-        .get(`api/statistics/record/understand/1`)
+        .get(`/api/statistics/record/${videoId}`)
         .then((res) => {
           store.commit("SET_RECORD_STATISTICS", res.data);
         })
@@ -74,9 +95,39 @@ const statisticsStore = {
     },
     setRecently: (store, userId) => {
       api
-        .get(`api/statistics/recent/${userId}`)
+        .get(`/api/lectureRoom/recent/${userId}`)
         .then((res) => {
           store.commit("SET_RECENTLY", res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    setLectureRooms: (store, userId) => {
+      api
+        .get(`/api/lectureRoom/${userId}`)
+        .then((res) => {
+          store.commit("SET_LECTUREROOMS", res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    setLectures: (store, lectureRoomId) => {
+      api
+        .get(`/api/lectureRoom/lecture/${lectureRoomId}`)
+        .then((res) => {
+          store.commit("SET_LECTURES", res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    setLectureOne: (store, videoId) => {
+      api
+        .get(`/api/lectureRoom/lecture/one/${videoId}`)
+        .then((res) => {
+          store.commit("SET_LECTURE_ONE", res.data);
         })
         .catch((err) => {
           console.log(err);

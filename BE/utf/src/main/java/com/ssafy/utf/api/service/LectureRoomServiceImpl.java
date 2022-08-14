@@ -19,13 +19,13 @@ public class LectureRoomServiceImpl implements LectureRoomService {
     @Autowired
     LectureRepository lectureRepository;
     @Override
-    public ArrayList<RecentLecture> getRecentLectures(long userId) {
+    public ArrayList<RecentLecture> getRecentLectures(long userId) { //최근 5개 강의 찾는 메소드
         ArrayList<RecentLecture> recentLectures = new ArrayList<>();
 
         ArrayList<LectureRoom> lectureRooms = lectureRoomRepository.findByUserId(userId);
         for(LectureRoom lectureRoom : lectureRooms){
             long lectureRoomId = lectureRoom.getLectureRoomId();
-            ArrayList<Lecture> lectures = lectureRepository.findByLectureRoomId(lectureRoomId);
+            ArrayList<Lecture> lectures = lectureRepository.findByLectureRoomIdOrderByStartTimeDesc(lectureRoomId);
             for (Lecture lecture: lectures){
                 RecentLecture recentLecture = new RecentLecture();
                 recentLecture.setLectureRoomId(lectureRoomId);
@@ -42,5 +42,10 @@ public class LectureRoomServiceImpl implements LectureRoomService {
             result.add(recentLectures.get(i));
         }
         return result;
+    }
+
+    @Override
+    public ArrayList<LectureRoom> getLectureRooms(long userId) {
+        return lectureRoomRepository.findByUserId((userId));
     }
 }

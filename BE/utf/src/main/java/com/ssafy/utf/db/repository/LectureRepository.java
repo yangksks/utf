@@ -9,5 +9,7 @@ import java.util.ArrayList;
 @Repository
 public interface LectureRepository extends JpaRepository<Lecture, Long> {
 
-    ArrayList<Lecture> findByLectureRoomId(long lectureRoomId);
+    ArrayList<Lecture> findByLectureRoomIdOrderByStartTimeDesc(long lectureRoomId);
+
+    Lecture findByVideoId(long videoId);
 }

@@ -10,11 +10,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests()
                 .antMatchers("/api/user/*").permitAll()
-                .antMatchers("/api/statistics/current/*").permitAll()
-                .antMatchers("/api/statistics/end/*").permitAll()
-                .antMatchers("/api/statistics/record/understand/*").permitAll()
-                .antMatchers("/api/statistics/focus/current/*").permitAll()
-                .antMatchers("/api/statistics/recent/*").permitAll()
+                .antMatchers("/api/statistics/**").permitAll()
+                .antMatchers("/api/lectureRoom/**").permitAll()
                 .anyRequest().authenticated();
 
         httpSecurity.csrf().disable();
