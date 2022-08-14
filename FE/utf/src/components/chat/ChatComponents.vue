@@ -14,7 +14,7 @@ export default {
   name: "ChatComponents",
   data() {
     return {
-      username: this.publisher.session.connection.data.slice(15, -2),
+      username: this.getUserName(this.publisher.session.connection.data),
       timer: undefined,
     };
   },
@@ -43,16 +43,35 @@ export default {
     },
     /* Receive a message from current session */
     receiveMessage() {
-      this.publisher.session.on("signal", (event) => {
+      this.publisher.session.on("signal:general", (event) => {
         if (
           this.publisher.stream.connection.connectionId !=
           event.from.connectionId
         ) {
           this.pushMessage({
             from: {
-              name: event.from.data.slice(15, -2), //username,
+              name: this.getUserName(event.from.data), //username,
               time: this.getCurrentTime(),
               type: "general",
+            },
+            msg: event.data,
+          }); // save to vuex
+          setTimeout(() => {
+            const element = document.getElementById("chat-body");
+            element.scrollTop = element.scrollHeight;
+          }, 100);
+        }
+      });
+      this.publisher.session.on("signal:alert", (event) => {
+        if (
+          this.publisher.stream.connection.connectionId !=
+          event.from.connectionId
+        ) {
+          this.pushMessage({
+            from: {
+              name: this.getUserName(event.from.data), //username,
+              time: this.getCurrentTime(),
+              type: "alert",
             },
             msg: event.data,
           }); // save to vuex
@@ -95,6 +114,11 @@ export default {
     /* Get a current time */
     getCurrentTime() {
       return new Date().toLocaleTimeString();
+    },
+    /* Get a user name */
+    getUserName(name) {
+      var idx = name.slice(15).indexOf('"');
+      return name.slice(15, 15 + idx);
     },
   },
 };

@@ -1,8 +1,8 @@
 <template>
   <div class="user-list-components">
-    <div class="statistics-info">
+    <!-- <div class="statistics-info">
       <understanding-chart />
-    </div>
+    </div> -->
     <div class="userlist-info">
       <p class="userlist-header">
         {{ "참가인원 " + subscribers.length + "명" }}
@@ -18,8 +18,8 @@
 </template>
 
 <script>
-import UserInfo from "@/components/lecture/UserInfo";
-import UnderstandingChart from "@/components/lecture/UnderstandingChart.vue";
+import UserInfo from "@/components/lecture/student/UserInfo";
+// import UnderstandingChart from "@/components/lecture/UnderstandingChart.vue";
 
 export default {
   props: {
@@ -27,7 +27,7 @@ export default {
   },
   components: {
     UserInfo,
-    UnderstandingChart,
+    // UnderstandingChart,
   },
   computed: {
     orderedUsers: function () {
@@ -71,7 +71,7 @@ export default {
   padding: 1rem;
   font-size: 16px;
   font-weight: 700;
-  height: 75%;
+  height: 100%;
   margin: 5px 0px 0px 0px;
 }
 .userlist-header {
