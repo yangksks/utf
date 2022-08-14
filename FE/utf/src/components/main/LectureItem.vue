@@ -4,10 +4,13 @@
     <div>
       <img src="@/assets/UTFLogo-removebg.png" alt="logo" style="width: 80%" />
       <!-- Button trigger modal -->
-      <i class="bi bi-x" data-bs-toggle="modal" data-bs-target="#exampleModal" style="vertical-align: top; margin: 5px; font-size: 30px" @click="emitIndex(index)"></i>
+      <i class="bi bi-x" data-bs-toggle="modal" data-bs-target="#deleteLectureModal" style="vertical-align: top; margin: 5px; font-size: 30px" @click="emitIndex(index)"></i>
       <!-- <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#exampleModal" aria-label="Close" style="vertical-align: top; margin: 5px" @click="emitIndex(index)"></button> -->
     </div>
-    <div>자바 프로그래밍</div>
+    <div>
+      <h5>{{ lecture["title"] }}</h5>
+    </div>
+    <div>{{ lecture["lectureRoomCode"] }}&nbsp;&nbsp;<button type="button" class="btn btn-info" @click="copyCode">복사</button></div>
     <div style="text-align: center"><button type="button" class="btn btn-success" style="width: 45%">통계 보기</button></div>
   </div>
 </template>
@@ -15,6 +18,7 @@
 <script>
 export default {
   props: {
+    lecture: Object,
     index: Number,
     darkMode: Boolean,
   },
@@ -22,6 +26,19 @@ export default {
     emitIndex(index) {
       console.log("index : " + index);
       this.$emit("emitIndex", index);
+    },
+    copyCode() {
+      var text = this.lecture["lectureRoomCode"];
+
+      navigator.clipboard
+        .writeText(text)
+        .then(() => {
+          console.log("Text copied to clipboard");
+          alert("복사되었습니다");
+        })
+        .catch((err) => {
+          console.error("Error in copying text: ", err);
+        });
     },
   },
 };

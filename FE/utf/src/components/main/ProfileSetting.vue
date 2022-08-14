@@ -14,6 +14,7 @@
       <b-row>
         <b-col sm="1"></b-col>
         <b-col sm="2">
+          <!-- <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUserModal" style="margin-right: 50px">탈퇴</button> -->
           <p @click="deleteUser()">탈퇴</p>
         </b-col>
       </b-row>
@@ -24,8 +25,8 @@
 <script>
 /* eslint-disable prettier/prettier */
 import store from "@/store";
-import { deleteUserRequest } from "@/api/index.js";
 import { updateUserRequest } from "@/api/index.js";
+import { deleteUserRequest } from "@/api/index.js";
 export default {
   props: {
     darkMode: Boolean,
@@ -40,12 +41,14 @@ export default {
     cancel() {
       this.userName = store.state.userInfo["userName"];
       this.email = store.state.userInfo["email"];
-      this.$emit("cancel");      
+      this.$emit("cancel");
     },
     deleteUser() {
-      let flag = confirm("정말로 탈퇴 하시겠습니까??");
-      if(flag){
+      let flag = confirm("정말로 탈퇴하시겠습니까??");
+      if (flag) {
         deleteUserRequest(store.state.userInfo["userId"]);
+        store.replaceState = {};
+        sessionStorage.clear();
       }
     },
     async updateUser() {
@@ -58,7 +61,8 @@ export default {
 </script>
 
 <style scoped>
-#profileInputName, #profileInputEmail {
+#profileInputName,
+#profileInputEmail {
   width: 80%;
   border: none;
   border-radius: 10px;

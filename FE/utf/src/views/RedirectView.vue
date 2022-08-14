@@ -6,8 +6,10 @@
 <script>
 /* eslint-disable prettier/prettier */
 import { loginRequest } from "@/api/index.js";
+import { getLectureRoomList } from "@/api/index.js";
+import store from "@/store";
 
-function redirect() {
+async function redirect() {
   const code = new URL(window.location.href).searchParams.get("code");
   const state = new URL(window.location.href).searchParams.get("state");
   const scope = new URL(window.location.href).searchParams.get("scope");
@@ -24,7 +26,10 @@ function redirect() {
   else if (code && state && scope) {
     socialLoginType = 3;
   }
-  loginRequest(`http://localhost:8080/api/user/socialLogin`, socialLoginType, code, state);
+  await loginRequest(`http://localhost:8080/api/user/socialLogin`, socialLoginType, code, state);
+  if (store.state.userInfo != null) {
+    await getLectureRoomList(store.state.userInfo["userId"]);
+  }
 }
 
 export default {
