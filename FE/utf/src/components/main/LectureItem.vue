@@ -10,12 +10,13 @@
     <div>
       <h5>{{ lecture["title"] }}</h5>
     </div>
-    <div>{{ lecture["lectureRoomCode"] }}&nbsp;&nbsp;<button type="button" class="btn btn-info" @click="copyCode">복사</button></div>
+    <div><button type="button" class="btn btn-info" @click="copyCode">URL 복사</button></div>
     <div style="text-align: center"><button type="button" class="btn btn-success" style="width: 45%">통계 보기</button></div>
   </div>
 </template>
 
 <script>
+/* eslint-disable prettier/prettier */
 export default {
   props: {
     lecture: Object,
@@ -28,8 +29,8 @@ export default {
       this.$emit("emitIndex", index);
     },
     copyCode() {
-      var text = this.lecture["lectureRoomCode"];
-
+      var text = "http://localhost:3000/lecture/" + this.lecture["lectureRoomCode"];
+      console.log(text);
       navigator.clipboard
         .writeText(text)
         .then(() => {
