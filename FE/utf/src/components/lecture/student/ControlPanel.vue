@@ -13,23 +13,32 @@
         :stream-manager="publisher"
         class="m-1"
       />
-      <b-button class="exit m-1" pill @click="leaveSession">
+      <b-button class="raiseup m-1" pill v-if="!isRaised" @click="raiseUp">
         <b-skeleton-icons>
           <svg
+            viewBox="20 0 448 512"
             xmlns="http://www.w3.org/2000/svg"
             :width="buttonSize"
             :height="buttonSize"
             fill="currentColor"
-            class="bi bi-box-arrow-right"
-            viewBox="-4 -2 20 20"
           >
             <path
-              fill-rule="evenodd"
-              d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"
+              d="M408.781 128.007C386.356 127.578 368 146.36 368 168.79V256h-8V79.79c0-22.43-18.356-41.212-40.781-40.783C297.488 39.423 280 57.169 280 79v177h-8V40.79C272 18.36 253.644-.422 231.219.007 209.488.423 192 18.169 192 40v216h-8V80.79c0-22.43-18.356-41.212-40.781-40.783C121.488 40.423 104 58.169 104 80v235.992l-31.648-43.519c-12.993-17.866-38.009-21.817-55.877-8.823-17.865 12.994-21.815 38.01-8.822 55.877l125.601 172.705A48 48 0 0 0 172.073 512h197.59c22.274 0 41.622-15.324 46.724-37.006l26.508-112.66a192.011 192.011 0 0 0 5.104-43.975V168c.001-21.831-17.487-39.577-39.218-39.993z"
             />
+          </svg>
+        </b-skeleton-icons>
+      </b-button>
+      <b-button class="putdown m-1" pill v-if="isRaised" @click="putDown">
+        <b-skeleton-icons>
+          <svg
+            viewBox="20 0 448 512"
+            xmlns="http://www.w3.org/2000/svg"
+            :width="buttonSize"
+            :height="buttonSize"
+            fill="currentColor"
+          >
             <path
-              fill-rule="evenodd"
-              d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"
+              d="M408.781 128.007C386.356 127.578 368 146.36 368 168.79V256h-8V79.79c0-22.43-18.356-41.212-40.781-40.783C297.488 39.423 280 57.169 280 79v177h-8V40.79C272 18.36 253.644-.422 231.219.007 209.488.423 192 18.169 192 40v216h-8V80.79c0-22.43-18.356-41.212-40.781-40.783C121.488 40.423 104 58.169 104 80v235.992l-31.648-43.519c-12.993-17.866-38.009-21.817-55.877-8.823-17.865 12.994-21.815 38.01-8.822 55.877l125.601 172.705A48 48 0 0 0 172.073 512h197.59c22.274 0 41.622-15.324 46.724-37.006l26.508-112.66a192.011 192.011 0 0 0 5.104-43.975V168c.001-21.831-17.487-39.577-39.218-39.993z"
             />
           </svg>
         </b-skeleton-icons>
@@ -69,8 +78,28 @@
           </svg>
         </b-skeleton-icons>
       </b-button>
+      <b-button class="exit m-1" pill @click="leaveSession">
+        <b-skeleton-icons>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            :width="buttonSize"
+            :height="buttonSize"
+            fill="currentColor"
+            class="bi bi-box-arrow-right"
+            viewBox="-4 -2 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"
+            />
+            <path
+              fill-rule="evenodd"
+              d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"
+            />
+          </svg>
+        </b-skeleton-icons>
+      </b-button>
     </div>
-
     <div class="menu-2">
       <b-button
         class="chatting m-1"
@@ -129,7 +158,7 @@ import AudioButton from "@/components/common/AudioButton";
 import CamButton from "@/components/common/CamButton";
 export default {
   name: "ControlPanel",
-  props: { recording: Boolean, publisher: Object },
+  props: { recording: Boolean, publisher: Object, maintainer: Object },
   components: {
     AudioButton,
     CamButton,
@@ -139,6 +168,7 @@ export default {
       video: true,
       audio: true,
       isMissed: false,
+      isRaised: false,
       isChatOpened: true,
       timer: undefined,
       buttonSize: 45,
@@ -171,11 +201,14 @@ export default {
     missed() {
       console.log("자리비움 시작");
       this.isMissed = true;
+      const target = [];
+      target.push(this.maintainer.stream.connection);
+      this.simpleMessageTemplate(Date.now(), target, "missed");
       this.timer = setTimeout(() => {
         const msg =
           this.publisher.session.connection.data.slice(15, -2) +
           "님이 자리를 오래 비웠습니다.";
-        this.sendMessageTemplate(msg, undefined, "alert");
+        this.simpleMessageTemplate(msg, target, "alert");
         console.log("5분 지남");
         // }, 5 * 60 * 1000);
       }, 5 * 1 * 1000);
@@ -184,12 +217,26 @@ export default {
     comeback() {
       clearTimeout(this.timer);
       this.isMissed = false;
+      const target = [];
+      target.push(this.maintainer.stream.connection);
+      this.simpleMessageTemplate(undefined, target, "comeback");
       console.log("복귀했음");
     },
-    /* A template for sending a message
-     * Input: data(JSON: message), to(Array: target), type(String: message tag)
-     */
-    sendMessageTemplate(data, to, type) {
+    raiseUp() {
+      console.log("질문시작");
+      this.isRaised = true;
+      const target = [];
+      target.push(this.maintainer.stream.connection);
+      const msg =
+        this.publisher.session.connection.data.slice(15, -2) +
+        "님이 손을 들었습니다.";
+      this.simpleMessageTemplate(msg, target, "alert");
+    },
+    putDown() {
+      this.isRaised = false;
+    },
+    /* Simple template for alert absent */
+    simpleMessageTemplate(data, to, type) {
       this.publisher.session
         .signal({
           data: data, // Any string (optional)
@@ -197,25 +244,12 @@ export default {
           type: type, // The type of message (optional)
         })
         .then(() => {
-          this.pushMessage({
-            from: {
-              name: this.publisher.session.connection.data.slice(15, -2),
-              time: new Date().toLocaleTimeString(),
-              type: type,
-            },
-            msg: data,
-          });
-          console.log("Message successfully sent");
+          console.log("Alert Message successfully sent");
         })
         .catch((error) => {
           console.error(error);
         });
-      setTimeout(() => {
-        const element = document.getElementById("chat-body");
-        element.scrollTop = element.scrollHeight;
-      }, 100);
     },
-
     leaveSession() {
       this.$emit("leaveSession", false);
     },
@@ -241,6 +275,12 @@ export default {
 }
 .missing {
   background: #565e64;
+}
+.raiseup {
+  background-color: #565e64;
+}
+.putdown {
+  background-color: gold;
 }
 .clicked {
   background: black;

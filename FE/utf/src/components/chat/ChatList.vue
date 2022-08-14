@@ -1,11 +1,6 @@
 <template>
   <div class="chat-body" id="chat-body">
-    <chat-message
-      v-for="(msg, index) in msgs"
-      :key="index"
-      :msg="msg"
-      :prev="[index == 0 ? null : msgs[index - 1]]"
-    >
+    <chat-message v-for="(msg, index) in msgs" :key="index" :msg="msg">
     </chat-message>
   </div>
 </template>

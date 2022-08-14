@@ -4,11 +4,11 @@
     <div>
       <img src="@/assets/UTFLogo-removebg.png" alt="logo" style="width: 80%" />
       <!-- Button trigger modal -->
-      <i class="bi bi-x" data-bs-toggle="modal" data-bs-target="#exampleModal" style="vertical-align: top; margin: 5px; font-size: 30px" @click="emitIndex(index)"></i>
+      <i class="bi bi-x" data-bs-toggle="modal" data-bs-target="#deleteLectureModal" style="vertical-align: top; margin: 5px; font-size: 30px" @click="emitIndex(index)"></i>
       <!-- <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#exampleModal" aria-label="Close" style="vertical-align: top; margin: 5px" @click="emitIndex(index)"></button> -->
     </div>
     <div>{{ this.lectureRoom.title }}</div>
-    <div style="text-align: center"><button type="button" class="btn btn-success" style="width: 45%">통계 보기</button></div>
+    <div style="text-align: center"><button type="button" class="btn btn-success" style="width: 45%" @click="goLectureRoom(lectureRoom.lectureRoomId)" >통계 보기</button></div>
   </div>
 </template>
 
@@ -23,6 +23,9 @@ export default {
     emitIndex(index) {
       console.log("index : " + index);
       this.$emit("emitIndex", index);
+    },
+    goLectureRoom(lectureRoomId) {
+      this.$router.push(`/lectureRoom/${lectureRoomId}`);
     },
   },
 };
