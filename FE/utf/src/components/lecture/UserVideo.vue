@@ -22,7 +22,6 @@ export default {
   computed: {
     clientData() {
       const { clientData } = this.getConnectionData();
-      // this.getFaceEmotionPerTime(); // 얘를 여기 넣는게 맞나...
       return clientData;
     },
   },
@@ -41,6 +40,8 @@ export default {
   position: relative;
   border-radius: 20px;
   overflow: hidden;
+  display: inline-block;
+  width: auto;
 }
 .client-name {
   position: absolute;

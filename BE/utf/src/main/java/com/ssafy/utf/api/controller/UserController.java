@@ -127,6 +127,7 @@ public class UserController {
 
     @DeleteMapping("/{userId}")
     public ResponseEntity<Object> deleteUser(@PathVariable("userId") long userId) {
+        System.out.println(userId);
         HashMap<String, Object> result = new HashMap<>();
         HttpStatus status = null;
         try {

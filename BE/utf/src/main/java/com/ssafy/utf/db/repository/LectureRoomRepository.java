@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -17,4 +18,6 @@ public interface LectureRoomRepository extends JpaRepository<LectureRoom, Intege
     @Modifying
     @Transactional
     void deleteByLectureRoomId(long lectureRoomId);
+
+    ArrayList<LectureRoom> findByUserId(long userId);
 }

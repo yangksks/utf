@@ -1,52 +1,83 @@
 <template>
   <div id="video-components">
-    <div id="screen-share"></div>
-    <my-video
-      :stream-manager="publisher"
-      :class="{ highlight: speaker == 'me' }"
-    />
-    <user-video
-      v-for="sub in subscribers"
-      :key="sub.stream.streamId"
-      :stream-manager="sub"
-      :class="{ highlight: sub.stream.streamId == speaker }"
-    />
+    <div class="student-videos">
+      <b-button v-if="page != 1" variant="outline-light" @click="page--"
+        >&lt;</b-button
+      >
+      <user-video
+        class="mx-1"
+        v-for="sub in listData"
+        :key="sub.stream.streamId"
+        :stream-manager="sub"
+      />
+
+      <b-button v-if="lastPage > page" variant="outline-light" @click="page++"
+        >&gt;</b-button
+      >
+    </div>
+    <div class="teacher-video">
+      <user-video class="teacher" :stream-manager="screen" v-if="screen" />
+      <user-video class="teacher" :stream-manager="maintainer" v-else />
+    </div>
   </div>
 </template>
 
 <script>
-import UserVideo from "@/components/video/UserVideo";
-import MyVideo from "@/components/video/MyVideo.vue";
+import UserVideo from "@/components/lecture/UserVideo";
+// import MyVideo from "@/components/lecture/MyVideo.vue";
 
 export default {
   name: "VideoComponents",
 
   components: {
     UserVideo,
-    MyVideo,
+    // MyVideo,
   },
   props: {
-    publisher: Object,
     subscribers: Object,
-    speaker: String,
+    maintainer: Object,
+    screen: Object,
+    lastPage: Number,
   },
   data() {
-    return {};
+    return {
+      page: 1,
+    };
+  },
+  computed: {
+    listData: function () {
+      return this.subscribers.slice((this.page - 1) * 4, this.page * 4);
+    },
   },
 };
 </script>
 
 <style scoped>
-#video-components {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(4, calc(25% - 4px));
-  row-gap: 4px;
-}
-
 .highlight {
   border: 2px;
   border-style: solid;
   border-color: blue;
+}
+
+.user-video {
+  height: 100%;
+}
+
+.student-videos {
+  height: 180px;
+  padding-top: 8px;
+  padding-bottom: 4px;
+}
+
+.teacher-video {
+  height: calc(100% - 180px);
+  padding-top: 4px;
+  padding-bottom: 8px;
+}
+
+button {
+  height: 100%;
+  position: relative;
+  bottom: 78px;
 }
 </style>

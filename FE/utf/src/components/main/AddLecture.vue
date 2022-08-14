@@ -6,10 +6,11 @@
         <i class="bi bi-plus" style="font-size: 130px"></i>
       </div>
       <div :class="{ 'flip-card-back': !darkMode, 'flip-card-backDark': darkMode }">
-        강의명
-        <input type="text" id="lectureName" />
-        <button type="button" class="btn btn-primary" @click="addLecture()">개설</button>
-        <button type="button" class="btn btn-secondary" @click="flip()">취소</button>
+        <input type="text" id="lectureName" placeholder="강의명"/>
+        <div class="btnGroup mt-3">
+          <button type="button" class="blueBtn" @click="addLecture()">개설</button>
+          <button type="button" class="redBtn" @click="flip()">취소</button>
+        </div>
       </div>
     </div>
   </div>
@@ -102,5 +103,21 @@ export default {
 .flip-card-backDark {
   background-color: #202026;
   transform: rotateY(180deg);
+}
+#lectureName {
+  border: none;
+  border-radius: 10px;
+  width: 80%;
+  margin: auto;
+  margin-top: 50px;
+  background-color: #e2ebff;
+}
+.btnGroup {
+  display: flex;
+  justify-content: space-evenly;
+}
+.btnGroup button {
+  width: 80px;
+  height: 30px;
 }
 </style>

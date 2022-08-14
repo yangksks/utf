@@ -1,4 +1,4 @@
-package com.ssafy.utf.db.entity.statistics;
+package com.ssafy.utf.db.entity.lecture;
 
 import lombok.*;
 
@@ -13,12 +13,15 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Emotion {
+public class Lecture {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long emotionId;
-    private String name;
-    private String emotion;
-    private Double score;
+    private long videoId;
+    private long lectureRoomId;
+    private String videoUrl;
+    private String startTime;
+    private String endTime;
+    private String chatRecord;
+
 }

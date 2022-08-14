@@ -3,6 +3,9 @@ import axios from "axios";
 import store from "@/store/index.js";
 import router from "@/router/index.js";
 
+var API_BASE_URL = "http://localhost:8080";
+var OPENVIDU_BASE_URL = "http://i7a701.p.ssafy.io:5443";
+
 async function loginRequest(requestURL, socialLoginType, code, state) {
     await axios
         .post(requestURL, {
@@ -44,6 +47,7 @@ async function sendName(name) {
             router.push({ path: "/" });
         });
 }
+
 function deleteUserRequest(userId) {
     axios
         .delete(`http://localhost:8080/api/user/${userId}`)
@@ -60,7 +64,7 @@ async function updateUserRequest(userId, userName, email) {
     await axios
         .put(`http://localhost:8080/api/user/${userId}`, {
             userName: userName,
-            email: email
+            email: email,
         })
         .then((res) => {
             console.log(res);
@@ -114,6 +118,28 @@ function deleteLectureRoom(lectureRoomId) {
             router.push({ path: "/main" });
         });
 }
+
+// axios 객체 생성
+function apiInstance() {
+    const instance = axios.create({
+        baseURL: API_BASE_URL,
+        headers: {
+            "Content-type": "application/json",
+        },
+    });
+    return instance;
+}
+
+function openviduInstance() {
+    const instance = axios.create({
+        baseURL: OPENVIDU_BASE_URL,
+        headers: {
+            "Content-type": "application/json",
+        },
+    });
+    return instance;
+}
+
 export {
     loginRequest,
     sendName,
@@ -122,4 +148,6 @@ export {
     registLectureRoomRequest,
     getLectureRoomList,
     deleteLectureRoom,
+    apiInstance,
+    openviduInstance,
 };

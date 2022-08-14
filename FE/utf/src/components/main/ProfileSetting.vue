@@ -3,11 +3,21 @@
   <div class="container">
     <div :class="{ profileBox: !darkMode, profileBoxDark: darkMode }">
       Edit profile<br />
-      name<br /><input v-model="userName" /><br />
-      email<br /><input v-model="email" /><br />
-      <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUserModal" style="margin-right: 50px">탈퇴</button>
-      <button type="button" class="btn btn-primary" @click="updateUser()">수정</button>
-      <button type="button" id="cancleBtn" class="btn btn-secondary">취소</button>
+      <label for="profileInputName">name</label><br />
+      <input id="profileInputName" v-model="userName" /><br />
+      <label for="profileInputEmail">email</label><br />
+      <input id="profileInputEmail" v-model="email" /><br />
+      <div class="btnGroup mt-3">
+        <button type="button" class="blueBtn" @click="updateUser()">수정</button>
+        <button type="button" class="redBtn" @click="cancel()">취소</button>
+      </div>
+      <b-row>
+        <b-col sm="1"></b-col>
+        <b-col sm="2">
+          <!-- <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUserModal" style="margin-right: 50px">탈퇴</button> -->
+          <p @click="deleteUser()">탈퇴</p>
+        </b-col>
+      </b-row>
     </div>
   </div>
 </template>
@@ -16,6 +26,7 @@
 /* eslint-disable prettier/prettier */
 import store from "@/store";
 import { updateUserRequest } from "@/api/index.js";
+import { deleteUserRequest } from "@/api/index.js";
 export default {
   props: {
     darkMode: Boolean,
@@ -26,15 +37,20 @@ export default {
       email: store.state.userInfo["email"],
     };
   },
-  mounted() {
-    const cancleBtn = document.querySelector("#cancleBtn");
-    cancleBtn.onclick = () => {
+  methods: {
+    cancel() {
       this.userName = store.state.userInfo["userName"];
       this.email = store.state.userInfo["email"];
-      this.$emit("cancle");
-    };
-  },
-  methods: {
+      this.$emit("cancel");
+    },
+    deleteUser() {
+      let flag = confirm("정말로 탈퇴 하시겠습니까??");
+      if (flag) {
+        deleteUserRequest(store.state.userInfo["userId"]);
+        store.replaceState = {};
+        sessionStorage.clear();
+      }
+    },
     async updateUser() {
       await updateUserRequest(store.state.userInfo["userId"], this.userName, this.email);
       // this.$emit("toggle");
@@ -44,4 +60,25 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+#profileInputName,
+#profileInputEmail {
+  width: 80%;
+  border: none;
+  border-radius: 10px;
+  margin: auto;
+  background-color: #e2ebff;
+}
+p {
+  cursor: pointer;
+  font-size: 12px;
+  color: red;
+}
+.btnGroup {
+  display: flex;
+  justify-content: flex-end;
+}
+.btnGroup button {
+  margin-right: 10px;
+}
+</style>
