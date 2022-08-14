@@ -44,7 +44,7 @@ export default {
       this.$emit("cancel");
     },
     deleteUser() {
-      let flag = confirm("정말로 탈퇴 하시겠습니까??");
+      let flag = confirm("정말로 탈퇴하시겠습니까??");
       if (flag) {
         deleteUserRequest(store.state.userInfo["userId"]);
         store.replaceState = {};

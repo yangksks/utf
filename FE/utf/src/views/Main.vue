@@ -6,29 +6,9 @@
         <b-col sm="3" :class="{ left: !darkMode, leftDark: darkMode }">
           <logo class="mb-3" />
           <profile :class="{ displayNone: hideProfile }" @setting="toggle" @logout="logout" v-bind:darkMode="darkMode" />
-          <!-- Modal -->
-          <!-- <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="deleteUserModalLabel" style="color: black">탈퇴하시겠습니까?</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="deleteUser()">탈퇴</button>
-                  <button type="button" class="btn btn-secondaty" data-bs-dismiss="modal">취소</button>
-                </div>
-              </div>
-            </div>
-          </div> -->
           <profile-setting :class="{ displayNone: hideProfileSetting }" @cancel="toggle" @toggle="toggle" v-bind:darkMode="darkMode" />
           <h2 class="mt-3">Recently</h2>
           <recetly-lecture v-bind:darkMode="darkMode" />
-          <div class="darkModeSwitch">
-            <label for="toggle" class="toggleSwitch" style="position: absolute; left: 300px; bottom: 50px">
-              <span class="toggleButton"></span>
-            </label>
-          </div>
         </b-col>
         <b-col sm="9" :class="{ right: !darkMode, rightDark: darkMode }">
           <h2>Class</h2>
@@ -40,7 +20,7 @@
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title" id="deleteLectureModalLabel" style="color: black">강의를 삭제 하시겠습니까?</h5>
+                      <h5 class="modal-title" id="deleteLectureModalLabel" style="color: black">강의를 삭제하시겠습니까?</h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-footer">
@@ -70,6 +50,11 @@
           </b-row>
         </b-col>
       </b-row>
+      <div class="darkModeSwitch">
+        <label for="toggle" class="toggleSwitch" style="position: relative; left: 16%; bottom: 100px">
+          <span class="toggleButton"></span>
+        </label>
+      </div>
     </b-container>
   </div>
 </template>
@@ -79,7 +64,6 @@
 import Logo from "@/components/common/Logo.vue";
 import Profile from "@/components/main/Profile.vue";
 import ProfileSetting from "@/components/main/ProfileSetting.vue";
-// import { deleteUserRequest } from "@/api/index.js";
 import RecetlyLecture from "@/components/main/RecentlyLecture.vue";
 import LectureItem from "@/components/main/LectureItem.vue";
 import { registLectureRoomRequest } from "@/api/index.js";
@@ -134,12 +118,6 @@ export default {
       sessionStorage.clear();
       router.push({ path: "/" });
     },
-    // deleteUser() {
-    //   deleteUserRequest(store.state.userInfo["userId"]);
-    //   store.replaceState = {};
-    //   sessionStorage.clear();
-    //   router.push({ path: "/" });
-    // },
     mouseOverLec(index) {
       this.lecturesMouseover[index] = true;
     },

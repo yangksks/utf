@@ -7,9 +7,10 @@
       <i class="bi bi-x" data-bs-toggle="modal" data-bs-target="#deleteLectureModal" style="vertical-align: top; margin: 5px; font-size: 30px" @click="emitIndex(index)"></i>
       <!-- <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#exampleModal" aria-label="Close" style="vertical-align: top; margin: 5px" @click="emitIndex(index)"></button> -->
     </div>
-    <div>{{ lecture["title"] }}</div>
-    <div id="lectureCode">강의 코드 : {{ lecture["lectureRoomCode"] }}</div>
-    <div><button type="button" class="btn btn-info" @click="copyCode">코드 복사</button></div>
+    <div>
+      <h5>{{ lecture["title"] }}</h5>
+    </div>
+    <div>{{ lecture["lectureRoomCode"] }}&nbsp;&nbsp;<button type="button" class="btn btn-info" @click="copyCode">복사</button></div>
     <div style="text-align: center"><button type="button" class="btn btn-success" style="width: 45%">통계 보기</button></div>
   </div>
 </template>
@@ -33,6 +34,7 @@ export default {
         .writeText(text)
         .then(() => {
           console.log("Text copied to clipboard");
+          alert("복사되었습니다");
         })
         .catch((err) => {
           console.error("Error in copying text: ", err);
