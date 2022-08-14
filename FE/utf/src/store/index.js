@@ -18,6 +18,9 @@ export default createStore({
   state: {
     tempUserInfo: null,
     userInfo: null,
+    lectureRoomList: [],
+    tempLectureRoom: null,
+    lectureList: null,
   },
   getters: {},
   mutations: {
@@ -27,6 +30,15 @@ export default createStore({
     SAVE_USER_INFO(state, payload) {
       state.userInfo = payload;
     },
+    SAVE_LECTURE_ROOM_LIST(state, payload) {
+      state.lectureRoomList = payload;
+    },
+    SAVE_LECTURE_LIST(state, payload) {
+      state.lectureList = payload;
+    },
+    ADD_LECTURE_ROOM(state, payload) {
+      state.tempLectureRoom = payload["lectureRoom"];
+    },
   },
   actions: {
     saveTempUserInfo(context, payload) {
@@ -34,6 +46,15 @@ export default createStore({
     },
     saveUserInfo(context, payload) {
       context.commit("SAVE_USER_INFO", payload);
+    },
+    saveLectureRoomList(context, payload) {
+      context.commit("SAVE_LECTURE_ROOM_LIST", payload);
+    },
+    saveLectureList(context, payload) {
+      context.commit("SAVE_LECTURE_LIST", payload);
+    },
+    addLectureRoom(context, payload) {
+      context.commit("ADD_LECTURE_ROOM", payload);
     },
   },
 });

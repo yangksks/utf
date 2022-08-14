@@ -7,6 +7,21 @@
           <logo />
           <profile :class="{ displayNone: hideProfile }" @setting="toggle" @logout="logout" v-bind:darkMode="darkMode" />
           <profile-setting :class="{ displayNone: hideProfileSetting }" @cancle="toggle" @toggle="toggle" v-bind:darkMode="darkMode" />
+          <!-- Modal -->
+          <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="deleteUserModalLabel" style="color: black">탈퇴하시겠습니까?</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="deleteUser()">탈퇴</button>
+                  <button type="button" class="btn btn-secondaty" data-bs-dismiss="modal">취소</button>
+                </div>
+              </div>
+            </div>
+          </div>
           <h2>Recently</h2>
           <recetly-lecture v-bind:darkMode="darkMode" />
           <label for="toggle" class="toggleSwitch" style="position: absolute; left: 300px; bottom: 50px">
@@ -17,13 +32,13 @@
           <h2>Class</h2>
           <b-row class="cards">
             <b-col sm="3" v-for="(lecture, index) in lectures" :key="index" style="margin-bottom: 20px">
-              <lecture-item class="buttons" @mouseover="mouseOverLec(index)" @mouseout="mouseOutLec(index)" @emitIndex="saveIndex(index)" :class="{ 'opacity-50': lectures[index] }" v-bind:index="index" v-bind:darkMode="darkMode"></lecture-item>
+              <lecture-item class="buttons" @mouseover="mouseOverLec(index)" @mouseout="mouseOutLec(index)" @emitIndex="saveIndex(index)" :class="{ 'opacity-50': lecturesMouseover[index] }" v-bind:lecture="lecture" v-bind:index="index" v-bind:darkMode="darkMode"></lecture-item>
               <!-- Modal -->
-              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal fade" id="deleteLectureModal" tabindex="-1" aria-labelledby="deleteLectureModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalLabel" style="color: black">강의를 삭제 하시겠습니까?</h5>
+                      <h5 class="modal-title" id="deleteLectureModalLabel" style="color: black">강의를 삭제 하시겠습니까?</h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-footer">
@@ -62,8 +77,11 @@
 import Logo from "@/components/common/Logo.vue";
 import Profile from "@/components/main/Profile.vue";
 import ProfileSetting from "@/components/main/ProfileSetting.vue";
+import { deleteUserRequest } from "@/api/index.js";
 import RecetlyLecture from "@/components/main/RecentlyLecture.vue";
 import LectureItem from "@/components/main/LectureItem.vue";
+import { registLectureRoomRequest } from "@/api/index.js";
+import { deleteLectureRoom } from "@/api/index.js";
 import store from "@/store";
 import router from "@/router";
 import AddLecture from "@/components/main/AddLecture.vue";
@@ -80,7 +98,8 @@ export default {
   },
   data() {
     return {
-      lectures: [false, false, false, false, false, false],
+      lectures: [],
+      lecturesMouseover: [],
       addBtn: false,
       addBtnFliped: false,
       deleteIndex: -1,
@@ -90,6 +109,11 @@ export default {
     };
   },
   mounted() {
+    console.log("mounted");
+    this.lectures = store.state.lectureRoomList;
+    for (let i = 0; i < this.lectures.length; i++) {
+      this.lecturesMouseover.push(false);
+    }
     const $toggle = document.querySelector(".toggleSwitch");
 
     $toggle.onclick = () => {
@@ -108,11 +132,17 @@ export default {
       sessionStorage.clear();
       router.push({ path: "/" });
     },
+    deleteUser() {
+      deleteUserRequest(store.state.userInfo["userId"]);
+      store.replaceState = {};
+      sessionStorage.clear();
+      router.push({ path: "/" });
+    },
     mouseOverLec(index) {
-      this.lectures[index] = true;
+      this.lecturesMouseover[index] = true;
     },
     mouseOutLec(index) {
-      this.lectures[index] = false;
+      this.lecturesMouseover[index] = false;
     },
     mouseOverAdd() {
       this.addBtn = true;
@@ -120,8 +150,9 @@ export default {
     mouseOutAdd() {
       this.addBtn = false;
     },
-    registLecture() {
-      this.lectures.push(false);
+    async registLecture(lectureName) {
+      await registLectureRoomRequest(lectureName);
+      this.lectures.push(store.state.tempLectureRoom); //여기서 에러
     },
     saveIndex(index) {
       this.deleteIndex = index;
@@ -129,6 +160,7 @@ export default {
     deleteLecture(index) {
       console.log(index);
       this.lectures.splice(index, 1);
+      deleteLectureRoom(index + 1);
     },
   },
 };

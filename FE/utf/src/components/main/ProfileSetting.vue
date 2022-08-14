@@ -5,7 +5,7 @@
       Edit profile<br />
       name<br /><input v-model="userName" /><br />
       email<br /><input v-model="email" /><br />
-      <button type="button" class="btn btn-danger" style="margin-right: 50px" @click="deleteUser()">탈퇴</button>
+      <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUserModal" style="margin-right: 50px">탈퇴</button>
       <button type="button" class="btn btn-primary" @click="updateUser()">수정</button>
       <button type="button" id="cancleBtn" class="btn btn-secondary">취소</button>
     </div>
@@ -15,7 +15,6 @@
 <script>
 /* eslint-disable prettier/prettier */
 import store from "@/store";
-import { deleteUserRequest } from "@/api/index.js";
 import { updateUserRequest } from "@/api/index.js";
 export default {
   props: {
@@ -36,9 +35,6 @@ export default {
     };
   },
   methods: {
-    deleteUser() {
-      deleteUserRequest(store.state.userInfo["userId"]);
-    },
     async updateUser() {
       await updateUserRequest(store.state.userInfo["userId"], this.userName, this.email);
       // this.$emit("toggle");
