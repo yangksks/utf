@@ -39,6 +39,7 @@ export default {
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(4, calc(25% - 4px));
   row-gap: 4px;
+  overflow: scroll;
 }
 
 .highlight {
