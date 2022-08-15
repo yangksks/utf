@@ -68,7 +68,6 @@ export default {
   methods: {
     ...mapGetters("StatisticsStore", ["getRecordedStatistics"]),
     setChart() {
-      console.log(this.statistics);
       this.chartList[0].series[0].data = this.statistics[-2];
       this.chartList[1].series[0].data = this.statistics[-1];
       this.chartList[2].series[0].data = this.statistics[1];
@@ -91,7 +90,6 @@ export default {
           }
         }
       });
-      console.log(this.statistics);
       //각 시간에서의 값들을 비율로 바꿔주기
       for (let i = 0; i < maxSize; i++) {
         let num = 0; // i번째 시간에서 총 학생 수

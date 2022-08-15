@@ -1,3 +1,4 @@
+<!-- eslint-disable prettier/prettier -->
 <template>
   <b-container class="mt-5">
     <img src="@/assets/UTFLogo-removebg.png" alt="logo" />
@@ -6,11 +7,7 @@
         <b-col sm="4"></b-col>
         <b-col sm="4">
           <div class="inputForm p-2">
-            <b-form-input
-              class="mr--sm-0 w-75"
-              v-model="name"
-              placeholder="이름을 입력해주세요"
-            />
+            <b-form-input class="mr--sm-0 w-75" v-model="name" placeholder="이름을 입력해주세요" autofocus />
             <input type="submit" class="blueBtn" value="회원가입" />
           </div>
         </b-col>

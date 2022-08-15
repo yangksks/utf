@@ -33,6 +33,7 @@ public class LectureRoomServiceImpl implements LectureRoomService {
             if (checkLectureRoom == null) {
                 lectureRoom.setUserId(lectureRoomRegistReq.getUserId());
                 lectureRoom.setTitle(lectureRoomRegistReq.getTitle());
+                lectureRoom.setSubject(lectureRoomRegistReq.getSubject());
                 lectureRoom.setLectureRoomCode(lectureRoomCode);
                 break;
             }

@@ -7,10 +7,10 @@
           <div class="listBackground pt-2">
             <div
               class="lectures"
-              :class="{ selectedLecture: lecture.videoId === this.videoId }"
+              :class="{ selectedLecture: lecture.lectureId === this.lectureId }"
               v-for="(lecture, index) in lectureList"
               :key="index"
-              @click="lectureOne(lecture.videoId)"
+              @click="lectureOne(lecture.lectureId)"
             >
               {{ lecture.startTime }}
               <br />
@@ -54,7 +54,7 @@ export default {
   data() {
     return {
       lectureRoomId: 0,
-      videoId: 0,
+      lectureId: 0,
       selected: false,
     };
   },
@@ -70,11 +70,11 @@ export default {
       "setRecordStatistics",
     ]),
     ...mapGetters("StatisticsStore", ["getLectures"]),
-    lectureOne(videoId) {
-      this.videoId = videoId;
+    lectureOne(lectureId) {
+      this.lectureId = lectureId;
       this.selected = true;
-      this.setLectureOne(videoId);
-      this.setRecordStatistics(videoId);
+      this.setLectureOne(lectureId);
+      this.setRecordStatistics(lectureId);
     },
   },
   mounted() {

@@ -13,8 +13,8 @@
         <b-col sm="9" :class="{ right: !darkMode, rightDark: darkMode }">
           <h2>Class</h2>
           <b-row class="cards">
-            <b-col sm="3" v-for="(lectureRoom, index) in lectureRooms" :key="index" style="margin-bottom: 20px">
-              <lecture-item class="buttons" :lectureRoom="lectureRoom" @emitIndex="saveIndex(index)" :class="{ 'opacity-50': lectureRooms[index] }" v-bind:index="index" v-bind:darkMode="darkMode"></lecture-item>
+            <b-col sm="3" v-for="(lecture, index) in lectures" :key="index" style="margin-bottom: 20px">
+              <lecture-item class="buttons" @mouseover="mouseOverLec(index)" @mouseout="mouseOutLec(index)" @emitIndex="saveIndex(index)" :class="{ 'opacity-50': lecturesMouseover[index] }" :lecture="lecture" :index="index" :darkMode="darkMode"></lecture-item>
               <!-- Modal -->
               <div class="modal fade" id="deleteLectureModal" tabindex="-1" aria-labelledby="deleteLectureModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -66,6 +66,8 @@ import Profile from "@/components/main/Profile.vue";
 import ProfileSetting from "@/components/main/ProfileSetting.vue";
 import RecetlyLecture from "@/components/main/RecentlyLecture.vue";
 import LectureItem from "@/components/main/LectureItem.vue";
+import { registLectureRoomRequest } from "@/api/index.js";
+import { deleteLectureRoom } from "@/api/index.js";
 import store from "@/store";
 import router from "@/router";
 import AddLecture from "@/components/main/AddLecture.vue";
@@ -83,6 +85,8 @@ export default {
   },
   data() {
     return {
+      lectures: [],
+      lecturesMouseover: [],
       addBtn: false,
       addBtnFliped: false,
       deleteIndex: -1,
@@ -91,13 +95,13 @@ export default {
       darkMode: false,
     };
   },
-  computed: {
-    lectureRooms() {
-      return this.getLectureRooms();
-    }
-  },
   mounted() {
-    this.setLectureRooms(4); //userId로 바꿔줘야함
+    console.log("mounted");
+    this.lectures = store.state.lectureRoomList;
+    console.log(this.lectures);
+    for (let i = 0; i < this.lectures.length; i++) {
+      this.lecturesMouseover.push(false);
+    }
     const $toggle = document.querySelector(".toggleSwitch");
 
     $toggle.onclick = () => {
@@ -118,10 +122,10 @@ export default {
       router.push({ path: "/" });
     },
     mouseOverLec(index) {
-      this.lectures[index] = true;
+      this.lecturesMouseover[index] = true;
     },
     mouseOutLec(index) {
-      this.lectures[index] = false;
+      this.lecturesMouseover[index] = false;
     },
     mouseOverAdd() {
       this.addBtn = true;
@@ -129,8 +133,8 @@ export default {
     mouseOutAdd() {
       this.addBtn = false;
     },
-    registLecture() {
-      this.lectures.push(false);
+    async registLecture(lectureName, subject) {
+      await registLectureRoomRequest(lectureName, subject);
     },
     saveIndex(index) {
       this.deleteIndex = index;
@@ -138,6 +142,7 @@ export default {
     deleteLecture(index) {
       console.log(index);
       this.lectures.splice(index, 1);
+      deleteLectureRoom(index + 1);
     },
   },
 };

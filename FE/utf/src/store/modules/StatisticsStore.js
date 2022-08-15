@@ -83,9 +83,9 @@ const statisticsStore = {
           console.log(err);
         });
     },
-    setRecordStatistics: (store, videoId) => {
+    setRecordStatistics: (store, lectureId) => {
       api
-        .get(`/api/statistics/record/${videoId}`)
+        .get(`/api/statistics/record/${lectureId}`)
         .then((res) => {
           store.commit("SET_RECORD_STATISTICS", res.data);
         })
@@ -95,7 +95,7 @@ const statisticsStore = {
     },
     setRecently: (store, userId) => {
       api
-        .get(`/api/lectureRoom/recent/${userId}`)
+        .get(`/api/lecture/recent/${userId}`)
         .then((res) => {
           store.commit("SET_RECENTLY", res.data);
         })
@@ -115,7 +115,7 @@ const statisticsStore = {
     },
     setLectures: (store, lectureRoomId) => {
       api
-        .get(`/api/lectureRoom/lecture/${lectureRoomId}`)
+        .get(`/api/lecture/${lectureRoomId}`)
         .then((res) => {
           store.commit("SET_LECTURES", res.data);
         })
@@ -123,9 +123,9 @@ const statisticsStore = {
           console.log(err);
         });
     },
-    setLectureOne: (store, videoId) => {
+    setLectureOne: (store, lectureId) => {
       api
-        .get(`/api/lectureRoom/lecture/one/${videoId}`)
+        .get(`/api/lecture/one/${lectureId}`)
         .then((res) => {
           store.commit("SET_LECTURE_ONE", res.data);
         })

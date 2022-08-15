@@ -76,11 +76,12 @@ async function updateUserRequest(userId, userName, email) {
             router.push({ path: "/" });
         });
 }
-async function registLectureRoomRequest(lectureName) {
+async function registLectureRoomRequest(lectureName, subject) {
     await axios
         .post(`http://localhost:8080/api/lectureRoom`, {
             userId: store.state.userInfo["userId"],
             title: lectureName,
+            subject: subject,
         })
         .then((res) => {
             console.log(res);

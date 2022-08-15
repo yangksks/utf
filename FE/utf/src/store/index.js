@@ -20,7 +20,6 @@ export default createStore({
     tempUserInfo: null,
     userInfo: null,
     lectureRoomList: [],
-    tempLectureRoom: null,
     lectureList: null,
   },
   getters: {},
@@ -38,7 +37,7 @@ export default createStore({
       state.lectureList = payload;
     },
     ADD_LECTURE_ROOM(state, payload) {
-      state.tempLectureRoom = payload["lectureRoom"];
+      state.lectureRoomList.push(payload["lectureRoom"]);
     },
   },
   actions: {
