@@ -53,14 +53,14 @@ public class LectureRoomServiceImpl implements LectureRoomService {
     }
 
     @Override
-    public ArrayList<RecentLecture> getRecentLectures(long userId) {
-        ArrayList<RecentLecture> recentLectures = new ArrayList<>();
+    public List<RecentLecture> getRecentLectures(long userId) {
+        List<RecentLecture> recentLectures = new ArrayList<>();
 
-        ArrayList<LectureRoom> lectureRooms = lectureRoomRepository.findByUserId(userId);
+        List<LectureRoom> lectureRooms = lectureRoomRepository.findAllByUserId(userId);
         for (LectureRoom lectureRoom : lectureRooms) {
             long lectureRoomId = lectureRoom.getLectureRoomId();
-            ArrayList<Lecture> lectures = lectureRepository.findByLectureRoomId(lectureRoomId);
-            for (Lecture lecture : lectures) {
+            List<Lecture> lectures = lectureRepository.findByLectureRoomIdOrderByStartTimeDesc(lectureRoomId);
+            for (Lecture lecture: lectures){
                 RecentLecture recentLecture = new RecentLecture();
                 recentLecture.setLectureRoomId(lectureRoomId);
                 recentLecture.setTitle(lectureRoom.getTitle());
@@ -70,11 +70,12 @@ public class LectureRoomServiceImpl implements LectureRoomService {
             }
         }
         Collections.sort(recentLectures);
-        ArrayList<RecentLecture> result = new ArrayList<>();
+        List<RecentLecture> result = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             if (i >= recentLectures.size()) break;
             result.add(recentLectures.get(i));
         }
         return result;
     }
+
 }

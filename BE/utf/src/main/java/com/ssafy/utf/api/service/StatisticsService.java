@@ -1,7 +1,6 @@
 package com.ssafy.utf.api.service;
 
 import com.ssafy.utf.db.entity.statistics.Emotion;
-import com.ssafy.utf.db.entity.statistics.RecentLecture;
 import com.ssafy.utf.db.entity.statistics.Statistics;
 
 import java.util.ArrayList;

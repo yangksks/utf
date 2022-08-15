@@ -35,9 +35,9 @@ const routes = [
     component: () => import("@/views/ExitRoom.vue"),
   },
   {
-    path: "/test",
-    name: "test",
-    component: () => import("@/views/sss.vue"),
+    path: "/lectureRoom/:lectureRoomId",
+    name: "lectureRoom",
+    component: () => import("@/views/LectureStatistics.vue"),
   },
 ];
 
