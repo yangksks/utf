@@ -23,6 +23,7 @@
       @recordingEnd="recordingEnd"
       @stopShare="stopShare"
       @leaveSession="leaveSession"
+      ref="control"
     ></control-panel>
   </div>
 </template>
@@ -37,6 +38,7 @@ import {
   createSessionApi,
   recordingStartApi,
   recordingStopApi,
+  registRecordVideoApi,
 } from "@/api/openvidu.js";
 import store from "@/store";
 
@@ -47,6 +49,9 @@ export default {
     ControlPanel,
     UserListComponents,
     VideoComponents,
+  },
+  props: {
+    lectureRoomId: Number,
   },
   data() {
     return {
@@ -61,7 +66,7 @@ export default {
       subscribers: [],
       speaker: undefined,
 
-      mySessionId: "Session_A",
+      mySessionId: this.$route.params.lectureRoomCode,
       myUserName: store.state.userInfo["userName"],
     };
   },
@@ -159,6 +164,7 @@ export default {
             });
             this.publisherScreen.once("accessDenied", () => {
               console.warn("ScreenShare: Access Denied");
+              this.$refs.control.isShared = false;
             });
           })
           .catch((error) => {
@@ -187,12 +193,28 @@ export default {
       );
     },
 
+    //registRecordVideoApi
     recordingEnd() {
       this.recording = false;
       recordingStopApi(
         this.RECORDING_ID,
-        (response) => {
-          console.log(response);
+        ({ data }) => {
+          console.log(data);
+          registRecordVideoApi(
+            {
+              //RoomId를 몰라용
+              lectureRoomId: this.lectureRoomId,
+              id: data.id,
+              name: data.name,
+              sessionId: data.sessionId,
+              createdAt: data.createdAt,
+              duration: data.duration,
+              url: data.url,
+              // 채팅로그 가져옵시다
+            },
+            () => {},
+            () => {}
+          );
         },
         (error) => console.log(error)
       );
@@ -209,8 +231,8 @@ export default {
       this.OVCamera = undefined;
       this.speaker = undefined;
 
-      this.$router.push("/main");
       window.removeEventListener("beforeunload", this.leaveSession);
+      this.$router.push("/main");
     },
 
     getToken(mySessionId) {

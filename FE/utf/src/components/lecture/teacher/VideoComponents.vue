@@ -43,7 +43,7 @@ export default {
 }
 
 .highlight {
-  border: 2px;
+  border: 1px;
   border-style: solid;
   border-color: blue;
 }
