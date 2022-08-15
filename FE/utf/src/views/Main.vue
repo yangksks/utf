@@ -14,7 +14,7 @@
           <h2>Class</h2>
           <b-row class="cards">
             <b-col sm="3" v-for="(lecture, index) in lectures" :key="index" style="margin-bottom: 20px">
-              <lecture-item class="buttons" @mouseover="mouseOverLec(index)" @mouseout="mouseOutLec(index)" @emitIndex="saveIndex(index)" :class="{ 'opacity-50': lecturesMouseover[index] }" v-bind:lecture="lecture" v-bind:index="index" v-bind:darkMode="darkMode"></lecture-item>
+              <lecture-item class="buttons" @mouseover="mouseOverLec(index)" @mouseout="mouseOutLec(index)" @emitIndex="saveIndex(index)" :class="{ 'opacity-50': lecturesMouseover[index] }" :lecture="lecture" :index="index" :darkMode="darkMode"></lecture-item>
               <!-- Modal -->
               <div class="modal fade" id="deleteLectureModal" tabindex="-1" aria-labelledby="deleteLectureModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -130,9 +130,8 @@ export default {
     mouseOutAdd() {
       this.addBtn = false;
     },
-    async registLecture(lectureName) {
-      await registLectureRoomRequest(lectureName);
-      this.lectures.push(store.state.tempLectureRoom); //여기서 에러
+    async registLecture(lectureName, subject) {
+      await registLectureRoomRequest(lectureName, subject);
     },
     saveIndex(index) {
       this.deleteIndex = index;
