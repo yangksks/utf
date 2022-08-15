@@ -1,6 +1,7 @@
-import { openviduInstance } from "./index.js";
+import { openviduInstance, apiInstance } from "./index.js";
 
 const api = openviduInstance();
+const backApi = apiInstance();
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 
 async function recordingStopApi(recordingId, success, fail) {
@@ -26,10 +27,10 @@ async function recordingStartApi(sessionId, success, fail) {
       JSON.stringify({
         session: sessionId,
         name: "testRecording",
-        hasAudio: false,
+        hasAudio: true,
         hasVideo: true,
         outputMode: "COMPOSED",
-        recordingLayout: "BEST_FIT",
+        recordingLayout: "CUSTOM",
         resolution: "1280x720",
         frameRate: 25,
         shmSize: 536870912,
@@ -98,10 +99,18 @@ async function closeSessionApi(sessionId, success, fail) {
     .catch(fail);
 }
 
+async function registRecordVideoApi(recordReq, success, fail) {
+  await backApi
+    .post(`/api/lectureRoom/record`, recordReq)
+    .then(success)
+    .catch(fail);
+}
+
 export {
   createTokenApi,
   createSessionApi,
   closeSessionApi,
   recordingStartApi,
   recordingStopApi,
+  registRecordVideoApi,
 };

@@ -56,7 +56,7 @@ export default {
     return {
       OVCamera: undefined,
       sessionCamera: undefined,
-      mySessionId: "Session_A",
+      mySessionId: this.$route.params.lectureRoomCode,
 
       publisher: undefined,
       subscribers: [],
@@ -164,9 +164,8 @@ export default {
       this.OVCamera = undefined;
       this.speaker = undefined;
 
-      this.$router.push("/exit");
-
       window.removeEventListener("beforeunload", this.leaveSession);
+      this.$router.push("/exit");
     },
 
     getToken(mySessionId) {
