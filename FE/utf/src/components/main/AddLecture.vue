@@ -3,10 +3,22 @@
   <div class="flip-card">
     <div class="flip-card-inner" :class="{ flip: isFlip }">
       <div class="buttons" :class="{ 'flip-card-front': !darkMode, 'flip-card-frontDark': darkMode }" @click="flip()">
-        <i class="bi bi-plus" style="font-size: 130px"></i>
+        <i class="bi bi-plus" style="font-size: 170px"></i>
       </div>
       <div :class="{ 'flip-card-back': !darkMode, 'flip-card-backDark': darkMode }">
-        <input type="text" id="lectureName" placeholder="강의명"/>
+        <input type="text" id="lectureName" placeholder="강의명" />
+        <select class="form-select" name="subject" id="subject">
+          <option value="0">국어</option>
+          <option value="1">영어</option>
+          <option value="2">수학</option>
+          <option value="3">사회</option>
+          <option value="4">과학</option>
+          <option value="5">음악</option>
+          <option value="6">미술</option>
+          <option value="7">공학</option>
+          <option value="8">컴퓨터</option>
+          <option value="9">기타</option>
+        </select>
         <div class="btnGroup mt-3">
           <button type="button" class="blueBtn" @click="addLecture()">개설</button>
           <button type="button" class="redBtn" @click="flip()">취소</button>
@@ -17,6 +29,7 @@
 </template>
 
 <script>
+/* eslint-disable prettier/prettier */
 export default {
   props: {
     darkMode: Boolean,
@@ -28,7 +41,8 @@ export default {
   },
   methods: {
     addLecture() {
-      this.$emit("registLecture", document.querySelector("#lectureName").value);
+      this.$emit("registLecture", document.querySelector("#lectureName").value, document.querySelector("#subject").value);
+      document.querySelector("#subject").value = 0;
       this.flip();
     },
     flip() {
@@ -70,7 +84,7 @@ export default {
 .flip-card-back {
   position: absolute;
   width: 100%;
-  height: 196px;
+  height: 270px;
   border: 1px solid #c1c1c1;
   border-radius: 20px;
   -webkit-backface-visibility: hidden; /* Safari */
@@ -80,7 +94,7 @@ export default {
 .flip-card-backDark {
   position: absolute;
   width: 100%;
-  height: 196px;
+  height: 270px;
   border: 1px solid #3e3e3e;
   border-radius: 20px;
   -webkit-backface-visibility: hidden; /* Safari */
@@ -111,6 +125,11 @@ export default {
   margin: auto;
   margin-top: 50px;
   background-color: #e2ebff;
+}
+#subject {
+  width: 80%;
+  margin: auto;
+  margin-top: 20px;
 }
 .btnGroup {
   display: flex;
