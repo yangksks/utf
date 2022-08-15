@@ -4,7 +4,7 @@
     v-for="(lecture, index) in this.recentLectures"
     :key="index"
     class="buttons"
-    @click="goLecture(lecture.lectureRoomId)"
+    @click="goLecture(lecture.lectureRoomId, lecture.lectureId)"
   >
     <div class="msg">
       과목명 : {{ lecture.title }}<br />
@@ -28,9 +28,10 @@ export default {
     },
   },
   methods: {
-    ...mapActions("StatisticsStore", ["setRecently"]),
+    ...mapActions("StatisticsStore", ["setRecently", "setLectureOne"]),
     ...mapGetters("StatisticsStore", ["getRecentLectures"]),
-    goLecture(lectureRoomId) {
+    goLecture(lectureRoomId, lectureId) {
+      this.setLectureOne(lectureId);
       this.$router.push("/lectureRoom/" + lectureRoomId);
     },
   },

@@ -1,8 +1,8 @@
 <!-- eslint-disable prettier/prettier -->
 <template>
   <div :class="{ card: !darkMode, cardDark: darkMode }">
-    <div style="display: flex" @click="startLecture(lecture.lectureRoomId)">
-      <img :src="getImgSrc()" alt="logo" style="width: 70%; margin: 15px" />
+    <div style="display: flex">
+      <img :src="getImgSrc()" alt="logo" style="width: 70%; margin: 15px" @click="startLecture(lecture.lectureRoomId)"/>
       <!-- Button trigger modal -->
       <i
         class="bi bi-x"
@@ -19,16 +19,16 @@
     <div>
       <button
         type="button"
-        class="btn btn-info"
-        style="margin: 7px"
+        class="blueBtn"
+        style="margin: 7px; width: 40%"
         @click="copyCode"
       >
         URL 복사
       </button>
       <button
         type="button"
-        class="btn btn-success"
-        style="margin: 7px"
+        class="yellowBtn"
+        style="margin: 7px; width: 40%"
         @click="goLecture(this.lecture.lectureRoomId)"
       >
         통계 보기

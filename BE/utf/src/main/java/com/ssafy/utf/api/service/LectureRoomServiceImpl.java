@@ -67,6 +67,7 @@ public class LectureRoomServiceImpl implements LectureRoomService {
                 recentLecture.setLectureRoomId(lectureRoomId);
                 recentLecture.setTitle(lectureRoom.getTitle());
                 recentLecture.setStartTime(lecture.getStartTime());
+                recentLecture.setLectureId(lecture.getLectureId());
 
                 recentLectures.add(recentLecture);
             }
