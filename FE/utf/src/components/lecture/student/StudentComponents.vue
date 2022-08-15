@@ -17,6 +17,7 @@
         v-else
       ></user-list-components>
       <control-panel
+        :maintainer="maintainer"
         :publisher="publisher"
         :recording="recording"
         @reSize="reSize"
@@ -36,7 +37,7 @@
 import WaitingRoom from "@/components/lecture/student/WaitingRoom.vue";
 import ChatComponents from "@/components/chat/ChatComponents.vue";
 import ControlPanel from "@/components/lecture/student/ControlPanel.vue";
-import UserListComponents from "@/components/lecture/UserListComponents.vue";
+import UserListComponents from "@/components/lecture/student/UserListComponents.vue";
 import VideoComponents from "@/components/lecture/student/VideoComponents.vue";
 import { OpenVidu } from "openvidu-browser";
 import { createTokenApi, createSessionApi } from "@/api/openvidu.js";

@@ -10,7 +10,11 @@
       :publisher="publisher"
       :subscribers="subscribers"
     ></chat-components>
-    <user-list-components :subscribers="subscribers"></user-list-components>
+    <user-list-components
+      v-if="publisher"
+      :subscribers="subscribers"
+      :publisher="publisher"
+    ></user-list-components>
     <control-panel
       :publisher="publisher"
       :recording="recording"
@@ -25,7 +29,7 @@
 <script>
 import ChatComponents from "@/components/chat/ChatComponents.vue";
 import ControlPanel from "@/components/lecture/teacher/ControlPanel.vue";
-import UserListComponents from "@/components/lecture/UserListComponents.vue";
+import UserListComponents from "@/components/lecture/teacher/UserListComponents.vue";
 import VideoComponents from "@/components/lecture/teacher/VideoComponents.vue";
 import { OpenVidu } from "openvidu-browser";
 import {

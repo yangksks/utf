@@ -2,9 +2,7 @@
   <div class="user-box">
     <div class="user-box-outer">
       <div class="user-box-inner">
-        <p class="user-icon">{{ "감정" }}</p>
         <p class="user-name">{{ username }}</p>
-        <p class="user-time">{{ "[" + "TIME" + "]" }}</p>
       </div>
     </div>
   </div>
