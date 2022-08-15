@@ -12,6 +12,9 @@ import store from "@/store/index.js";
 
 export default {
   name: "LectureRoom",
+  props: {
+    lectureRoomId: Number,
+  },
   components: {
     TeacherComponents,
     StudentComponents,
@@ -23,6 +26,7 @@ export default {
   },
   mounted() {
     this.userInfo = store.state.userInfo;
+    console.log(this.lectureRoomId);
   },
 };
 </script>
