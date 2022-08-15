@@ -62,6 +62,16 @@ export default {
     lectureList() {
       return this.getLectures();
     },
+    lecture() {
+      return this.getLecture();
+    },
+  },
+  watch: {
+    lecture() {
+      this.lectureId = this.lecture.lectureId;
+      this.selected = true;
+      this.setRecordStatistics(this.lectureId);
+    },
   },
   methods: {
     ...mapActions("StatisticsStore", [
@@ -69,12 +79,11 @@ export default {
       "setLectureOne",
       "setRecordStatistics",
     ]),
-    ...mapGetters("StatisticsStore", ["getLectures"]),
+    ...mapGetters("StatisticsStore", ["getLectures", "getLecture"]),
     lectureOne(lectureId) {
       this.lectureId = lectureId;
       this.selected = true;
       this.setLectureOne(lectureId);
-      this.setRecordStatistics(lectureId);
     },
   },
   mounted() {
