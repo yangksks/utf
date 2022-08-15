@@ -6,13 +6,17 @@
     class="buttons"
     @click="goLecture(lecture.lectureRoomId)"
   >
-    {{ lecture.title }}<br />
-    {{ lecture.startTime }}
+    <div class="msg">
+      과목명 : {{ lecture.title }}<br />
+      강의시간 : {{ lecture.startTime }}
+    </div>
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import store from "@/store";
+
 export default {
   name: "RecetlyLecture",
   props: {
@@ -31,12 +35,18 @@ export default {
     },
   },
   mounted() {
-    this.setRecently(4); //userId로 바꿀것
+    this.setRecently(store.state.userInfo["userId"]);
   },
 };
 </script>
 
 <style scoped>
+.buttons {
+  text-align: left;
+}
+.msg {
+  margin-left: 10px;
+}
 .recentList {
   background-color: #ffffff;
   margin: 10px;
