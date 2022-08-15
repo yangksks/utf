@@ -203,6 +203,7 @@ export default {
     },
   },
   mounted() {
+    this.mySessionId = this.$route.params.id;
     this.createPublisher();
   },
 };

@@ -1,6 +1,7 @@
 package com.ssafy.utf.api.controller;
 
 import com.ssafy.utf.api.request.LectureRoomRegistReq;
+import com.ssafy.utf.api.request.RecordingReq;
 import com.ssafy.utf.api.service.LectureRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -57,4 +58,19 @@ public class LectureRoomController {
         }
         return ResponseEntity.status(status).build();
     }
+
+    @PostMapping("/record")
+    public ResponseEntity<Object> registRecordVideo(@RequestBody RecordingReq recordingReq) {
+        HttpStatus status = null;
+        try {
+            lectureRoomService.registRecordVideo(recordingReq);
+            status = HttpStatus.OK;
+        } catch (Exception e) {
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+            e.printStackTrace();
+        }
+
+        return ResponseEntity.status(status).build();
+    }
+
 }

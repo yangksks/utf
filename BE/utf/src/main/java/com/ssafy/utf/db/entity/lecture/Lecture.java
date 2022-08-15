@@ -13,11 +13,12 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Builder
 public class Lecture {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long videoId;
+    private long lectureId;
     private long lectureRoomId;
     private String videoUrl;
     private String startTime;

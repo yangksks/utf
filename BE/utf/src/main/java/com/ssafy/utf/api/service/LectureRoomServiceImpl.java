@@ -2,6 +2,7 @@ package com.ssafy.utf.api.service;
 
 
 import com.ssafy.utf.api.request.LectureRoomRegistReq;
+import com.ssafy.utf.api.request.RecordingReq;
 import com.ssafy.utf.common.util.RandomCodeGenerator;
 import com.ssafy.utf.db.entity.lecture.Lecture;
 import com.ssafy.utf.db.entity.lecture.LectureRoom;
@@ -11,15 +12,16 @@ import com.ssafy.utf.db.repository.LectureRoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class LectureRoomServiceImpl implements LectureRoomService {
     @Autowired
     LectureRoomRepository lectureRoomRepository;
-
     @Autowired
     LectureRepository lectureRepository;
 
@@ -75,5 +77,26 @@ public class LectureRoomServiceImpl implements LectureRoomService {
             result.add(recentLectures.get(i));
         }
         return result;
+    }
+
+    @Override
+    public void registRecordVideo(RecordingReq recordingReq) throws Exception {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        Date created = new Date(recordingReq.getCreatedAt());
+        Date end = new Date((long) (recordingReq.getCreatedAt() + recordingReq.getDuration()));
+
+        String created_time = sdf.format(created);
+        String end_time = sdf.format(end);
+
+        Lecture lecture = new Lecture();
+
+        lecture.setLectureRoomId(recordingReq.getLectureRoomId());
+        lecture.setStartTime(created_time);
+        lecture.setEndTime(end_time);
+        lecture.setVideoUrl(recordingReq.getUrl());
+        // url : /opt/openvidu/recordings/{recordingReq.id}/{recordingReq.name}.mp4
+
+        lectureRepository.save(lecture);
     }
 }
