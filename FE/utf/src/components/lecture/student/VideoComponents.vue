@@ -4,6 +4,7 @@
       <b-button v-if="page != 1" variant="outline-light" @click="page--"
         >&lt;</b-button
       >
+      <my-video class="mx-1" :stream-manager="subscribers[0]" />
       <user-video
         class="mx-1"
         v-for="sub in listData"
@@ -24,14 +25,14 @@
 
 <script>
 import UserVideo from "@/components/lecture/UserVideo";
-// import MyVideo from "@/components/lecture/MyVideo.vue";
+import MyVideo from "@/components/lecture/MyVideo.vue";
 
 export default {
   name: "VideoComponents",
 
   components: {
     UserVideo,
-    // MyVideo,
+    MyVideo,
   },
   props: {
     subscribers: Object,
@@ -46,7 +47,9 @@ export default {
   },
   computed: {
     listData: function () {
-      return this.subscribers.slice((this.page - 1) * 4, this.page * 4);
+      let obj = this.subscribers.slice(1);
+      return obj.slice((this.page - 1) * 3, this.page * 3);
+      // return this.subscribers.slice((this.page - 1) * 4, this.page * 4);
     },
   },
 };
