@@ -81,4 +81,8 @@ p {
 .btnGroup button {
   margin-right: 10px;
 }
+label{
+  position: relative;
+  right: 32%;
+}
 </style>

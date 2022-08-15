@@ -15,7 +15,9 @@ public interface LectureRoomService {
 
     void deleteLectureRoom(long lectureRoomId);
 
-    ArrayList<RecentLecture> getRecentLectures(long userId);
+    List<RecentLecture> getRecentLectures(long userId);
+
 
     void registRecordVideo(RecordingReq recordingReq) throws Exception;
+
 }

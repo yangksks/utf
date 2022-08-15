@@ -164,9 +164,8 @@ export default {
       this.OVCamera = undefined;
       this.speaker = undefined;
 
-      this.$router.push("/exit");
-
       window.removeEventListener("beforeunload", this.leaveSession);
+      this.$router.push("/exit");
     },
 
     getToken(mySessionId) {

@@ -14,7 +14,7 @@
           <h2>Class</h2>
           <b-row class="cards">
             <b-col sm="3" v-for="(lecture, index) in lectures" :key="index" style="margin-bottom: 20px">
-              <lecture-item class="buttons" @mouseover="mouseOverLec(index)" @mouseout="mouseOutLec(index)" @emitIndex="saveIndex(index)" :class="{ 'opacity-50': lecturesMouseover[index] }" v-bind:lecture="lecture" v-bind:index="index" v-bind:darkMode="darkMode"></lecture-item>
+              <lecture-item class="buttons" @mouseover="mouseOverLec(index)" @mouseout="mouseOutLec(index)" @emitIndex="saveIndex(index)" :class="{ 'opacity-50': lecturesMouseover[index] }" :lecture="lecture" :index="index" :darkMode="darkMode"></lecture-item>
               <!-- Modal -->
               <div class="modal fade" id="deleteLectureModal" tabindex="-1" aria-labelledby="deleteLectureModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -48,13 +48,11 @@
               />
             </b-col>
           </b-row>
+          <label for="toggle" class="toggleSwitch" style="position: absolute; left: 85%; bottom: 100px">
+            <span class="toggleButton"></span>
+          </label>
         </b-col>
       </b-row>
-      <div class="darkModeSwitch">
-        <label for="toggle" class="toggleSwitch" style="position: relative; left: 16%; bottom: 100px">
-          <span class="toggleButton"></span>
-        </label>
-      </div>
     </b-container>
   </div>
 </template>
@@ -71,6 +69,7 @@ import { deleteLectureRoom } from "@/api/index.js";
 import store from "@/store";
 import router from "@/router";
 import AddLecture from "@/components/main/AddLecture.vue";
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: "MainVue",
@@ -97,6 +96,7 @@ export default {
   mounted() {
     console.log("mounted");
     this.lectures = store.state.lectureRoomList;
+    console.log(this.lectures);
     for (let i = 0; i < this.lectures.length; i++) {
       this.lecturesMouseover.push(false);
     }
@@ -108,7 +108,8 @@ export default {
     };
   },
   methods: {
-    getLectruesByUserId() {},
+    ...mapActions("StatisticsStore",["setLectureRooms"]),
+    ...mapGetters("StatisticsStore",["getLectureRooms"]),
     toggle() {
       this.hideProfile = !this.hideProfile;
       this.hideProfileSetting = !this.hideProfileSetting;
@@ -130,9 +131,8 @@ export default {
     mouseOutAdd() {
       this.addBtn = false;
     },
-    async registLecture(lectureName) {
-      await registLectureRoomRequest(lectureName);
-      this.lectures.push(store.state.tempLectureRoom); //여기서 에러
+    async registLecture(lectureName, subject) {
+      await registLectureRoomRequest(lectureName, subject);
     },
     saveIndex(index) {
       this.deleteIndex = index;

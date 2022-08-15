@@ -23,6 +23,7 @@
       @recordingEnd="recordingEnd"
       @stopShare="stopShare"
       @leaveSession="leaveSession"
+      ref="control"
     ></control-panel>
   </div>
 </template>
@@ -160,6 +161,7 @@ export default {
             });
             this.publisherScreen.once("accessDenied", () => {
               console.warn("ScreenShare: Access Denied");
+              this.$refs.control.isShared = false;
             });
           })
           .catch((error) => {

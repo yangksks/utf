@@ -4,7 +4,7 @@
     v-for="(lecture, index) in this.recentLectures"
     :key="index"
     class="buttons"
-    @click="goLecture(lecture)"
+    @click="goLecture(lecture.lectureRoomId)"
   >
     {{ lecture.title }}<br />
     {{ lecture.startTime }}
@@ -18,21 +18,20 @@ export default {
   props: {
     darkMode: Boolean,
   },
-  data() {
-    return {
-      recentLectures: [],
-    };
+  computed: {
+    recentLectures() {
+      return this.getRecentLectures();
+    },
   },
   methods: {
     ...mapActions("StatisticsStore", ["setRecently"]),
     ...mapGetters("StatisticsStore", ["getRecentLectures"]),
-    goLecture(lecture) {
-      console.log(lecture);
+    goLecture(lectureRoomId) {
+      this.$router.push("/lectureRoom/" + lectureRoomId);
     },
   },
   mounted() {
-    this.setRecently(4);
-    this.recentLectures = this.getRecentLectures();
+    this.setRecently(4); //userId로 바꿀것
   },
 };
 </script>
