@@ -1,6 +1,7 @@
 <template>
   <div class="background">
     <b-container>
+      <logo class="logo" :size="40" />
       <b-row>
         <!-- 강의리스트 -->
         <b-col sm="2" class="list">
@@ -43,12 +44,14 @@ import { mapActions, mapGetters } from "vuex";
 import LectureVideo from "@/components/statistics/LectureVideo.vue";
 import LectureChat from "@/components/statistics/LectureChat.vue";
 import UserList from "@/components/statistics/UserList.vue";
+import Logo from "@/components/common/Logo.vue";
 
 export default {
   components: {
     LectureVideo,
     LectureChat,
     UserList,
+    Logo,
   },
   props: {},
   data() {
@@ -116,5 +119,11 @@ export default {
 .selectedLecture {
   background-color: #5196fe;
   color: white;
+}
+.logo {
+  width: 20%;
+  position: relative;
+  right: 5%;
+  bottom: 10px;
 }
 </style>
