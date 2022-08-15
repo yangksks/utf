@@ -40,8 +40,22 @@ export default {
   grid-template-rows: repeat(4, calc(25% - 4px));
   row-gap: 4px;
   overflow: scroll;
+  /* overflow-x: hidden; */
 }
-
+/* #video-components::-webkit-scrollbar {
+  width: 6px;
+}
+#video-components::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+#video-components::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  background-color: gray;
+}
+#video-components::-webkit-scrollbar-button {
+  width: 0;
+  height: 0;
+} */
 .highlight {
   border: 1px;
   border-style: solid;

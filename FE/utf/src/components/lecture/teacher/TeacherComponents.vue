@@ -41,7 +41,7 @@ import {
   registRecordVideoApi,
 } from "@/api/openvidu.js";
 import store from "@/store";
-
+import { mapState, mapMutations } from "vuex";
 export default {
   name: "TeacherComponents",
   components: {
@@ -70,7 +70,13 @@ export default {
       myUserName: store.state.userInfo["userName"],
     };
   },
+  computed: {
+    ...mapState("chatStore", ["msgList"]),
+  },
   methods: {
+    ...mapMutations("chatStore", {
+      clearMessage: "CLEAR_MSG",
+    }),
     joinSession() {
       this.OVCamera = new OpenVidu();
       this.OVScreen = new OpenVidu();
@@ -196,6 +202,7 @@ export default {
     //registRecordVideoApi
     recordingEnd() {
       this.recording = false;
+      console.log("msglst:", this.msgList);
       recordingStopApi(
         this.RECORDING_ID,
         ({ data }) => {
@@ -210,6 +217,7 @@ export default {
               createdAt: data.createdAt,
               duration: data.duration,
               url: data.url,
+              chatRecord: JSON.stringify(this.msgList),
               // 채팅로그 가져옵시다
             },
             () => {},
@@ -230,8 +238,8 @@ export default {
       this.subscribers = [];
       this.OVCamera = undefined;
       this.speaker = undefined;
-
       window.removeEventListener("beforeunload", this.leaveSession);
+      this.clearMessage();
       this.$router.push("/main");
     },
 

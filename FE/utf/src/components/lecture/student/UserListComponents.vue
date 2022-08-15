@@ -71,7 +71,7 @@ export default {
   padding: 1rem;
   font-size: 16px;
   font-weight: 700;
-  height: 100%;
+  min-height: 100%;
   margin: 5px 0px 0px 0px;
 }
 .userlist-header {

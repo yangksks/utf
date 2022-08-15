@@ -1,7 +1,7 @@
 <template>
   <div class="waiting-room" v-if="streamManager">
     <b-container fluid style="height: 100px"
-      ><logo class="h-100"
+      ><logo class="h-100" :size="9"
     /></b-container>
     <b-container class="waiting-room-container bg-light">
       <div class="position-relative">
