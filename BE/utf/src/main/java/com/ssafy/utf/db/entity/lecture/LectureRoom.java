@@ -19,6 +19,7 @@ public class LectureRoom {
     long lectureRoomId;
     long userId;
     String title;
+    int subject;
     String lectureRoomCode;
     boolean isActive;
 }

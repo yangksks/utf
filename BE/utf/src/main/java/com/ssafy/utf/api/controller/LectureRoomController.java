@@ -18,6 +18,7 @@ public class LectureRoomController {
 
     @PostMapping
     public ResponseEntity<Object> registLectureRoom(@RequestBody LectureRoomRegistReq lectureRoomRegistReq) {
+        System.out.println(lectureRoomRegistReq);
         HashMap<String, Object> result = new HashMap<>();
         HttpStatus status = null;
         try {

@@ -10,4 +10,5 @@ import lombok.ToString;
 public class LectureRoomRegistReq {
     long userId;
     String title;
+    int subject;
 }
