@@ -16,5 +16,6 @@ public class RecordingReq {
     private long createdAt;
     private float duration;
     private String url;
+    private String chatRecord;
 
 }
