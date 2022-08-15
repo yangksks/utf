@@ -48,13 +48,11 @@
               />
             </b-col>
           </b-row>
+          <label for="toggle" class="toggleSwitch" style="position: absolute; left: 85%; bottom: 100px">
+            <span class="toggleButton"></span>
+          </label>
         </b-col>
       </b-row>
-      <div class="darkModeSwitch">
-        <label for="toggle" class="toggleSwitch" style="position: relative; left: 16%; bottom: 100px">
-          <span class="toggleButton"></span>
-        </label>
-      </div>
     </b-container>
   </div>
 </template>
