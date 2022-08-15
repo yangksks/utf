@@ -43,21 +43,17 @@ export default {
             opacity: 0.5,
           },
         },
-        // yaxis: {
-        //   categories: [0, 20, 40, 60, 80, 100],
-        // },
-        xaxis: {
-          categories: [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-          ],
+        yaxis: {
+          min: 0,
+          max: 100,
+          tickAmount: 5,
+        },
+        tooltip: {
+          y: {
+            formatter: function (val) {
+              return val + "%";
+            },
+          },
         },
       },
     };
