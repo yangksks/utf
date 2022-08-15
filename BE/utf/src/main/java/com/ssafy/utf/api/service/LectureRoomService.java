@@ -14,5 +14,6 @@ public interface LectureRoomService {
 
     void deleteLectureRoom(long lectureRoomId);
 
-    ArrayList<RecentLecture> getRecentLectures(long userId);
+    List<RecentLecture> getRecentLectures(long userId);
+
 }

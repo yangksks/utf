@@ -1,7 +1,8 @@
 <template>
   <apexchart
     ref="chart"
-    width="350"
+    width="100%"
+    height="200px"
     type="line"
     :series="series"
     :options="chartOptions"
@@ -23,11 +24,11 @@ export default {
     return {
       chartOptions: {
         chart: {
-          height: 200,
           type: "line",
           zoom: {
             enabled: false,
           },
+          background: "#fff",
         },
         dataLabels: {
           enabled: false,
@@ -42,19 +43,22 @@ export default {
             opacity: 0.5,
           },
         },
-        // xaxis: {
-        //   categories: [
-        //     "Jan",
-        //     "Feb",
-        //     "Mar",
-        //     "Apr",
-        //     "May",
-        //     "Jun",
-        //     "Jul",
-        //     "Aug",
-        //     "Sep",
-        //   ],
+        // yaxis: {
+        //   categories: [0, 20, 40, 60, 80, 100],
         // },
+        xaxis: {
+          categories: [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+          ],
+        },
       },
     };
   },
