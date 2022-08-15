@@ -50,6 +50,9 @@ export default {
     UserListComponents,
     VideoComponents,
   },
+  props: {
+    lectureRoomId: Number,
+  },
   data() {
     return {
       OVCamera: undefined,
@@ -63,7 +66,7 @@ export default {
       subscribers: [],
       speaker: undefined,
 
-      mySessionId: "Session_C",
+      mySessionId: this.$route.params.lectureRoomCode,
       myUserName: store.state.userInfo["userName"],
     };
   },
@@ -200,7 +203,7 @@ export default {
           registRecordVideoApi(
             {
               //RoomId를 몰라용
-              lectureRoomId: 1,
+              lectureRoomId: this.lectureRoomId,
               id: data.id,
               name: data.name,
               sessionId: data.sessionId,
@@ -228,8 +231,8 @@ export default {
       this.OVCamera = undefined;
       this.speaker = undefined;
 
-      this.$router.push("/main");
       window.removeEventListener("beforeunload", this.leaveSession);
+      this.$router.push("/main");
     },
 
     getToken(mySessionId) {
@@ -267,7 +270,6 @@ export default {
   },
 
   mounted() {
-    this.mySessionId = this.$route.params.id;
     this.joinSession();
   },
 };

@@ -1,6 +1,6 @@
 <template>
   <div class="lecture-room">
-    <teacher-components v-if="userInfo" />
+    <teacher-components :lectureRoomId="lectureRoomId" v-if="userInfo" />
     <student-components v-else />
   </div>
 </template>

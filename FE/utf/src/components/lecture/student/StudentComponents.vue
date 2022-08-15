@@ -56,7 +56,7 @@ export default {
     return {
       OVCamera: undefined,
       sessionCamera: undefined,
-      mySessionId: "Session_C",
+      mySessionId: this.$route.params.lectureRoomCode,
 
       publisher: undefined,
       subscribers: [],
@@ -202,7 +202,6 @@ export default {
     },
   },
   mounted() {
-    this.mySessionId = this.$route.params.id;
     this.createPublisher();
   },
 };
