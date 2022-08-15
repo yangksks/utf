@@ -14,7 +14,7 @@
           <h2>Class</h2>
           <b-row class="cards">
             <b-col sm="3" v-for="(lecture, index) in lectures" :key="index" style="margin-bottom: 20px">
-              <lecture-item class="buttons" @emitIndex="saveIndex(index)" :lecture="lecture" :index="index" :darkMode="darkMode"></lecture-item>
+              <lecture-item class="buttons" @emitIndex="saveIndex" :lecture="lecture" :index="index" :darkMode="darkMode"></lecture-item>
               <!-- Modal -->
               <div class="modal fade" id="deleteLectureModal" tabindex="-1" aria-labelledby="deleteLectureModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -24,7 +24,7 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="deleteLecture(deleteIndex)">삭제</button>
+                      <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="deleteLecture(deleteIndex, deleteLectureRoomId)">삭제</button>
                       <button type="button" class="btn btn-secondaty" data-bs-dismiss="modal">취소</button>
                     </div>
                   </div>
@@ -86,6 +86,7 @@ export default {
       addBtn: false,
       addBtnFliped: false,
       deleteIndex: -1,
+      deleteLectureRoomId: -1,
       hideProfile: false,
       hideProfileSetting: true,
       darkMode: false,
@@ -121,13 +122,17 @@ export default {
     async registLecture(lectureName, subject) {
       await registLectureRoomRequest(lectureName, subject);
     },
-    saveIndex(index) {
-      this.deleteIndex = index;
-    },
-    deleteLecture(index) {
+    saveIndex(index, lectureRoomId) {
       console.log(index);
+      console.log(lectureRoomId);
+      this.deleteIndex = index;
+      this.deleteLectureRoomId = lectureRoomId;
+    },
+    deleteLecture(index, lectureRoomId) {
+      console.log(index);
+      console.log(lectureRoomId);
       this.lectures.splice(index, 1);
-      deleteLectureRoom(index + 1);
+      deleteLectureRoom(lectureRoomId);
     },
   },
 };

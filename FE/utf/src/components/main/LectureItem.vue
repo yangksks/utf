@@ -9,7 +9,7 @@
         data-bs-toggle="modal"
         data-bs-target="#deleteLectureModal"
         style="vertical-align: top; margin: 5px; font-size: 30px"
-        @click="emitIndex(index)"
+        @click="emitIndex(index, lecture.lectureRoomId)"
       ></i>
       <!-- <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#exampleModal" aria-label="Close" style="vertical-align: top; margin: 5px" @click="emitIndex(index)"></button> -->
     </div>
@@ -46,9 +46,10 @@ export default {
     lectureRoom: Object,
   },
   methods: {
-    emitIndex(index) {
+    emitIndex(index, lectureRoomId) {
       console.log("index : " + index);
-      this.$emit("emitIndex", index);
+      console.log("lectureRoomId : " + lectureRoomId);
+      this.$emit("emitIndex", index, lectureRoomId);
     },
     copyCode() {
       var text =
