@@ -14,7 +14,7 @@
           <h2>Class</h2>
           <b-row class="cards">
             <b-col sm="3" v-for="(lecture, index) in lectures" :key="index" style="margin-bottom: 20px">
-              <lecture-item class="buttons" @mouseover="mouseOverLec(index)" @mouseout="mouseOutLec(index)" @emitIndex="saveIndex(index)" :class="{ 'opacity-50': lecturesMouseover[index] }" :lecture="lecture" :index="index" :darkMode="darkMode"></lecture-item>
+              <lecture-item class="buttons" @emitIndex="saveIndex(index)" :lecture="lecture" :index="index" :darkMode="darkMode"></lecture-item>
               <!-- Modal -->
               <div class="modal fade" id="deleteLectureModal" tabindex="-1" aria-labelledby="deleteLectureModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -83,7 +83,6 @@ export default {
   data() {
     return {
       lectures: [],
-      lecturesMouseover: [],
       addBtn: false,
       addBtnFliped: false,
       deleteIndex: -1,
@@ -95,10 +94,7 @@ export default {
   mounted() {
     console.log("mounted");
     this.lectures = store.state.lectureRoomList;
-    console.log(this.lectures);
-    for (let i = 0; i < this.lectures.length; i++) {
-      this.lecturesMouseover.push(false);
-    }
+
     const $toggle = document.querySelector(".toggleSwitch");
 
     $toggle.onclick = () => {
@@ -115,12 +111,6 @@ export default {
       store.replaceState = {};
       sessionStorage.clear();
       router.push({ path: "/" });
-    },
-    mouseOverLec(index) {
-      this.lecturesMouseover[index] = true;
-    },
-    mouseOutLec(index) {
-      this.lecturesMouseover[index] = false;
     },
     mouseOverAdd() {
       this.addBtn = true;
