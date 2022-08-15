@@ -198,12 +198,13 @@ export default {
           registRecordVideoApi(
             {
               //RoomId를 몰라용
-              lectureRoomId: "",
+              lectureRoomId: 1,
               id: data.id,
               name: data.name,
               sessionId: data.sessionId,
               createdAt: data.createdAt,
               duration: data.duration,
+              url: data.url,
               // 채팅로그 가져옵시다
             },
             () => {},
