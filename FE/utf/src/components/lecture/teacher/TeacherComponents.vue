@@ -33,6 +33,7 @@ import {
   createSessionApi,
   recordingStartApi,
   recordingStopApi,
+  registRecordVideoApi,
 } from "@/api/openvidu.js";
 import store from "@/store";
 
@@ -57,7 +58,7 @@ export default {
       subscribers: [],
       speaker: undefined,
 
-      mySessionId: "Session_A",
+      mySessionId: "Session_C",
       myUserName: store.state.userInfo["userName"],
     };
   },
@@ -183,12 +184,27 @@ export default {
       );
     },
 
+    //registRecordVideoApi
     recordingEnd() {
       this.recording = false;
       recordingStopApi(
         this.RECORDING_ID,
-        (response) => {
-          console.log(response);
+        ({ data }) => {
+          console.log(data);
+          registRecordVideoApi(
+            {
+              //RoomId를 몰라용
+              lectureRoomId: "",
+              id: data.id,
+              name: data.name,
+              sessionId: data.sessionId,
+              createdAt: data.createdAt,
+              duration: data.duration,
+              // 채팅로그 가져옵시다
+            },
+            () => {},
+            () => {}
+          );
         },
         (error) => console.log(error)
       );
