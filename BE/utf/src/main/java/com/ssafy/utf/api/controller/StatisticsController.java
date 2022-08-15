@@ -3,7 +3,7 @@ package com.ssafy.utf.api.controller;
 import com.ssafy.utf.api.service.LectureRoomService;
 import com.ssafy.utf.api.service.LectureService;
 import com.ssafy.utf.api.service.StatisticsService;
-import com.ssafy.utf.db.entity.Lecture;
+import com.ssafy.utf.db.entity.lecture.Lecture;
 import com.ssafy.utf.db.entity.statistics.Emotion;
 import com.ssafy.utf.db.entity.statistics.Focus;
 import com.ssafy.utf.db.entity.statistics.RecentLecture;

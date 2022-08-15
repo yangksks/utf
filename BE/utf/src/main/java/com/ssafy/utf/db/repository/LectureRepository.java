@@ -11,5 +11,5 @@ public interface LectureRepository extends JpaRepository<Lecture, Long> {
 
     ArrayList<Lecture> findByLectureRoomIdOrderByStartTimeDesc(long lectureRoomId);
 
-    Lecture findByVideoId(long videoId);
+    Lecture findByLectureId(long lectureId);
 }
