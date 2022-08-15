@@ -20,9 +20,10 @@ const routes = [
     component: RedirectView,
   },
   {
-    path: "/lecture/:id",
+    path: "/lecture/:lectureRoomCode",
     name: "lecture",
     component: () => import("@/views/LectureRoom.vue"),
+    props: true,
   },
   {
     path: "/main",

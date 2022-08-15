@@ -1,7 +1,7 @@
 <!-- eslint-disable prettier/prettier -->
 <template>
   <div :class="{ card: !darkMode, cardDark: darkMode }">
-    <div style="display: flex">
+    <div style="display: flex" @click="startLecture(lecture.lectureRoomId)">
       <img :src="getImgSrc()" alt="logo" style="width: 70%; margin: 15px" />
       <!-- Button trigger modal -->
       <i
@@ -71,6 +71,15 @@ export default {
     },
     goLecture(lectureRoomId) {
       this.$router.push(`/lectureRoom/${lectureRoomId}`);
+    },
+    startLecture(lectureRoomId) {
+      this.$router.push({
+        name: "lecture",
+        params: {
+          lectureRoomCode: this.lecture.lectureRoomCode,
+          lectureRoomId: lectureRoomId,
+        },
+      });
     },
   },
 };

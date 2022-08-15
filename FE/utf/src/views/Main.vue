@@ -69,7 +69,6 @@ import { deleteLectureRoom } from "@/api/index.js";
 import store from "@/store";
 import router from "@/router";
 import AddLecture from "@/components/main/AddLecture.vue";
-import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: "MainVue",
@@ -108,8 +107,6 @@ export default {
     };
   },
   methods: {
-    ...mapActions("StatisticsStore",["setLectureRooms"]),
-    ...mapGetters("StatisticsStore",["getLectureRooms"]),
     toggle() {
       this.hideProfile = !this.hideProfile;
       this.hideProfileSetting = !this.hideProfileSetting;
