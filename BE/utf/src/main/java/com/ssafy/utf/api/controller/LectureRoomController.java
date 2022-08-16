@@ -74,4 +74,17 @@ public class LectureRoomController {
         return ResponseEntity.status(status).build();
     }
 
+    @GetMapping("/code/{lectureRoomCode}")
+    public ResponseEntity<Long> getLectureRoomId(@PathVariable String lectureRoomCode){
+        HttpStatus status = null;
+        long lectureRoomId = 0;
+        try {
+            lectureRoomId = lectureRoomService.getLectureRoomId(lectureRoomCode);
+            status = HttpStatus.OK;
+        }catch (Exception e){
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+            e.printStackTrace();
+        }
+        return ResponseEntity.status(status).body(lectureRoomId);
+    }
 }

@@ -10,21 +10,24 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
 import VueApexCharts from "vue3-apexcharts";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   components: {
     apexchart: VueApexCharts,
   },
+  props: {
+    lectureRoomId: Number,
+  },
   data() {
     return {
-      series: [0, 0, 0],
+      series: [0, 0],
       chartOptions: {
         chart: {
           type: "pie",
         },
-        labels: ["이해함", "중립", "이해못함"],
+        labels: ["집중 잘하고 있어요", "집중이 필요해요"],
         legend: {
           show: false,
         },
@@ -33,17 +36,22 @@ export default {
             breakpoint: 480,
           },
         ],
+        title: {
+          text: "집중도",
+          align: "center",
+        },
+        colors: ["#2B80FF", "#FF4F5A"],
       },
     };
   },
   methods: {
-    ...mapActions("StatisticsStore", ["setUnderstanding"]),
-    ...mapGetters("StatisticsStore", ["getCurrentUnderstanding"]),
+    ...mapActions("focusStore", ["setFocusing"]),
+    ...mapGetters("focusStore", ["getFocusRatio"]),
     setChart() {
       setInterval(() => {
-        this.setUnderstanding();
-        let obj = this.getCurrentUnderstanding();
-        let newChart = [obj[1], obj[0], obj[-1]];
+        this.setFocusing(this.lectureRoomId);
+        let obj = this.getFocusRatio();
+        let newChart = [obj[2], obj[-2]];
         this.series = newChart;
       }, 5000);
     },
@@ -54,4 +62,4 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style></style>
