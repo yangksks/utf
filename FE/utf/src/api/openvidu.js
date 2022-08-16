@@ -86,16 +86,12 @@ async function createTokenApi(sessionId, role, success, fail) {
 
 async function closeSessionApi(sessionId, success, fail) {
   await api
-    .delete(
-      `/openvidu/api/sessions/${sessionId}`,
-      {},
-      {
-        auth: {
-          username: "OPENVIDUAPP",
-          password: OPENVIDU_SERVER_SECRET,
-        },
-      }
-    )
+    .delete(`/openvidu/api/sessions/${sessionId}`, {
+      auth: {
+        username: "OPENVIDUAPP",
+        password: OPENVIDU_SERVER_SECRET,
+      },
+    })
     .then(success)
     .catch(fail);
 }

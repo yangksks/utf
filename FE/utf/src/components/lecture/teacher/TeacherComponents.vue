@@ -37,6 +37,7 @@ import { OpenVidu } from "openvidu-browser";
 import {
   createTokenApi,
   createSessionApi,
+  closeSessionApi,
   recordingStartApi,
   recordingStopApi,
   registRecordVideoApi,
@@ -97,9 +98,7 @@ export default {
           this.speaker = null;
         });
 
-        for (let index = 0; index < 15; index++) {
-          this.subscribers.push(subscriber);
-        }
+        this.subscribers.push(subscriber);
 
         this.lastPage = parseInt(this.subscribers.length / 15);
         if (this.subscribers.length % 15 > 0) this.lastPage++;
@@ -245,7 +244,15 @@ export default {
       this.publisher = undefined;
       this.subscribers = [];
       this.OVCamera = undefined;
+      this.OVScreen = undefined;
       this.speaker = undefined;
+
+      closeSessionApi(
+        this.mySessionId,
+        () => {},
+        () => {}
+      );
+
       window.removeEventListener("beforeunload", this.leaveSession);
       this.clearMessage();
       this.$router.push("/main");
