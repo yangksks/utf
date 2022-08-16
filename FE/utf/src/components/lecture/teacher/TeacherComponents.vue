@@ -3,6 +3,7 @@
     <video-components
       :publisher="publisher"
       :subscribers="subscribers"
+      :lastPage="lastPage"
       :speaker="speaker"
     />
     <chat-components
@@ -66,6 +67,7 @@ export default {
       subscribers: [],
       speaker: undefined,
 
+      lastPage: 1,
       mySessionId: this.$route.params.lectureRoomCode,
       myUserName: store.state.userInfo["userName"],
     };
@@ -94,7 +96,13 @@ export default {
         subscriber.on("publisherStopSpeaking", () => {
           this.speaker = null;
         });
-        this.subscribers.push(subscriber);
+
+        for (let index = 0; index < 15; index++) {
+          this.subscribers.push(subscriber);
+        }
+
+        this.lastPage = parseInt(this.subscribers.length / 15);
+        if (this.subscribers.length % 15 > 0) this.lastPage++;
       });
 
       this.sessionCamera.on("streamDestroyed", ({ stream }) => {
