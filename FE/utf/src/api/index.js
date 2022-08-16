@@ -3,8 +3,8 @@ import axios from "axios";
 import store from "@/store/index.js";
 import router from "@/router/index.js";
 
-var API_BASE_URL = "http://13.124.166.107:8080";
-var OPENVIDU_BASE_URL = "http://i7a701.p.ssafy.io:5443";
+var API_BASE_URL = "https://i7a701.p.ssafy.io:8080";
+var OPENVIDU_BASE_URL = "https://i7a701.p.ssafy.io:5443";
 
 async function loginRequest(socialLoginType, code, state) {
     await axios
