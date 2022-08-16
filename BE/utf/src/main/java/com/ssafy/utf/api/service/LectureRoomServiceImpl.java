@@ -51,6 +51,7 @@ public class LectureRoomServiceImpl implements LectureRoomService {
 
     @Override
     public void deleteLectureRoom(long lectureRoomId) {
+        lectureRepository.deleteByLectureRoomId(lectureRoomId);
         lectureRoomRepository.deleteByLectureRoomId(lectureRoomId);
     }
 

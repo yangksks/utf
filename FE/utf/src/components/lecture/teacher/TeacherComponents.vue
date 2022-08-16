@@ -169,6 +169,7 @@ export default {
                 .getVideoTracks()[0]
                 .addEventListener("ended", () => {
                   this.sessionScreen.unpublish(this.publisherScreen);
+                  this.$refs.control.isShared = false;
                 });
 
               this.sessionScreen.publish(this.publisherScreen);
