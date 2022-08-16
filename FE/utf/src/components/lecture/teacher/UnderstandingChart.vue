@@ -17,6 +17,9 @@ export default {
   components: {
     apexchart: VueApexCharts,
   },
+  props: {
+    lectureRoomId: Number,
+  },
   data() {
     return {
       series: [0, 0, 0],
@@ -41,7 +44,7 @@ export default {
     ...mapGetters("StatisticsStore", ["getCurrentUnderstanding"]),
     setChart() {
       setInterval(() => {
-        this.setUnderstanding();
+        this.setUnderstanding(this.lectureRoomId);
         let obj = this.getCurrentUnderstanding();
         let newChart = [obj[1], obj[0], obj[-1]];
         this.series = newChart;

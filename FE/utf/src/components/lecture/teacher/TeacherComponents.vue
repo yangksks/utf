@@ -14,6 +14,7 @@
       v-if="publisher"
       :subscribers="subscribers"
       :publisher="publisher"
+      :lectureRoomId="lectureRoomId"
     ></user-list-components>
     <control-panel
       :publisher="publisher"

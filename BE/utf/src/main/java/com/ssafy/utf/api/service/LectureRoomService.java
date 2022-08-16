@@ -20,4 +20,5 @@ public interface LectureRoomService {
 
     void registRecordVideo(RecordingReq recordingReq) throws Exception;
 
+    long getLectureRoomId(String lectureRoomCode);
 }

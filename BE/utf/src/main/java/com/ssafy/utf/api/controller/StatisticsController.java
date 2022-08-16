@@ -59,6 +59,7 @@ public class StatisticsController {
     public ResponseEntity<HashMap<Integer, Integer>> getCurrentUnderstandRatio(@PathVariable String lectureRoomId) {
 
         HashMap<String, ArrayList<Integer>> emotions = lectureRoomUnderstanding.get(lectureRoomId);
+        System.out.println(emotions.toString());
         int understand = 0; //각 시간에서 비율 구하기 위한 변수들
         int neutral = 0;
         int notUnderstand = 0;

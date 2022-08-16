@@ -4,7 +4,11 @@
       <b-button v-if="page != 1" variant="outline-light" @click="page--"
         >&lt;</b-button
       >
-      <my-video class="mx-1" :stream-manager="subscribers[0]" />
+      <my-video
+        class="mx-1"
+        :stream-manager="subscribers[0]"
+        :lectureRoomId="lectureRoomId"
+      />
       <user-video
         class="mx-1"
         v-for="sub in listData"
@@ -39,6 +43,7 @@ export default {
     maintainer: Object,
     screen: Object,
     lastPage: Number,
+    lectureRoomId: Number,
   },
   data() {
     return {

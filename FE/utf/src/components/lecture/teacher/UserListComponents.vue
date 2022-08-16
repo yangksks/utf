@@ -1,7 +1,8 @@
 <template>
   <div class="user-list-components">
     <div class="statistics-info">
-      <understanding-chart />
+      <understanding-chart :lectureRoomId="lectureRoomId" />
+      <!-- <focus-chart :lectureRoomId="lectureRoomId" /> -->
     </div>
     <div class="userlist-info">
       <p class="userlist-header">
@@ -20,16 +21,19 @@
 
 <script>
 import UserInfo from "@/components/lecture/teacher/UserInfo";
-import UnderstandingChart from "@/components/lecture/UnderstandingChart.vue";
+import UnderstandingChart from "@/components/lecture/teacher/UnderstandingChart.vue";
+// import FocusChart from "@/components/lecture/teacher/FocusChart.vue";
 
 export default {
   props: {
     subscribers: Array,
     publisher: Object,
+    lectureRoomId: Number,
   },
   components: {
     UserInfo,
     UnderstandingChart,
+    // FocusChart,
   },
   data() {
     return {

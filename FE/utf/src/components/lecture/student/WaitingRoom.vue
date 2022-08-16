@@ -66,9 +66,6 @@ import Logo from "@/components/common/Logo.vue";
 import OvVideo from "@/components/lecture/OvVideo.vue";
 import CamButton from "@/components/common/CamButton.vue";
 import AudioButton from "@/components/common/AudioButton.vue";
-// import webgazer from "webgazer";
-// import { mapActions, mapGetters } from "vuex";
-// import VueApexCharts from "vue3-apexcharts";
 
 export default {
   name: "WaitingRoom",
@@ -77,7 +74,6 @@ export default {
     CamButton,
     Logo,
     OvVideo,
-    // apexchart: VueApexCharts,
   },
   props: { streamManager: Object },
   data() {
@@ -105,8 +101,6 @@ export default {
     };
   },
   methods: {
-    //   ...mapActions("focusStore", ["sendMyFocus", "setFocusing"]),
-    //   ...mapGetters("focusStore", ["getFocusRatio"]),
     waitStart() {
       this.$emit("joinLecture", this.myName);
       this.isWait = true;
@@ -115,49 +109,7 @@ export default {
       this.$emit("waitStop");
       this.isWait = false;
     },
-    //   eyeTrackingBegin() {
-    //     webgazer
-    //       // eslint-disable-next-line
-    //       .setGazeListener(function (data, elapsedTime) {
-    //         if (data == null) {
-    //           return;
-    //         }
-    //       })
-    //       .begin();
-    //   },
-    //   sendFocus() {
-    //     webgazer.getCurrentPrediction().then((res) => {
-    //       if (res.x < 200 || 900 < res.x || res.y < 200 || 900 < res.y) {
-    //         this.isFocus = false;
-    //         this.x = res.x;
-    //         this.y = res.y;
-    //       } else {
-    //         this.isFocus = true;
-    //         this.x = res.x;
-    //         this.y = res.y;
-    //       }
-    //     });
-    //     this.sendMyFocus(["sfd", this.isFocus]);
-    //   },
-    //   setChart() {
-    //     setInterval(() => {
-    //       this.setFocusing();
-    //       let obj = this.getFocusRatio();
-    //       let newChart = [obj[2], obj[-2]];
-    //       this.series = newChart;
-    //     }, 5000);
-    //   },
   },
-  // mounted() {
-  //   this.eyeTrackingBegin();
-  //   const setFocusFunc = () => {
-  //     setInterval(() => {
-  //       this.sendFocus();
-  //     }, 5000);
-  //   };
-  //   setFocusFunc();
-  //   this.setChart();
-  // },
 };
 </script>
 

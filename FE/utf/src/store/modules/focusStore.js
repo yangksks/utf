@@ -17,9 +17,10 @@ const statisticsStore = {
     },
   },
   actions: {
+    //item : [name, isFocus, lectureRoomId]
     sendMyFocus: (store, item) => {
       api
-        .post(`/statistics/focus/current/1`, {
+        .post(`/api/statistics/focus/current/${item[2]}`, {
           name: item[0],
           isFocus: item[1],
         })
@@ -30,9 +31,9 @@ const statisticsStore = {
           console.log(err);
         });
     },
-    setFocusing: (store) => {
+    setFocusing: (store, lectureRoomId) => {
       api
-        .get(`statistics/focus/current/1`)
+        .get(`/api/statistics/focus/current/${lectureRoomId}`)
         .then((res) => {
           try {
             console.log(res.data);

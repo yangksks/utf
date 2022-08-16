@@ -102,4 +102,9 @@ public class LectureRoomServiceImpl implements LectureRoomService {
 
         lectureRepository.save(lecture);
     }
+
+    @Override
+    public long getLectureRoomId(String lectureRoomCode) {
+        return lectureRoomRepository.findLectureRoomIdByLectureRoomCode(lectureRoomCode);
+    }
 }
