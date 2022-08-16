@@ -26,7 +26,7 @@ async function redirect() {
   else if (code && state && scope) {
     socialLoginType = 3;
   }
-  await loginRequest(`http://localhost:8080/api/user/socialLogin`, socialLoginType, code, state);
+  await loginRequest(socialLoginType, code, state);
   if (store.state.userInfo != null) {
     await getLectureRoomList(store.state.userInfo["userId"]);
   }
