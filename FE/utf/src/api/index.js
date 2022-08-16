@@ -3,8 +3,7 @@ import axios from "axios";
 import store from "@/store/index.js";
 import router from "@/router/index.js";
 
-var API_BASE_URL = "https://i7a701.p.ssafy.io";
-var OPENVIDU_BASE_URL = "http://i7a701.p.ssafy.io:5443";
+const API_BASE_URL = process.env.VUE_APP_API_BASE_URL;
 
 async function loginRequest(socialLoginType, code, state) {
     await axios
@@ -87,7 +86,6 @@ async function registLectureRoomRequest(lectureName, subject) {
             console.log(res);
             store.dispatch('addLectureRoom', res.data);
             router.push({ path: "/main" });
-            // router.push({ path: "/main", params: { lectureRoom: res.data["lectureRoom"] } });
         })
         .catch((err) => {
             console.log(err);
@@ -122,8 +120,9 @@ function deleteLectureRoom(lectureRoomId) {
 
 // axios 객체 생성
 function apiInstance() {
+    const API_INSTANCE_BASE_URL = process.env.VUE_APP_API_BASE_URL;
     const instance = axios.create({
-        baseURL: API_BASE_URL,
+        baseURL: API_INSTANCE_BASE_URL,
         headers: {
             "Content-type": "application/json",
         },
@@ -132,6 +131,7 @@ function apiInstance() {
 }
 
 function openviduInstance() {
+    const OPENVIDU_BASE_URL = process.env.VUE_APP_OPENVIDU_BASE_URL;
     const instance = axios.create({
         baseURL: OPENVIDU_BASE_URL,
         headers: {
