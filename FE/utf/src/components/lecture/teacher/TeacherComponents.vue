@@ -3,6 +3,7 @@
     <video-components
       :publisher="publisher"
       :subscribers="subscribers"
+      :lastPage="lastPage"
       :speaker="speaker"
     />
     <chat-components
@@ -14,6 +15,7 @@
       v-if="publisher"
       :subscribers="subscribers"
       :publisher="publisher"
+      :lectureRoomId="lectureRoomId"
     ></user-list-components>
     <control-panel
       :publisher="publisher"
@@ -36,6 +38,7 @@ import { OpenVidu } from "openvidu-browser";
 import {
   createTokenApi,
   createSessionApi,
+  closeSessionApi,
   recordingStartApi,
   recordingStopApi,
   registRecordVideoApi,
@@ -66,6 +69,7 @@ export default {
       subscribers: [],
       speaker: undefined,
 
+      lastPage: 1,
       mySessionId: this.$route.params.lectureRoomCode,
       myUserName: store.state.userInfo["userName"],
     };
@@ -94,7 +98,11 @@ export default {
         subscriber.on("publisherStopSpeaking", () => {
           this.speaker = null;
         });
+
         this.subscribers.push(subscriber);
+
+        this.lastPage = parseInt(this.subscribers.length / 15);
+        if (this.subscribers.length % 15 > 0) this.lastPage++;
       });
 
       this.sessionCamera.on("streamDestroyed", ({ stream }) => {
@@ -237,7 +245,15 @@ export default {
       this.publisher = undefined;
       this.subscribers = [];
       this.OVCamera = undefined;
+      this.OVScreen = undefined;
       this.speaker = undefined;
+
+      closeSessionApi(
+        this.mySessionId,
+        () => {},
+        () => {}
+      );
+
       window.removeEventListener("beforeunload", this.leaveSession);
       this.clearMessage();
       this.$router.push("/main");

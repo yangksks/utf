@@ -24,14 +24,19 @@
         <!-- 강의 동영상/통계 -->
         <b-col sm="6">
           <div v-if="selected">
-            <lecture-video />
+            <lecture-video :lecture="lecture" />
           </div>
           <div v-else class="selectMsg">
             <h3>강의를 선택하세요</h3>
           </div>
         </b-col>
         <!-- 채팅목록 -->
-        <b-col sm="2"><lecture-chat /></b-col>
+        <b-col sm="2">
+          <div class="chat-component">
+            <div class="chat-header">채팅내역</div>
+            <lecture-chat :msgs="msgList"></lecture-chat>
+          </div>
+        </b-col>
         <!-- 참가자목록 -->
         <b-col sm="2"><user-list /></b-col>
       </b-row>
@@ -59,6 +64,7 @@ export default {
       lectureRoomId: 0,
       lectureId: 0,
       selected: false,
+      msgList: [],
     };
   },
   computed: {
@@ -87,6 +93,7 @@ export default {
       this.lectureId = lectureId;
       this.selected = true;
       this.setLectureOne(lectureId);
+      this.msgList = JSON.parse(this.getLecture().chatRecord);
     },
   },
   mounted() {
@@ -125,5 +132,19 @@ export default {
   position: relative;
   right: 5%;
   bottom: 10px;
+}
+.chat-component {
+  height: 80vh;
+  background-color: white;
+  border-radius: 15px;
+}
+.chat-header {
+  background: #ffffff;
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.05);
+  border-radius: 15px 15px 0px 0px;
+  padding: 1.8rem;
+  font-size: 15px;
+  font-weight: 700;
+  color: #292929;
 }
 </style>

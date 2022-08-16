@@ -47,7 +47,7 @@ export default {
   position: absolute;
   color: white;
   z-index: 1000;
-  left: 12px;
+  left: 14px;
   margin: 0;
 }
 </style>

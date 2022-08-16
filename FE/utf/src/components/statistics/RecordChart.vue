@@ -48,6 +48,21 @@ export default {
           max: 100,
           tickAmount: 5,
         },
+        xaxis: {
+          labels: {
+            formatter: function (val) {
+              let s = 5 * val;
+              let m = Math.floor(s / 60);
+              s = s - m;
+              if (s < 10) s = "0" + String(s);
+              else s = String(s);
+
+              if (m < 10) m = "0" + String(m);
+              else m = String(m);
+              return m + ":" + s;
+            },
+          },
+        },
         tooltip: {
           y: {
             formatter: function (val) {

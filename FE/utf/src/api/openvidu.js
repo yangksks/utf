@@ -21,12 +21,13 @@ async function recordingStopApi(recordingId, success, fail) {
 }
 
 async function recordingStartApi(sessionId, success, fail) {
+  let fileName = Math.random().toString(36).substring(2, 11);
   await api
     .post(
       `/openvidu/api/recordings/start`,
       JSON.stringify({
         session: sessionId,
-        name: "testRecording",
+        name: fileName,
         hasAudio: true,
         hasVideo: true,
         outputMode: "COMPOSED",
@@ -85,16 +86,12 @@ async function createTokenApi(sessionId, role, success, fail) {
 
 async function closeSessionApi(sessionId, success, fail) {
   await api
-    .delete(
-      `/openvidu/api/sessions/${sessionId}`,
-      {},
-      {
-        auth: {
-          username: "OPENVIDUAPP",
-          password: OPENVIDU_SERVER_SECRET,
-        },
-      }
-    )
+    .delete(`/openvidu/api/sessions/${sessionId}`, {
+      auth: {
+        username: "OPENVIDUAPP",
+        password: OPENVIDU_SERVER_SECRET,
+      },
+    })
     .then(success)
     .catch(fail);
 }

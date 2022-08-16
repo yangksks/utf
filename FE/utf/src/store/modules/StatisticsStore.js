@@ -10,6 +10,7 @@ const statisticsStore = {
     lectureRooms: undefined, //강의실 목록
     lectures: undefined, //강의실 들어왔을 때 강의들
     lecture: undefined, //강의 1개
+    lectureRoomId: 0,
   },
   getters: {
     getCurrentUnderstanding: (state) => {
@@ -29,6 +30,9 @@ const statisticsStore = {
     },
     getLecture: (state) => {
       return state.lecture;
+    },
+    getLectureRoomId: (state) => {
+      return state.lectureRoomId;
     },
   },
   mutations: {
@@ -50,6 +54,9 @@ const statisticsStore = {
     SET_LECTUREROOMS: (state, payload) => {
       state.lectureRooms = payload;
     },
+    SET_LECTURE_ROOM_ID: (state, payload) => {
+      state.lectureRoomId = payload;
+    },
   },
   actions: {
     setEmotion: (store, item) => {
@@ -69,9 +76,9 @@ const statisticsStore = {
           console.log(err);
         });
     },
-    setUnderstanding: (store) => {
+    setUnderstanding: (store, lectureRoomId) => {
       api
-        .get(`/api/statistics/current/1`)
+        .get(`/api/statistics/current/${lectureRoomId}`)
         .then((res) => {
           try {
             store.commit("SET_UNDERSTANDING", res.data);
@@ -128,6 +135,16 @@ const statisticsStore = {
         .get(`/api/lecture/one/${lectureId}`)
         .then((res) => {
           store.commit("SET_LECTURE_ONE", res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    setLectureRoomId: (store, code) => {
+      api
+        .get(`/api/lectureRoom/code/${code}`)
+        .then((res) => {
+          store.commit("SET_LECTURE_ROOM_ID", res.data);
         })
         .catch((err) => {
           console.log(err);

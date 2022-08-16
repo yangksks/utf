@@ -6,6 +6,7 @@
         :subscribers="subscribers"
         :lastPage="lastPage"
         :screen="screen"
+        :lectureRoomId="lectureRoomId"
       />
       <chat-components
         v-if="publisher && isChat"
@@ -51,7 +52,9 @@ export default {
     ControlPanel,
     UserListComponents,
   },
-  props: {},
+  props: {
+    lectureRoomId: Number,
+  },
   data() {
     return {
       OVCamera: undefined,

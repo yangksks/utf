@@ -59,29 +59,46 @@ public class StatisticsController {
     public ResponseEntity<HashMap<Integer, Integer>> getCurrentUnderstandRatio(@PathVariable String lectureRoomId) {
 
         HashMap<String, ArrayList<Integer>> emotions = lectureRoomUnderstanding.get(lectureRoomId);
+        System.out.println(62);
+        System.out.println(lectureRoomUnderstanding.get(lectureRoomId));
         int understand = 0; //각 시간에서 비율 구하기 위한 변수들
         int neutral = 0;
         int notUnderstand = 0;
 
-        if(emotions != null){
-            for(String name : emotions.keySet()){ // 각학생들의 이해도정보에 대해
-                int understanding = emotions.get(name).get(emotions.get(name).size()-1); //학생의 현재 이해도 정보
+        if(emotions != null) {
+            for (String name : emotions.keySet()) { // 각학생들의 이해도정보에 대해
+                int understanding = emotions.get(name).get(emotions.get(name).size() - 1); //학생의 현재 이해도 정보
                 // 개수 증가
-                if(understanding == -1){
+                if (understanding == -1) {
                     notUnderstand++;
-                }else if(understanding == 0){
+                } else if (understanding == 0) {
                     neutral++;
-                }else{
+                } else {
                     understand++;
                 }
             }
         }
+        if( ratios.containsKey(lectureRoomId) ){ //강의 진행중
+            try {
+                ratios.get(lectureRoomId).get(-1).add(notUnderstand);
+                ratios.get(lectureRoomId).get(0).add(neutral);
+                ratios.get(lectureRoomId).get(1).add(understand);
+            } catch(NullPointerException e) {
+            } finally {
+                HashMap<Integer, ArrayList<Integer>> newRatio = new HashMap<>();
+                ArrayList<Integer> not = new ArrayList<>();
+                ArrayList<Integer> neu = new ArrayList<>();
+                ArrayList<Integer> un = new ArrayList<>();
+                not.add(notUnderstand);
+                neu.add(neutral);
+                un.add(understand);
 
-        if( ratios.containsKey(lectureRoomId) ){ // 강의 진행중
-            ratios.get(lectureRoomId).get(-1).add(notUnderstand);
-            ratios.get(lectureRoomId).get(0).add(neutral);
-            ratios.get(lectureRoomId).get(1).add(understand);
+                newRatio.put(-1, not);
+                newRatio.put(0, neu);
+                newRatio.put(1, un);
 
+                ratios.put(lectureRoomId, newRatio);
+            }
         }else{ // 안하던 강의
             HashMap<Integer,ArrayList<Integer>> newRatio = new HashMap<>();
             ArrayList<Integer> not = new ArrayList<>();
@@ -94,6 +111,8 @@ public class StatisticsController {
             newRatio.put(-1,not);
             newRatio.put(0,neu);
             newRatio.put(1,un);
+            System.out.println(100);
+            System.out.println("put");
 
             ratios.put(lectureRoomId, newRatio);
         }
@@ -194,15 +213,24 @@ public class StatisticsController {
                 }
             }
         }
-        if(focus + notFocus != 0){ //비율로 바꿔주기
-            int n = focus + notFocus;
-            focus = (focus*100) / n;
-            notFocus = (notFocus*100) / n;
-        }
 
         if( ratios.containsKey(lectureRoomId) ){ // 강의 진행중
-            ratios.get(lectureRoomId).get(-2).add(notFocus);
-            ratios.get(lectureRoomId).get(2).add(focus);
+            try {
+                ratios.get(lectureRoomId).get(-2).add(notFocus);
+                ratios.get(lectureRoomId).get(2).add(focus);
+            } catch (NullPointerException e) {
+            } finally {
+                HashMap<Integer,ArrayList<Integer>> newRatio = new HashMap<>();
+                ArrayList<Integer> F = new ArrayList<>();
+                ArrayList<Integer> T = new ArrayList<>();
+                F.add(notFocus);
+                T.add(focus);
+
+                newRatio.put(-2,F);
+                newRatio.put(2,T);
+
+                ratios.put(lectureRoomId, newRatio);
+            }
 
         }else{ // 안하던 강의
             HashMap<Integer,ArrayList<Integer>> newRatio = new HashMap<>();
