@@ -3,7 +3,7 @@ import axios from "axios";
 import store from "@/store/index.js";
 import router from "@/router/index.js";
 
-var API_BASE_URL = "https://i7a701.p.ssafy.io:8080";
+var API_BASE_URL = "https://i7a701.p.ssafy.io";
 var OPENVIDU_BASE_URL = "https://i7a701.p.ssafy.io:5443";
 
 async function loginRequest(socialLoginType, code, state) {
