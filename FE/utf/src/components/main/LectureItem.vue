@@ -1,8 +1,8 @@
 <!-- eslint-disable prettier/prettier -->
 <template>
   <div :class="{ card: !darkMode, cardDark: darkMode }">
-    <div style="display: flex">
-      <img :src="getImgSrc()" alt="logo" style="width: 70%; margin: 15px" @click="startLecture(lecture.lectureRoomId)" />
+    <div style="display: flex; justify-content: center;">
+      <img :src="getImgSrc()" alt="logo" style="width: 60%; margin: 15px" @click="startLecture(lecture.lectureRoomId)" />
       <!-- Button trigger modal -->
       <i class="bi bi-x" data-bs-toggle="modal" data-bs-target="#deleteLectureModal" style="vertical-align: top; margin: 5px; font-size: 30px" @click="emitIndex(index, lecture.lectureRoomId)"></i>
       <!-- <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#exampleModal" aria-label="Close" style="vertical-align: top; margin: 5px" @click="emitIndex(index)"></button> -->

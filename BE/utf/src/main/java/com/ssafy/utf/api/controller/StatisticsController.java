@@ -59,8 +59,6 @@ public class StatisticsController {
     public ResponseEntity<HashMap<Integer, Integer>> getCurrentUnderstandRatio(@PathVariable String lectureRoomId) {
 
         HashMap<String, ArrayList<Integer>> emotions = lectureRoomUnderstanding.get(lectureRoomId);
-        System.out.println(62);
-        System.out.println(lectureRoomUnderstanding.get(lectureRoomId));
         int understand = 0; //각 시간에서 비율 구하기 위한 변수들
         int neutral = 0;
         int notUnderstand = 0;
@@ -111,9 +109,6 @@ public class StatisticsController {
             newRatio.put(-1,not);
             newRatio.put(0,neu);
             newRatio.put(1,un);
-            System.out.println(100);
-            System.out.println("put");
-
             ratios.put(lectureRoomId, newRatio);
         }
 
