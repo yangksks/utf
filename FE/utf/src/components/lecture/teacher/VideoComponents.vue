@@ -5,11 +5,27 @@
       :class="{ highlight: speaker == 'me' }"
     />
     <user-video
-      v-for="sub in subscribers"
+      v-for="sub in listData"
       :key="sub.stream.streamId"
       :stream-manager="sub"
       :class="{ highlight: sub.stream.streamId == speaker }"
     />
+
+    <b-button
+      variant="outline-secondary"
+      :disabled="page == 1"
+      class="left-button"
+      @click="page--"
+      >&lt;</b-button
+    >
+    <b-button
+      variant="outline-secondary"
+      :disabled="!(lastPage > page)"
+      class="right-button"
+      @click="page++"
+      >&gt;</b-button
+    >
+    <p class="page">{{ page }}/{{ lastPage }}</p>
   </div>
 </template>
 
@@ -26,9 +42,17 @@ export default {
     publisher: Object,
     subscribers: Object,
     speaker: String,
+    lastPage: Number,
   },
   data() {
-    return {};
+    return {
+      page: 1,
+    };
+  },
+  computed: {
+    listData: function () {
+      return this.subscribers.slice((this.page - 1) * 15, this.page * 15);
+    },
   },
 };
 </script>
@@ -36,26 +60,32 @@ export default {
 <style scoped>
 #video-components {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(4, calc(25% - 4px));
+  grid-template-columns: 30px repeat(4, calc(25% - 15px)) 30px;
+  grid-template-rows: repeat(4, calc(25% - 9px)) 20px;
   row-gap: 4px;
-  overflow: scroll;
-  /* overflow-x: hidden; */
+  overflow: hidden;
+  padding-left: 3px;
 }
-/* #video-components::-webkit-scrollbar {
-  width: 6px;
+
+.page {
+  grid-column: 1/6;
 }
-#video-components::-webkit-scrollbar-track {
-  background-color: transparent;
+
+.left-button {
+  grid-row: 1/5;
+  height: 50px;
+  width: 30px;
+  margin: auto;
 }
-#video-components::-webkit-scrollbar-thumb {
-  border-radius: 3px;
-  background-color: gray;
+
+.right-button {
+  grid-row: 1/5;
+  grid-column: 6/7;
+  height: 50px;
+  width: 30px;
+  margin: auto;
 }
-#video-components::-webkit-scrollbar-button {
-  width: 0;
-  height: 0;
-} */
+
 .highlight {
   border: 1px;
   border-style: solid;

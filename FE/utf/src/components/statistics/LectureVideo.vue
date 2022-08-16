@@ -1,6 +1,8 @@
 <template>
   <div class="lecture-video-container">
-    <div class="video"></div>
+    <div class="video">
+      <video :src="lecture.videoUrl" style="width: 100%" controls></video>
+    </div>
     <div v-for="(item, index) in chartList" :key="index">
       <chart v-if="item.show" :series="item.series" class="mt-1" />
     </div>
@@ -27,6 +29,9 @@ export default {
   name: "LineChart",
   components: {
     Chart,
+  },
+  props: {
+    lecture: Object,
   },
   data() {
     return {
@@ -67,6 +72,7 @@ export default {
   },
   methods: {
     ...mapGetters("StatisticsStore", ["getRecordedStatistics"]),
+
     setChart() {
       this.chartList[0].series[0].data = this.statistics[-2];
       this.chartList[1].series[0].data = this.statistics[-1];
