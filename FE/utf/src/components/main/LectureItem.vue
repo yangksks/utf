@@ -18,6 +18,7 @@
 </template>
 
 <script>
+/* eslint-disable prettier/prettier */
 export default {
   props: {
     lecture: Object,
