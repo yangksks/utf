@@ -17,25 +17,24 @@ const statisticsStore = {
     },
   },
   actions: {
+    //item : [name, isFocus, lectureRoomId]
     sendMyFocus: (store, item) => {
       api
-        .post(`/statistics/focus/current/1`, {
+        .post(`/api/statistics/focus/current/${item[2]}`, {
           name: item[0],
           isFocus: item[1],
         })
-        .then((res) => {
-          console.log(res.data);
-        })
+        // eslint-disable-next-line
+        .then((res) => {})
         .catch((err) => {
           console.log(err);
         });
     },
-    setFocusing: (store) => {
+    setFocusing: (store, lectureRoomId) => {
       api
-        .get(`statistics/focus/current/1`)
+        .get(`/api/statistics/focus/current/${lectureRoomId}`)
         .then((res) => {
           try {
-            console.log(res.data);
             store.commit("SET_FOCUSING", res.data);
           } catch (error) {
             //do-nothing
