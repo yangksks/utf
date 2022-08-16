@@ -86,7 +86,7 @@ public class LectureRoomServiceImpl implements LectureRoomService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         Date created = new Date(recordingReq.getCreatedAt());
-        Date end = new Date((long) (recordingReq.getCreatedAt() + recordingReq.getDuration()));
+        Date end = new Date((long) (recordingReq.getCreatedAt() + (recordingReq.getDuration() * 100)));
 
         String created_time = sdf.format(created);
         String end_time = sdf.format(end);
