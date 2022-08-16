@@ -27,7 +27,7 @@ export default {
         chart: {
           type: "pie",
         },
-        labels: ["이해함", "중립", "이해못함"],
+        labels: ["이해돼요", "평범해요", "이해안돼요"],
         legend: {
           show: false,
         },
@@ -36,6 +36,11 @@ export default {
             breakpoint: 480,
           },
         ],
+        title: {
+          text: "이해도",
+          align: "center",
+        },
+        colors: ["#2B80FF", "#FFD543", "#FF4F5A"],
       },
     };
   },

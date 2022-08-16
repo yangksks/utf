@@ -24,9 +24,8 @@ const statisticsStore = {
           name: item[0],
           isFocus: item[1],
         })
-        .then((res) => {
-          console.log(res.data);
-        })
+        // eslint-disable-next-line
+        .then((res) => {})
         .catch((err) => {
           console.log(err);
         });
@@ -36,7 +35,6 @@ const statisticsStore = {
         .get(`/api/statistics/focus/current/${lectureRoomId}`)
         .then((res) => {
           try {
-            console.log(res.data);
             store.commit("SET_FOCUSING", res.data);
           } catch (error) {
             //do-nothing

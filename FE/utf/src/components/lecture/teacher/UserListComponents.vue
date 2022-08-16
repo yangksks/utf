@@ -2,7 +2,7 @@
   <div class="user-list-components">
     <div class="statistics-info">
       <understanding-chart :lectureRoomId="lectureRoomId" />
-      <!-- <focus-chart :lectureRoomId="lectureRoomId" /> -->
+      <focus-chart :lectureRoomId="lectureRoomId" />
     </div>
     <div class="userlist-info">
       <p class="userlist-header">
@@ -22,7 +22,7 @@
 <script>
 import UserInfo from "@/components/lecture/teacher/UserInfo";
 import UnderstandingChart from "@/components/lecture/teacher/UnderstandingChart.vue";
-// import FocusChart from "@/components/lecture/teacher/FocusChart.vue";
+import FocusChart from "@/components/lecture/teacher/FocusChart.vue";
 
 export default {
   props: {
@@ -33,7 +33,7 @@ export default {
   components: {
     UserInfo,
     UnderstandingChart,
-    // FocusChart,
+    FocusChart,
   },
   data() {
     return {
@@ -84,6 +84,7 @@ export default {
   overflow-x: hidden;
 }
 .statistics-info {
+  display: flex;
   background: #ffffff;
   color: #292929;
   box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.05);

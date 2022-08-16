@@ -4,7 +4,6 @@
 
 <script>
 import * as faceapi from "face-api.js";
-import webgazer from "webgazer";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
@@ -16,8 +15,8 @@ export default {
   },
   data() {
     return {
-      x: 0,
-      y: 0,
+      initial_x: 0,
+      initial_y: 0,
       isFocus: true,
     };
   },
@@ -30,30 +29,6 @@ export default {
     ...mapActions("focusStore", ["sendMyFocus"]),
     ...mapActions("StatisticsStore", ["setEmotion", "setLectureRoomId"]),
     ...mapGetters("StatisticsStore", ["getLectureRoomId"]),
-    eyeTrackingBegin() {
-      webgazer
-        // eslint-disable-next-line
-        .setGazeListener(function (data, elapsedTime) {
-          if (data == null) {
-            return;
-          }
-        })
-        .begin();
-    },
-    sendFocus() {
-      webgazer.getCurrentPrediction().then((res) => {
-        if (res.x < 200 || 900 < res.x || res.y < 200 || 900 < res.y) {
-          this.isFocus = false;
-          this.x = res.x;
-          this.y = res.y;
-        } else {
-          this.isFocus = true;
-          this.x = res.x;
-          this.y = res.y;
-        }
-      });
-      this.sendMyFocus([this.name, this.isFocus, this.lectureRoomId]);
-    },
     setId() {
       let link = document.location.href.split("/");
       let code = link[4];
@@ -63,13 +38,6 @@ export default {
   mounted() {
     this.setId();
     this.streamManager.addVideoElement(this.$el);
-    //eyetracking
-    this.eyeTrackingBegin();
-    const setFocusFunc = async () => {
-      setInterval(() => {
-        this.sendFocus();
-      }, 5000);
-    };
     //faceapi 모델 로드
     const webcamElement = document.querySelectorAll(".webcam")[0];
     const modelLoad = async () => {
@@ -82,6 +50,7 @@ export default {
     const getFaceEmotion = async () => {
       const minConfidenceFace = 0.5;
 
+      //이해도
       const expressionResult = await faceapi
         .detectSingleFace(
           webcamElement,
@@ -94,24 +63,50 @@ export default {
           .filter(([key, score]) => score > minConfidenceFace) // key : 감정 , score : 점수
           .sort((a, b) => b[1] - a[1]) //score 높은 순으로 정렬
       );
-      // this.emotion.push(Object.keys(expressionFiltered)[0]); //가장 높은 점수의 감정 저장
       let emotion = Object.keys(expressionFiltered)[0] || "neutral";
       let score = expressionFiltered[emotion] || 0.9;
       const arr = [this.lectureRoomId, this.name, emotion, score];
       this.setEmotion(arr);
     };
+    //집중도
+    const getEyeTracking = async () => {
+      const eye = await faceapi
+        .detectSingleFace(webcamElement)
+        .withFaceLandmarks();
+      let leftEye = eye.landmarks.getLeftEye();
+      let rightEye = eye.landmarks.getRightEye();
+      let x = 0;
+      let y = 0;
+      for (let i = 0; i < 6; i++) {
+        x += leftEye[i].x;
+        y += rightEye[i].y;
+      }
+      x = x / 6;
+      y = y / 6;
+      //처음이면 저장
+      if (this.initial_x == 0 && this.initial_y == 0) {
+        this.initial_x = x;
+        this.initial_y = y;
+      }
+      if (
+        // x,y 중 하나라도 50이상 차이나면 x
+        Math.abs(this.initial_x - x) > 50 ||
+        Math.abs(this.initial_y - y) > 50
+      ) {
+        this.isFocus = false;
+      } else {
+        this.isFocus = true;
+      }
+      this.sendMyFocus([this.name, this.isFocus, this.lectureRoomId]);
+    };
     //시간당(5초마다) 이해도/집중도 얻는 함수
     const getStatisticsPerTime = () => {
       setInterval(async () => {
         await getFaceEmotion();
-        setFocusFunc();
+        await getEyeTracking();
       }, 5000);
     };
     getStatisticsPerTime();
-
-    // const el = document.querySelector("#webgazerVideoContainer");
-    // console.log(el);
-    // el.style.display = "none";
   },
 };
 </script>

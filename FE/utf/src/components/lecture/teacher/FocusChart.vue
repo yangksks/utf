@@ -27,7 +27,7 @@ export default {
         chart: {
           type: "pie",
         },
-        labels: ["집중o", "집중x"],
+        labels: ["집중 잘하고 있어요", "집중이 필요해요"],
         legend: {
           show: false,
         },
@@ -36,6 +36,11 @@ export default {
             breakpoint: 480,
           },
         ],
+        title: {
+          text: "집중도",
+          align: "center",
+        },
+        colors: ["#2B80FF", "#FF4F5A"],
       },
     };
   },
