@@ -4,7 +4,8 @@
 
 <script>
 import * as faceapi from "face-api.js";
-import { mapActions } from "vuex";
+import webgazer from "webgazer";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "OvVideo",
@@ -13,19 +14,73 @@ export default {
     streamManager: Object,
     name: String,
   },
+  data() {
+    return {
+      x: 0,
+      y: 0,
+      isFocus: true,
+    };
+  },
+  computed: {
+    lectureRoomId() {
+      return this.getLectureRoomId();
+    },
+  },
   methods: {
-    ...mapActions("StatisticsStore", ["setEmotion"]),
+    ...mapActions("focusStore", ["sendMyFocus"]),
+    ...mapActions("StatisticsStore", ["setEmotion", "setLectureRoomId"]),
+    ...mapGetters("StatisticsStore", ["getLectureRoomId"]),
+    eyeTrackingBegin() {
+      webgazer
+        // eslint-disable-next-line
+        .setGazeListener(function (data, elapsedTime) {
+          if (data == null) {
+            return;
+          }
+        })
+        .begin();
+    },
+    sendFocus() {
+      webgazer.getCurrentPrediction().then((res) => {
+        if (res.x < 200 || 900 < res.x || res.y < 200 || 900 < res.y) {
+          this.isFocus = false;
+          this.x = res.x;
+          this.y = res.y;
+        } else {
+          this.isFocus = true;
+          this.x = res.x;
+          this.y = res.y;
+        }
+      });
+      this.sendMyFocus([this.name, this.isFocus, this.lectureRoomId]);
+    },
+    setId() {
+      let link = document.location.href.split("/");
+      let code = link[4];
+      this.setLectureRoomId(code);
+    },
   },
   mounted() {
+    this.setId();
     this.streamManager.addVideoElement(this.$el);
-    //감지한 웹캠에서 face-api이용해 표정 감지 함수
-    const getFaceEmotion = async () => {
-      const webcamElement = document.querySelectorAll(".webcam")[0];
-
-      const minConfidenceFace = 0.5;
+    //eyetracking
+    this.eyeTrackingBegin();
+    const setFocusFunc = async () => {
+      setInterval(() => {
+        this.sendFocus();
+      }, 5000);
+    };
+    //faceapi 모델 로드
+    const webcamElement = document.querySelectorAll(".webcam")[0];
+    const modelLoad = async () => {
       await faceapi.loadSsdMobilenetv1Model("/models");
       await faceapi.loadFaceExpressionModel("/models");
       await faceapi.loadFaceLandmarkModel("/models");
+    };
+    modelLoad();
+    //감지한 웹캠에서 face-api이용해 표정 감지 함수
+    const getFaceEmotion = async () => {
+      const minConfidenceFace = 0.5;
 
       const expressionResult = await faceapi
         .detectSingleFace(
@@ -42,16 +97,21 @@ export default {
       // this.emotion.push(Object.keys(expressionFiltered)[0]); //가장 높은 점수의 감정 저장
       let emotion = Object.keys(expressionFiltered)[0] || "neutral";
       let score = expressionFiltered[emotion] || 0.9;
-      const arr = [1, this.name, emotion, score]; //1 강의실 id로 바꿔주기
+      const arr = [this.lectureRoomId, this.name, emotion, score];
       this.setEmotion(arr);
     };
-    //시간당(5초마다) 감정 얻는 함수
-    const getFaceEmotionPerTime = () => {
+    //시간당(5초마다) 이해도/집중도 얻는 함수
+    const getStatisticsPerTime = () => {
       setInterval(async () => {
         await getFaceEmotion();
+        setFocusFunc();
       }, 5000);
     };
-    getFaceEmotionPerTime();
+    getStatisticsPerTime();
+
+    // const el = document.querySelector("#webgazerVideoContainer");
+    // console.log(el);
+    // el.style.display = "none";
   },
 };
 </script>
