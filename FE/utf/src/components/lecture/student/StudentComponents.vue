@@ -42,7 +42,7 @@ import UserListComponents from "@/components/lecture/student/UserListComponents.
 import VideoComponents from "@/components/lecture/student/VideoComponents.vue";
 import { OpenVidu } from "openvidu-browser";
 import { createTokenApi, createSessionApi } from "@/api/openvidu.js";
-
+import { mapMutations } from "vuex";
 export default {
   name: "StudentComponents",
   components: {
@@ -72,6 +72,9 @@ export default {
     };
   },
   methods: {
+    ...mapMutations("chatStore", {
+      clearMessage: "CLEAR_MSG",
+    }),
     createPublisher() {
       this.OVCamera = new OpenVidu();
       this.sessionCamera = this.OVCamera.initSession();
@@ -168,6 +171,7 @@ export default {
       this.speaker = undefined;
 
       window.removeEventListener("beforeunload", this.leaveSession);
+      this.clearMessage();
       this.$router.push("/exit");
     },
 

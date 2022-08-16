@@ -2,42 +2,23 @@
 <template>
   <div :class="{ card: !darkMode, cardDark: darkMode }">
     <div style="display: flex">
-      <img :src="getImgSrc()" alt="logo" style="width: 70%; margin: 15px" @click="startLecture(lecture.lectureRoomId)"/>
+      <img :src="getImgSrc()" alt="logo" style="width: 70%; margin: 15px" @click="startLecture(lecture.lectureRoomId)" />
       <!-- Button trigger modal -->
-      <i
-        class="bi bi-x"
-        data-bs-toggle="modal"
-        data-bs-target="#deleteLectureModal"
-        style="vertical-align: top; margin: 5px; font-size: 30px"
-        @click="emitIndex(index)"
-      ></i>
+      <i class="bi bi-x" data-bs-toggle="modal" data-bs-target="#deleteLectureModal" style="vertical-align: top; margin: 5px; font-size: 30px" @click="emitIndex(index, lecture.lectureRoomId)"></i>
       <!-- <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#exampleModal" aria-label="Close" style="vertical-align: top; margin: 5px" @click="emitIndex(index)"></button> -->
     </div>
     <div>
       <h5>{{ lecture["title"] }}</h5>
     </div>
     <div>
-      <button
-        type="button"
-        class="blueBtn"
-        style="margin: 7px; width: 40%"
-        @click="copyCode"
-      >
-        URL 복사
-      </button>
-      <button
-        type="button"
-        class="yellowBtn"
-        style="margin: 7px; width: 40%"
-        @click="goLecture(this.lecture.lectureRoomId)"
-      >
-        통계 보기
-      </button>
+      <button type="button" class="blueBtn" style="margin: 7px; width: 40%" @click="copyCode">URL 복사</button>
+      <button type="button" class="yellowBtn" style="margin: 7px; width: 40%" @click="goLecture(this.lecture.lectureRoomId)">통계 보기</button>
     </div>
   </div>
 </template>
 
 <script>
+/* eslint-disable prettier/prettier */
 export default {
   props: {
     lecture: Object,
@@ -46,13 +27,13 @@ export default {
     lectureRoom: Object,
   },
   methods: {
-    emitIndex(index) {
+    emitIndex(index, lectureRoomId) {
       console.log("index : " + index);
-      this.$emit("emitIndex", index);
+      console.log("lectureRoomId : " + lectureRoomId);
+      this.$emit("emitIndex", index, lectureRoomId);
     },
     copyCode() {
-      var text =
-        "http://localhost:3000/lecture/" + this.lecture["lectureRoomCode"];
+      var text = "https://i7a701.p.ssafy.io/lecture/" + this.lecture["lectureRoomCode"];
       console.log(text);
       navigator.clipboard
         .writeText(text)
@@ -65,9 +46,7 @@ export default {
         });
     },
     getImgSrc() {
-      return require("../../assets/image/subjectIcon/subject" +
-        this.lecture["subject"] +
-        ".png");
+      return require("../../assets/image/subjectIcon/subject" + this.lecture["subject"] + ".png");
     },
     goLecture(lectureRoomId) {
       this.$router.push(`/lectureRoom/${lectureRoomId}`);

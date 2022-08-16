@@ -3,6 +3,7 @@
     <video-components
       :publisher="publisher"
       :subscribers="subscribers"
+      :lastPage="lastPage"
       :speaker="speaker"
     />
     <chat-components
@@ -37,12 +38,13 @@ import { OpenVidu } from "openvidu-browser";
 import {
   createTokenApi,
   createSessionApi,
+  closeSessionApi,
   recordingStartApi,
   recordingStopApi,
   registRecordVideoApi,
 } from "@/api/openvidu.js";
 import store from "@/store";
-
+import { mapState, mapMutations } from "vuex";
 export default {
   name: "TeacherComponents",
   components: {
@@ -67,11 +69,18 @@ export default {
       subscribers: [],
       speaker: undefined,
 
+      lastPage: 1,
       mySessionId: this.$route.params.lectureRoomCode,
       myUserName: store.state.userInfo["userName"],
     };
   },
+  computed: {
+    ...mapState("chatStore", ["msgList"]),
+  },
   methods: {
+    ...mapMutations("chatStore", {
+      clearMessage: "CLEAR_MSG",
+    }),
     joinSession() {
       this.OVCamera = new OpenVidu();
       this.OVScreen = new OpenVidu();
@@ -89,7 +98,11 @@ export default {
         subscriber.on("publisherStopSpeaking", () => {
           this.speaker = null;
         });
+
         this.subscribers.push(subscriber);
+
+        this.lastPage = parseInt(this.subscribers.length / 15);
+        if (this.subscribers.length % 15 > 0) this.lastPage++;
       });
 
       this.sessionCamera.on("streamDestroyed", ({ stream }) => {
@@ -197,6 +210,7 @@ export default {
     //registRecordVideoApi
     recordingEnd() {
       this.recording = false;
+      console.log("msglst:", this.msgList);
       recordingStopApi(
         this.RECORDING_ID,
         ({ data }) => {
@@ -211,6 +225,7 @@ export default {
               createdAt: data.createdAt,
               duration: data.duration,
               url: data.url,
+              chatRecord: JSON.stringify(this.msgList),
               // 채팅로그 가져옵시다
             },
             () => {},
@@ -230,9 +245,17 @@ export default {
       this.publisher = undefined;
       this.subscribers = [];
       this.OVCamera = undefined;
+      this.OVScreen = undefined;
       this.speaker = undefined;
 
+      closeSessionApi(
+        this.mySessionId,
+        () => {},
+        () => {}
+      );
+
       window.removeEventListener("beforeunload", this.leaveSession);
+      this.clearMessage();
       this.$router.push("/main");
     },
 

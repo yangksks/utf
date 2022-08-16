@@ -3,12 +3,12 @@ import axios from "axios";
 import store from "@/store/index.js";
 import router from "@/router/index.js";
 
-var API_BASE_URL = "http://localhost:8080";
+var API_BASE_URL = "https://i7a701.p.ssafy.io";
 var OPENVIDU_BASE_URL = "http://i7a701.p.ssafy.io:5443";
 
-async function loginRequest(requestURL, socialLoginType, code, state) {
+async function loginRequest(socialLoginType, code, state) {
     await axios
-        .post(requestURL, {
+        .post(API_BASE_URL + `/api/user/socialLogin`, {
             data: {
                 socialLoginType: socialLoginType,
                 code: code,
@@ -32,7 +32,7 @@ async function loginRequest(requestURL, socialLoginType, code, state) {
 
 async function sendName(name) {
     await axios
-        .post(`http://localhost:8080/api/user/join`, {
+        .post(API_BASE_URL + `/api/user/join`, {
             userName: name,
             socialLoginType: store.state.tempUserInfo["socialLoginType"],
             socialId: store.state.tempUserInfo["socialId"],
@@ -50,7 +50,7 @@ async function sendName(name) {
 
 function deleteUserRequest(userId) {
     axios
-        .delete(`http://localhost:8080/api/user/${userId}`)
+        .delete(API_BASE_URL + `/api/user/${userId}`)
         .then((res) => {
             console.log(res);
             router.push({ path: "/" });
@@ -62,7 +62,7 @@ function deleteUserRequest(userId) {
 }
 async function updateUserRequest(userId, userName, email) {
     await axios
-        .put(`http://localhost:8080/api/user/${userId}`, {
+        .put(API_BASE_URL + `/api/user/${userId}`, {
             userName: userName,
             email: email,
         })
@@ -78,7 +78,7 @@ async function updateUserRequest(userId, userName, email) {
 }
 async function registLectureRoomRequest(lectureName, subject) {
     await axios
-        .post(`http://localhost:8080/api/lectureRoom`, {
+        .post(API_BASE_URL + `/api/lectureRoom`, {
             userId: store.state.userInfo["userId"],
             title: lectureName,
             subject: subject,
@@ -96,7 +96,7 @@ async function registLectureRoomRequest(lectureName, subject) {
 }
 function getLectureRoomList(userId) {
     axios
-        .get(`http://localhost:8080/api/lectureRoom/${userId}`)
+        .get(API_BASE_URL + `/api/lectureRoom/${userId}`)
         .then((res) => {
             console.log(res);
             store.dispatch("saveLectureRoomList", res.data["lectureRoomList"]);
@@ -109,7 +109,7 @@ function getLectureRoomList(userId) {
 }
 function deleteLectureRoom(lectureRoomId) {
     axios
-        .delete(`http://localhost:8080/api/lectureRoom/${lectureRoomId}`)
+        .delete(API_BASE_URL + `/api/lectureRoom/${lectureRoomId}`)
         .then((res) => {
             console.log(res);
             router.push({ path: "/main" });

@@ -97,7 +97,7 @@ public class LectureRoomServiceImpl implements LectureRoomService {
         lecture.setStartTime(created_time);
         lecture.setEndTime(end_time);
         lecture.setVideoUrl(recordingReq.getUrl());
-        // lecture.setChatRecord("채팅 저장"); 여기 만들어주세요
+        lecture.setChatRecord(recordingReq.getChatRecord());
         // url : /opt/openvidu/recordings/{recordingReq.id}/{recordingReq.name}.mp4
 
         lectureRepository.save(lecture);
