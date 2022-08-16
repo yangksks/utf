@@ -24,7 +24,7 @@
         <!-- 강의 동영상/통계 -->
         <b-col sm="6">
           <div v-if="selected">
-            <lecture-video />
+            <lecture-video :lecture="lecture" />
           </div>
           <div v-else class="selectMsg">
             <h3>강의를 선택하세요</h3>
