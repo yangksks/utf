@@ -8,4 +8,6 @@ public interface LectureService {
     ArrayList<Lecture> getLectures(long lectureRoomId);
 
     Lecture getLecture(long lectureId);
+
+    int getRecordLectureId();
 }

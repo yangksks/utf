@@ -59,8 +59,6 @@ public class StatisticsController {
     public ResponseEntity<HashMap<Integer, Integer>> getCurrentUnderstandRatio(@PathVariable String lectureRoomId) {
 
         HashMap<String, ArrayList<Integer>> emotions = lectureRoomUnderstanding.get(lectureRoomId);
-        System.out.println(62);
-        System.out.println(lectureRoomUnderstanding.get(lectureRoomId));
         int understand = 0; //각 시간에서 비율 구하기 위한 변수들
         int neutral = 0;
         int notUnderstand = 0;
@@ -78,26 +76,24 @@ public class StatisticsController {
                 }
             }
         }
-        if( ratios.containsKey(lectureRoomId) ){ //강의 진행중
-            try {
-                ratios.get(lectureRoomId).get(-1).add(notUnderstand);
-                ratios.get(lectureRoomId).get(0).add(neutral);
-                ratios.get(lectureRoomId).get(1).add(understand);
-            } catch(NullPointerException e) {
-            } finally {
-                HashMap<Integer, ArrayList<Integer>> newRatio = new HashMap<>();
+        if (ratios.containsKey(lectureRoomId)){
+            if (ratios.get(lectureRoomId).containsKey(-1)) ratios.get(lectureRoomId).get(-1).add(notUnderstand);
+            else {
                 ArrayList<Integer> not = new ArrayList<>();
-                ArrayList<Integer> neu = new ArrayList<>();
-                ArrayList<Integer> un = new ArrayList<>();
                 not.add(notUnderstand);
-                neu.add(neutral);
-                un.add(understand);
-
-                newRatio.put(-1, not);
-                newRatio.put(0, neu);
-                newRatio.put(1, un);
-
-                ratios.put(lectureRoomId, newRatio);
+                ratios.get(lectureRoomId).put(-1,not);
+            }
+            if (ratios.get(lectureRoomId).containsKey(0)) ratios.get(lectureRoomId).get(0).add(neutral);
+            else {
+                ArrayList<Integer> neu = new ArrayList<>();
+                neu.add(notUnderstand);
+                ratios.get(lectureRoomId).put(0,neu);
+            }
+            if (ratios.get(lectureRoomId).containsKey(1)) ratios.get(lectureRoomId).get(1).add(understand);
+            else {
+                ArrayList<Integer> un = new ArrayList<>();
+                un.add(notUnderstand);
+                ratios.get(lectureRoomId).put(1,un);
             }
         }else{ // 안하던 강의
             HashMap<Integer,ArrayList<Integer>> newRatio = new HashMap<>();
@@ -111,9 +107,6 @@ public class StatisticsController {
             newRatio.put(-1,not);
             newRatio.put(0,neu);
             newRatio.put(1,un);
-            System.out.println(100);
-            System.out.println("put");
-
             ratios.put(lectureRoomId, newRatio);
         }
 
@@ -125,10 +118,11 @@ public class StatisticsController {
         return new ResponseEntity<HashMap<Integer,Integer>>(front, HttpStatus.OK);
     }
 
-    @PostMapping("/end/{lectureRoomId}")
-    public ResponseEntity<String> endLecture(@PathVariable String lectureRoomId){ //강의 종료하고 DB올리기
+    @PostMapping("/end/{lectureRoomId}/{lectureId}")
+    public ResponseEntity<String> endLecture(@PathVariable String lectureRoomId, @PathVariable int lectureId){ //강의 종료하고 DB올리기
 
         HashMap<Integer, ArrayList<Integer>> recordRatio = ratios.get(lectureRoomId); //강의의 통계 가져오기
+        System.out.println("128 : " + ratios.get(lectureRoomId).toString());
         ArrayList<Integer> notUnderstand = recordRatio.get(-1);
         ArrayList<Integer> neutral = recordRatio.get(0);
         ArrayList<Integer> understand = recordRatio.get(1);
@@ -138,10 +132,11 @@ public class StatisticsController {
         ratios.remove(lectureRoomId);
         Date now = new Date();
         SimpleDateFormat datetime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //현재시각 DATETIME 형식으로
+        String time = datetime.format(now);
 
         Statistics st = new Statistics();
-        st.setLecture_room_id(1);
-        st.setTime(datetime.toString());
+        st.setVideoId(lectureId);
+        st.setTime(time);
         st.setUnderstand(understand);
         st.setNeutral(neutral);
         st.setNotUnderstand(notUnderstand);
@@ -152,23 +147,25 @@ public class StatisticsController {
         return new ResponseEntity<String>("SUCCESS",HttpStatus.OK);
     }
 
-    @GetMapping("/record/{video_id}")
-    public ResponseEntity<HashMap<Integer,ArrayList<Integer>>> getRecordedUnderstand(@PathVariable long video_id){
-        HashMap<Integer,ArrayList<Integer>> map = new HashMap<>();
+    @GetMapping("/record/{lectureId}")
+    public ResponseEntity<HashMap<String,ArrayList<Integer>>> getRecordedUnderstand(@PathVariable long lectureId){
+        HashMap<String,ArrayList<Integer>> map = new HashMap<>();
 
-        ArrayList<Integer> recordUnderstand = statisticsService.getRecordedUnderstand(video_id);
-        ArrayList<Integer> recordNeutral = statisticsService.getRecordedNeutral(video_id);
-        ArrayList<Integer> recordNotUnderstand = statisticsService.getRecordedNotUnderstand(video_id);
-        ArrayList<Integer> recordFocus = statisticsService.getRecordedFocus(video_id);
-        ArrayList<Integer> recordNotFocus = statisticsService.getRecordedNotFocus(video_id);
+        ArrayList<Integer> recordUnderstand = statisticsService.getRecordedUnderstand(lectureId);
+        ArrayList<Integer> recordNeutral = statisticsService.getRecordedNeutral(lectureId);
+        ArrayList<Integer> recordNotUnderstand = statisticsService.getRecordedNotUnderstand(lectureId);
+        ArrayList<Integer> recordFocus = statisticsService.getRecordedFocus(lectureId);
+        ArrayList<Integer> recordNotFocus = statisticsService.getRecordedNotFocus(lectureId);
 
-        map.put(-2, recordNotFocus);
-        map.put(-1,recordNotUnderstand);
-        map.put(0,recordNeutral);
-        map.put(1,recordUnderstand);
-        map.put(2, recordFocus);
+        map.put("-2", recordNotFocus);
+        map.put("-1",recordNotUnderstand);
+        map.put("0",recordNeutral);
+        map.put("1",recordUnderstand);
+        map.put("2", recordFocus);
 
-        return new ResponseEntity<HashMap<Integer,ArrayList<Integer>>>(map, HttpStatus.OK);
+        System.out.println(map);
+
+        return new ResponseEntity<HashMap<String,ArrayList<Integer>>>(map, HttpStatus.OK);
     }
 
     @PostMapping("/focus/current/{lectureRoomId}")
@@ -214,25 +211,20 @@ public class StatisticsController {
             }
         }
 
-        if( ratios.containsKey(lectureRoomId) ){ // 강의 진행중
-            try {
-                ratios.get(lectureRoomId).get(-2).add(notFocus);
-                ratios.get(lectureRoomId).get(2).add(focus);
-            } catch (NullPointerException e) {
-            } finally {
-                HashMap<Integer,ArrayList<Integer>> newRatio = new HashMap<>();
+        if(ratios.containsKey(lectureRoomId)){
+            if (ratios.get(lectureRoomId).containsKey(-2)) ratios.get(lectureRoomId).get(-2).add(notFocus);
+            else {
                 ArrayList<Integer> F = new ArrayList<>();
-                ArrayList<Integer> T = new ArrayList<>();
                 F.add(notFocus);
-                T.add(focus);
-
-                newRatio.put(-2,F);
-                newRatio.put(2,T);
-
-                ratios.put(lectureRoomId, newRatio);
+                ratios.get(lectureRoomId).put(-2,F);
             }
-
-        }else{ // 안하던 강의
+            if (ratios.get(lectureRoomId).containsKey(2)) ratios.get(lectureRoomId).get(2).add(notFocus);
+            else {
+                ArrayList<Integer> T = new ArrayList<>();
+                T.add(focus);
+                ratios.get(lectureRoomId).put(2,T);
+            }
+        } else {
             HashMap<Integer,ArrayList<Integer>> newRatio = new HashMap<>();
             ArrayList<Integer> F = new ArrayList<>();
             ArrayList<Integer> T = new ArrayList<>();

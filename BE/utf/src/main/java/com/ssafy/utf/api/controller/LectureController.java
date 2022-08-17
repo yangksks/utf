@@ -39,4 +39,10 @@ public class LectureController {
         Lecture lecture = lectureService.getLecture(lectureId);
         return new ResponseEntity<Lecture>(lecture, HttpStatus.OK);
     }
+
+    @GetMapping("/recentRecord")
+    public ResponseEntity<Integer> getRecordLectureId(){
+        int id = lectureService.getRecordLectureId();
+        return new ResponseEntity<Integer>(id, HttpStatus.OK);
+    }
 }

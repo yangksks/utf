@@ -44,20 +44,37 @@ export default {
       },
     };
   },
+  computed: {
+    isRecording() {
+      return this.getIsRecording();
+    },
+  },
+  watch: {
+    isRecording() {
+      if (this.isRecording === true) {
+        this.setChart();
+      }
+    },
+  },
   methods: {
     ...mapActions("focusStore", ["setFocusing"]),
     ...mapGetters("focusStore", ["getFocusRatio"]),
+    ...mapGetters("StatisticsStore", [
+      "getCurrentUnderstanding",
+      "getIsRecording",
+    ]),
     setChart() {
-      setInterval(() => {
-        this.setFocusing(this.lectureRoomId);
-        let obj = this.getFocusRatio();
-        let newChart = [obj[2], obj[-2]];
-        this.series = newChart;
+      var interval = setInterval(() => {
+        if (this.isRecording) {
+          this.setFocusing(this.lectureRoomId);
+          let obj = this.getFocusRatio();
+          let newChart = [obj[2], obj[-2]];
+          this.series = newChart;
+        } else {
+          clearInterval(interval);
+        }
       }, 5000);
     },
-  },
-  mounted() {
-    this.setChart();
   },
 };
 </script>
