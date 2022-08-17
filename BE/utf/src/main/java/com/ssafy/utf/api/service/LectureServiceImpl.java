@@ -22,4 +22,9 @@ public class LectureServiceImpl implements LectureService {
     public Lecture getLecture(long lectureId) {
         return lectureRepository.findByLectureId(lectureId);
     }
+
+    @Override
+    public int getRecordLectureId() {
+        return lectureRepository.getRecordLectureId();
+    }
 }
