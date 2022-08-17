@@ -23,7 +23,6 @@
 import UserInfo from "@/components/lecture/teacher/UserInfo";
 import UnderstandingChart from "@/components/lecture/teacher/UnderstandingChart.vue";
 import FocusChart from "@/components/lecture/teacher/FocusChart.vue";
-
 export default {
   props: {
     subscribers: Array,

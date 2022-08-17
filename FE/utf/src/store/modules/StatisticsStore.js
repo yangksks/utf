@@ -11,6 +11,8 @@ const statisticsStore = {
     lectures: undefined, //강의실 들어왔을 때 강의들
     lecture: undefined, //강의 1개
     lectureRoomId: 0,
+    isRecording: false,
+    recentLectureId: 0,
   },
   getters: {
     getCurrentUnderstanding: (state) => {
@@ -34,6 +36,12 @@ const statisticsStore = {
     getLectureRoomId: (state) => {
       return state.lectureRoomId;
     },
+    getIsRecording: (state) => {
+      return state.isRecording;
+    },
+    getRecentLectureId: (state) => {
+      return state.recentLectureId;
+    },
   },
   mutations: {
     SET_UNDERSTANDING: (state, payload) => {
@@ -56,6 +64,12 @@ const statisticsStore = {
     },
     SET_LECTURE_ROOM_ID: (state, payload) => {
       state.lectureRoomId = payload;
+    },
+    SET_IS_RECORDING: (state, payload) => {
+      state.isRecording = payload;
+    },
+    GET_LECTURE_ID: (state, payload) => {
+      state.recentLectureId = payload;
     },
   },
   actions: {
@@ -94,6 +108,10 @@ const statisticsStore = {
       api
         .get(`/api/statistics/record/${lectureId}`)
         .then((res) => {
+          // console.log("res.request.response" + res.request.response);
+          // console.log("res.data", res.data);
+          // console.log("res", res);
+          // eslint-disable-next-line
           store.commit("SET_RECORD_STATISTICS", res.data);
         })
         .catch((err) => {
@@ -145,6 +163,30 @@ const statisticsStore = {
         .get(`/api/lectureRoom/code/${code}`)
         .then((res) => {
           store.commit("SET_LECTURE_ROOM_ID", res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    setIsRecording: (store, flag) => {
+      store.commit("SET_IS_RECORDING", flag);
+    },
+    endLecture: (store, item) => {
+      api
+        .post(`/api/statistics/end/${item[0]}/${item[1]}`)
+        // eslint-disable-next-line
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    getLectureId: (store) => {
+      api
+        .get(`/api/lecture/recentRecord`)
+        .then((res) => {
+          store.commit("GET_LECTURE_ID", res.data);
         })
         .catch((err) => {
           console.log(err);

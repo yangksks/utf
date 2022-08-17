@@ -10,11 +10,11 @@ public interface StatisticsService {
 
     void insertLecture(Statistics st);
 
-    ArrayList<Integer> getRecordedUnderstand(long statisticsId);
-    ArrayList<Integer> getRecordedNeutral(long statisticsId);
-    ArrayList<Integer> getRecordedNotUnderstand(long statisticsId);
+    ArrayList<Integer> getRecordedUnderstand(long lectureId);
+    ArrayList<Integer> getRecordedNeutral(long lectureId);
+    ArrayList<Integer> getRecordedNotUnderstand(long lectureId);
 
-    ArrayList<Integer> getRecordedFocus(long statistics_id);
+    ArrayList<Integer> getRecordedFocus(long lectureId);
 
-    ArrayList<Integer> getRecordedNotFocus(long statistics_id);
+    ArrayList<Integer> getRecordedNotFocus(long lectureId);
 }

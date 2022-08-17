@@ -44,20 +44,37 @@ export default {
       },
     };
   },
-  methods: {
-    ...mapActions("StatisticsStore", ["setUnderstanding"]),
-    ...mapGetters("StatisticsStore", ["getCurrentUnderstanding"]),
-    setChart() {
-      setInterval(() => {
-        this.setUnderstanding(this.lectureRoomId);
-        let obj = this.getCurrentUnderstanding();
-        let newChart = [obj[1], obj[0], obj[-1]];
-        this.series = newChart;
-      }, 5000);
+  computed: {
+    isRecording() {
+      console.log(this.getIsRecording);
+      return this.getIsRecording();
     },
   },
-  mounted() {
-    this.setChart();
+  watch: {
+    isRecording() {
+      if (this.isRecording === true) {
+        this.setChart();
+      }
+    },
+  },
+  methods: {
+    ...mapActions("StatisticsStore", ["setUnderstanding"]),
+    ...mapGetters("StatisticsStore", [
+      "getCurrentUnderstanding",
+      "getIsRecording",
+    ]),
+    setChart() {
+      var interval = setInterval(() => {
+        if (this.isRecording) {
+          this.setUnderstanding(this.lectureRoomId);
+          let obj = this.getCurrentUnderstanding();
+          let newChart = [obj[1], obj[0], obj[-1]];
+          this.series = newChart;
+        } else {
+          clearInterval(interval);
+        }
+      }, 5000);
+    },
   },
 };
 </script>

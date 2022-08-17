@@ -31,14 +31,13 @@
           </div>
         </b-col>
         <!-- 채팅목록 -->
-        <b-col sm="2">
+        <b-col sm="3">
           <div class="chat-component">
             <div class="chat-header">채팅내역</div>
             <lecture-chat :msgs="msgList"></lecture-chat>
           </div>
         </b-col>
         <!-- 참가자목록 -->
-        <b-col sm="2"><user-list /></b-col>
       </b-row>
     </b-container>
   </div>
@@ -48,14 +47,12 @@
 import { mapActions, mapGetters } from "vuex";
 import LectureVideo from "@/components/statistics/LectureVideo.vue";
 import LectureChat from "@/components/statistics/LectureChat.vue";
-import UserList from "@/components/statistics/UserList.vue";
 import Logo from "@/components/common/Logo.vue";
 
 export default {
   components: {
     LectureVideo,
     LectureChat,
-    UserList,
     Logo,
   },
   props: {},
@@ -110,9 +107,20 @@ export default {
   padding-top: 50px;
 }
 .listBackground {
+  overflow: auto;
   background-color: white;
   border-radius: 15px;
   height: 80vh;
+}
+.listBackground::-webkit-scrollbar {
+  width: 10px;
+}
+.listBackground::-webkit-scrollbar-thumb {
+  background-color: #5196fe;
+  border-radius: 10px;
+}
+.listBackground::-webkit-scrollbar-track {
+  background: rgba(33, 122, 244, 0.1); /*스크롤바 뒷 배경 색상*/
 }
 .list {
   border-right: #c1c1c1 solid 1px;
@@ -137,6 +145,17 @@ export default {
   height: 80vh;
   background-color: white;
   border-radius: 15px;
+  overflow: auto;
+}
+.chat-component::-webkit-scrollbar {
+  width: 10px;
+}
+.chat-componen::-webkit-scrollbar-thumb {
+  background-color: #5196fe;
+  border-radius: 10px;
+}
+.chat-componen::-webkit-scrollbar-track {
+  background: rgba(33, 122, 244, 0.1); /*스크롤바 뒷 배경 색상*/
 }
 .chat-header {
   background: #ffffff;
