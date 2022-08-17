@@ -16,7 +16,7 @@ public class Statistics {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long statistics_id;
-    private int lectureId;
+    private int videoId;
     private String time;
     @Convert(converter = StatisticsConverter.class)
     private ArrayList<Integer> notUnderstand;

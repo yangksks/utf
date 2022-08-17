@@ -83,7 +83,7 @@ public class LectureRoomServiceImpl implements LectureRoomService {
     }
 
     @Override
-    public void registRecordVideo(RecordingReq recordingReq) throws Exception {
+    public Lecture registRecordVideo(RecordingReq recordingReq) throws Exception {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         Date created = new Date(recordingReq.getCreatedAt());
@@ -101,7 +101,7 @@ public class LectureRoomServiceImpl implements LectureRoomService {
         lecture.setChatRecord(recordingReq.getChatRecord());
         // url : /opt/openvidu/recordings/{recordingReq.id}/{recordingReq.name}.mp4
 
-        lectureRepository.save(lecture);
+        return lectureRepository.save(lecture);
     }
 
     @Override

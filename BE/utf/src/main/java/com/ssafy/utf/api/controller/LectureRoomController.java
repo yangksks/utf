@@ -3,6 +3,7 @@ package com.ssafy.utf.api.controller;
 import com.ssafy.utf.api.request.LectureRoomRegistReq;
 import com.ssafy.utf.api.request.RecordingReq;
 import com.ssafy.utf.api.service.LectureRoomService;
+import com.ssafy.utf.db.entity.lecture.Lecture;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,17 +62,18 @@ public class LectureRoomController {
     }
 
     @PostMapping("/record")
-    public ResponseEntity<Object> registRecordVideo(@RequestBody RecordingReq recordingReq) {
+    public ResponseEntity<Lecture> registRecordVideo(@RequestBody RecordingReq recordingReq) {
         HttpStatus status = null;
+        Lecture lecture = null;
         try {
-            lectureRoomService.registRecordVideo(recordingReq);
+            lecture = lectureRoomService.registRecordVideo(recordingReq);
             status = HttpStatus.OK;
         } catch (Exception e) {
             status = HttpStatus.INTERNAL_SERVER_ERROR;
             e.printStackTrace();
         }
 
-        return ResponseEntity.status(status).build();
+        return ResponseEntity.status(status).body(lecture);
     }
 
     @GetMapping("/code/{lectureRoomCode}")

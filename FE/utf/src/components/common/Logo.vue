@@ -24,6 +24,7 @@ export default {
   },
   methods: {
     goHome() {
+      this.$emit("initSelect");
       this.$router.push("/main");
     },
   },

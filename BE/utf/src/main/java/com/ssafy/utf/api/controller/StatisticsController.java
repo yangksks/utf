@@ -93,7 +93,7 @@ public class StatisticsController {
             else {
                 ArrayList<Integer> un = new ArrayList<>();
                 un.add(notUnderstand);
-                ratios.get(lectureRoomId).put(-1,un);
+                ratios.get(lectureRoomId).put(1,un);
             }
         }else{ // 안하던 강의
             HashMap<Integer,ArrayList<Integer>> newRatio = new HashMap<>();
@@ -135,7 +135,7 @@ public class StatisticsController {
         String time = datetime.format(now);
 
         Statistics st = new Statistics();
-        st.setLectureId(lectureId);
+        st.setVideoId(lectureId);
         st.setTime(time);
         st.setUnderstand(understand);
         st.setNeutral(neutral);
