@@ -81,11 +81,7 @@ export default {
     ...mapMutations("chatStore", {
       clearMessage: "CLEAR_MSG",
     }),
-    ...mapActions("StatisticsStore", [
-      "setIsRecording",
-      "endLecture",
-      "getLectureId",
-    ]),
+    ...mapActions("StatisticsStore", ["setIsRecording", "endLecture"]),
     ...mapGetters("StatisticsStore", ["getRecentLectureId"]),
     joinSession() {
       this.OVCamera = new OpenVidu();
@@ -216,6 +212,7 @@ export default {
 
     //registRecordVideoApi
     recordingEnd() {
+      let lectureId = 0;
       this.recording = false;
       this.setIsRecording(false);
       console.log("msglst:", this.msgList);
@@ -236,15 +233,16 @@ export default {
               chatRecord: JSON.stringify(this.msgList),
               // 채팅로그 가져옵시다
             },
-            () => {},
+            (res) => {
+              console.log(res);
+              lectureId = res.data.lectureId;
+              this.endLecture([this.lectureRoomId, lectureId]);
+            },
             () => {}
           );
         },
         (error) => console.log(error)
       );
-      this.getLectureId();
-      let lectureId = this.getRecentLectureId();
-      this.endLecture([this.lectureRoomId, lectureId]);
     },
 
     leaveSession() {

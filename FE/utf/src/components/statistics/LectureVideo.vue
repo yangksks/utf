@@ -105,11 +105,23 @@ export default {
         num += this.statistics[-2][i];
         num += this.statistics[2][i];
 
-        this.statistics[-2][i] = parseInt((this.statistics[-2][i] * 100) / num);
-        this.statistics[-1][i] = parseInt((this.statistics[-1][i] * 100) / num);
-        this.statistics[0][i] = parseInt((this.statistics[0][i] * 100) / num);
-        this.statistics[1][i] = parseInt((this.statistics[1][i] * 100) / num);
-        this.statistics[2][i] = parseInt((this.statistics[2][i] * 100) / num);
+        if (num == 0) {
+          this.statistics[-2][i] = 0;
+          this.statistics[-1][i] = 0;
+          this.statistics[0][i] = 0;
+          this.statistics[1][i] = 0;
+          this.statistics[2][i] = 0;
+        } else {
+          this.statistics[-2][i] = parseInt(
+            (this.statistics[-2][i] * 100) / num
+          );
+          this.statistics[-1][i] = parseInt(
+            (this.statistics[-1][i] * 100) / num
+          );
+          this.statistics[0][i] = parseInt((this.statistics[0][i] * 100) / num);
+          this.statistics[1][i] = parseInt((this.statistics[1][i] * 100) / num);
+          this.statistics[2][i] = parseInt((this.statistics[2][i] * 100) / num);
+        }
       }
     },
     showChart(index) {
