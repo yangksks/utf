@@ -1,7 +1,7 @@
 <template>
   <div class="background">
     <b-container>
-      <logo class="logo" :size="40" />
+      <logo class="logo" :size="40" @initSelect="initSelect" />
       <b-row>
         <!-- 강의리스트 -->
         <b-col sm="2" class="list">
@@ -32,9 +32,11 @@
         </b-col>
         <!-- 채팅목록 -->
         <b-col sm="3">
-          <div class="chat-component">
+          <div v-if="selected" class="chat-component">
             <div class="chat-header">채팅내역</div>
-            <lecture-chat :msgs="msgList"></lecture-chat>
+            <lecture-chat
+              :msgs="JSON.parse(getLecture().chatRecord)"
+            ></lecture-chat>
           </div>
         </b-col>
         <!-- 참가자목록 -->
@@ -61,7 +63,7 @@ export default {
       lectureRoomId: 0,
       lectureId: 0,
       selected: false,
-      msgList: [],
+      // msgList: [],
     };
   },
   computed: {
@@ -90,7 +92,10 @@ export default {
       this.lectureId = lectureId;
       this.selected = true;
       this.setLectureOne(lectureId);
-      this.msgList = JSON.parse(this.getLecture().chatRecord);
+      // this.msgList = JSON.parse(this.getLecture().chatRecord);
+    },
+    initSelect() {
+      this.selected = false;
     },
   },
   mounted() {
