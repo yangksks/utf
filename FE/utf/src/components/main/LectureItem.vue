@@ -33,7 +33,7 @@ export default {
       this.$emit("emitIndex", index, lectureRoomId);
     },
     copyCode() {
-      var text = "https://i7a701.p.ssafy.io/lecture/" + this.lecture["lectureRoomCode"];
+      var text = process.env.VUE_APP_LECTURE_ROOM_URL + this.lecture["lectureRoomCode"];
       console.log(text);
       navigator.clipboard
         .writeText(text)
