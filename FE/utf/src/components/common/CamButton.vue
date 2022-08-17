@@ -40,7 +40,7 @@ export default {
   },
   data() {
     return {
-      isActive: this.streamManager.properties.publishVideo,
+      isActive: this.streamManager.stream.videoActive,
     };
   },
 

@@ -210,8 +210,7 @@ export default {
           "님이 자리를 오래 비웠습니다.";
         this.simpleMessageTemplate(msg, target, "alert");
         console.log("5분 지남");
-        // }, 5 * 60 * 1000);
-      }, 5 * 1 * 1000);
+      }, 5 * 60 * 1000);
     },
     /* Clear timer when user comeback */
     comeback() {
