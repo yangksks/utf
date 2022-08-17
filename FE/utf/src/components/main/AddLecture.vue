@@ -84,7 +84,7 @@ export default {
 .flip-card-back {
   position: absolute;
   width: 100%;
-  height: 270px;
+  height: 237px;
   border: 1px solid #c1c1c1;
   border-radius: 20px;
   -webkit-backface-visibility: hidden; /* Safari */
@@ -94,7 +94,7 @@ export default {
 .flip-card-backDark {
   position: absolute;
   width: 100%;
-  height: 270px;
+  height: 237px;
   border: 1px solid #3e3e3e;
   border-radius: 20px;
   -webkit-backface-visibility: hidden; /* Safari */
