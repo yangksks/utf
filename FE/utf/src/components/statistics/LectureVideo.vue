@@ -8,14 +8,31 @@
     </div>
     <div class="radioGroup mt-2">
       <div v-for="(item, index) in chartList" :key="index">
-        <input
+        <b-form-radio
           type="radio"
           :id="item.key"
           v-model="selected"
           :value="item.value"
           @change="showChart(index)"
-        />
-        <label :for="item.key" class="text">{{ item.value }}</label>
+        >
+          <p v-if="item.value === 'notFocus'">
+            집중 안돼요
+            <img src="@/assets/sleep.png" style="width: 30%" alt="x" />
+          </p>
+          <p v-if="item.value === 'notUnderstand'">
+            이해 안돼요
+            <img src="@/assets/problem.png" style="width: 30%" alt="x" />
+          </p>
+          <p v-if="item.value === 'focus'">
+            집중하고 있어요
+            <img src="@/assets/focus.png" style="width: 30%" alt="o" />
+          </p>
+          <p v-if="item.value === 'understand'">
+            이해잘돼요
+            <img src="@/assets/understanding1.png" style="width: 30%" alt="o" />
+          </p>
+        </b-form-radio>
+        <!-- <label :for="item.key" class="text">{{ item.value }}</label> -->
       </div>
     </div>
   </div>
@@ -37,22 +54,22 @@ export default {
     return {
       chartList: [
         {
-          value: "집중x",
+          value: "notFocus",
           show: false,
           series: [{ data: [] }],
         },
         {
-          value: "이해x",
+          value: "notUnderstand",
           show: false,
           series: [{ data: [] }],
         },
         {
-          value: "이해o",
+          value: "understand",
           show: false,
           series: [{ data: [] }],
         },
         {
-          value: "집중o",
+          value: "focus",
           show: false,
           series: [{ data: [] }],
         },
