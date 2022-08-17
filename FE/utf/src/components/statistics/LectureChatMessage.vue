@@ -20,11 +20,6 @@
 export default {
   name: "LectureChatMessage",
   props: ["msg"],
-  data() {
-    return {
-      isSame: false,
-    };
-  },
   methods: {},
 };
 </script>
