@@ -14,7 +14,7 @@ public class RecordingReq {
     private String name;
     private String sessionId;
     private long createdAt;
-    private float duration;
+    private long duration;
     private String url;
     private String chatRecord;
 

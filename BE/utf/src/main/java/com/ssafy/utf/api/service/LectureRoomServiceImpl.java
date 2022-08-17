@@ -13,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class LectureRoomServiceImpl implements LectureRoomService {
@@ -85,9 +82,10 @@ public class LectureRoomServiceImpl implements LectureRoomService {
     @Override
     public Lecture registRecordVideo(RecordingReq recordingReq) throws Exception {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
 
         Date created = new Date(recordingReq.getCreatedAt());
-        Date end = new Date((long) (recordingReq.getCreatedAt() + (recordingReq.getDuration() * 100)));
+        Date end = new Date(recordingReq.getCreatedAt() + recordingReq.getDuration());
 
         String created_time = sdf.format(created);
         String end_time = sdf.format(end);
@@ -99,7 +97,9 @@ public class LectureRoomServiceImpl implements LectureRoomService {
         lecture.setEndTime(end_time);
         lecture.setVideoUrl(recordingReq.getUrl());
         lecture.setChatRecord(recordingReq.getChatRecord());
-        // url : /opt/openvidu/recordings/{recordingReq.id}/{recordingReq.name}.mp4
+
+        System.out.println(recordingReq.getDuration());
+        System.out.println(lecture.getEndTime());
 
         return lectureRepository.save(lecture);
     }

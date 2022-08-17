@@ -229,7 +229,7 @@ export default {
               name: data.name,
               sessionId: data.sessionId,
               createdAt: data.createdAt,
-              duration: data.duration,
+              duration: data.duration * 1000,
               url: data.url,
               chatRecord: JSON.stringify(this.msgList),
               // 채팅로그 가져옵시다
