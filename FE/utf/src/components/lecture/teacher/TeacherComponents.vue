@@ -44,7 +44,7 @@ import {
   registRecordVideoApi,
 } from "@/api/openvidu.js";
 import store from "@/store";
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
 export default {
   name: "TeacherComponents",
   components: {
@@ -81,6 +81,12 @@ export default {
     ...mapMutations("chatStore", {
       clearMessage: "CLEAR_MSG",
     }),
+    ...mapActions("StatisticsStore", [
+      "setIsRecording",
+      "endLecture",
+      "getLectureId",
+    ]),
+    ...mapGetters("StatisticsStore", ["getRecentLectureId"]),
     joinSession() {
       this.OVCamera = new OpenVidu();
       this.OVScreen = new OpenVidu();
@@ -197,6 +203,7 @@ export default {
 
     recordingStart() {
       this.recording = true;
+      this.setIsRecording(true);
       recordingStartApi(
         this.mySessionId,
         ({ data }) => {
@@ -210,6 +217,7 @@ export default {
     //registRecordVideoApi
     recordingEnd() {
       this.recording = false;
+      this.setIsRecording(false);
       console.log("msglst:", this.msgList);
       recordingStopApi(
         this.RECORDING_ID,
@@ -234,6 +242,9 @@ export default {
         },
         (error) => console.log(error)
       );
+      this.getLectureId();
+      let lectureId = this.getRecentLectureId();
+      this.endLecture([this.lectureRoomId, lectureId]);
     },
 
     leaveSession() {

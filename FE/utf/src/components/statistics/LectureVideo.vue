@@ -74,10 +74,13 @@ export default {
     ...mapGetters("StatisticsStore", ["getRecordedStatistics"]),
 
     setChart() {
-      this.chartList[0].series[0].data = this.statistics[-2];
-      this.chartList[1].series[0].data = this.statistics[-1];
-      this.chartList[2].series[0].data = this.statistics[1];
-      this.chartList[3].series[0].data = this.statistics[2];
+      // let ss = JSON.parse(this.statistics);
+      // console.log(ss);
+      console.log(this.statistics);
+      this.chartList[0].series[0].data = this.statistics["-2"];
+      this.chartList[1].series[0].data = this.statistics["-1"];
+      this.chartList[2].series[0].data = this.statistics["1"];
+      this.chartList[3].series[0].data = this.statistics["2"];
 
       //비율로 바꿔주기
       let maxSize = 0; //수업길이

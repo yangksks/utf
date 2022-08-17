@@ -15,8 +15,8 @@ public class Statistics {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long understand_statistics_id;
-    private int lecture_room_id;
+    private long statistics_id;
+    private int lectureId;
     private String time;
     @Convert(converter = StatisticsConverter.class)
     private ArrayList<Integer> notUnderstand;
@@ -25,8 +25,8 @@ public class Statistics {
     @Convert(converter = StatisticsConverter.class)
     private ArrayList<Integer> understand;
     @Convert(converter = StatisticsConverter.class)
-    private ArrayList<Integer> focus;
-    @Convert(converter = StatisticsConverter.class)
     private ArrayList<Integer> notFocus;
+    @Convert(converter = StatisticsConverter.class)
+    private ArrayList<Integer> focus;
 
 }
