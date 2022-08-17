@@ -45,7 +45,7 @@ export default {
   },
   data() {
     return {
-      isActive: this.streamManager.properties.publishAudio,
+      isActive: this.streamManager.stream.audioActive,
     };
   },
 
