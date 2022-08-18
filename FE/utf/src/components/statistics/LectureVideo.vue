@@ -6,7 +6,7 @@
     <div v-for="(item, index) in chartList" :key="index">
       <chart v-if="item.show" :series="item.series" class="mt-1" />
     </div>
-    <div class="radioGroup mt-2">
+    <div class="radioGroup mt-5">
       <div v-for="(item, index) in chartList" :key="index">
         <b-form-radio
           type="radio"
@@ -91,8 +91,6 @@ export default {
     ...mapGetters("StatisticsStore", ["getRecordedStatistics"]),
 
     setChart() {
-      // let ss = JSON.parse(this.statistics);
-      // console.log(ss);
       console.log(this.statistics);
       this.chartList[0].series[0].data = this.statistics["-2"];
       this.chartList[1].series[0].data = this.statistics["-1"];
@@ -118,9 +116,14 @@ export default {
       });
       //각 시간에서의 값들을 비율로 바꿔주기
       for (let i = 0; i < maxSize; i++) {
-        let num = 0; // i번째 시간에서 총 학생 수
-        num += this.statistics[-2][i];
-        num += this.statistics[2][i];
+        let focus = 0; // i번째 시간에서 총 학생 수
+        let understand = 0;
+        focus += this.statistics[-2][i] + this.statistics[2][i];
+        understand +=
+          this.statistics[-1][i] +
+          this.statistics[1][i] +
+          this.statistics[0][i];
+        let num = Math.max(focus, understand);
 
         if (num == 0) {
           this.statistics[-2][i] = 0;
