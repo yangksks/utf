@@ -79,4 +79,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.vue-apexcharts {
+  position: relative;
+  right: 5%;
+}
+</style>
