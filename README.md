@@ -303,15 +303,28 @@ feat/backend : 기능 추가
 ![image](./docs/gif/회원가입, 메인화면.gif)
 
 ### 강사입장
+![image](./docs/gif/강사입장.gif)
 
 ### 강사 화면공유
+![image](./docs/gif/강사 화면공유.gif)
 
 ### 강사 통신
+![image](./docs/gif/선생 채팅, 버튼.gif)
+
+### 강사 실시간 통계
+![image](./docs/gif/선생 이해도,집중도.gif)
+
+### 강사 통계
+![image](./docs/gif/강사 통계.gif)
 
 ### 학생 대기화면
+![image](./docs/gif/학생 대기화면.gif)
 
 ### 학생입장
+![image](./docs/gif/학생입장.gif)
 
 ### 학생 화면공유
+![image](./docs/gif/학생 화면공유.gif)
 
 ### 학생 통신
+![image](./docs/gif/학생 채팅, 버튼.gif)
