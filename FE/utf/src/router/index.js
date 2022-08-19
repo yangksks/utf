@@ -1,20 +1,44 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue";
+import LoginView from "@/views/LoginView.vue";
+import RedirectView from "@/views/RedirectView.vue";
+import JoinFormView from "@/views/JoinFormView.vue";
 
 const routes = [
   {
     path: "/",
-    name: "home",
-    component: HomeView,
+    name: "login",
+    component: LoginView,
   },
   {
-    path: "/about",
-    name: "about",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+    path: "/joinForm",
+    name: "joinForm",
+    component: JoinFormView,
+  },
+  {
+    path: "/redirect",
+    name: "redirect",
+    component: RedirectView,
+  },
+  {
+    path: "/lecture/:lectureRoomCode",
+    name: "lecture",
+    component: () => import("@/views/LectureRoom.vue"),
+    props: true,
+  },
+  {
+    path: "/main",
+    name: "main",
+    component: () => import("@/views/Main.vue"),
+  },
+  {
+    path: "/exit",
+    name: "exit",
+    component: () => import("@/views/ExitRoom.vue"),
+  },
+  {
+    path: "/lectureRoom/:lectureRoomId",
+    name: "lectureRoom",
+    component: () => import("@/views/LectureStatistics.vue"),
   },
 ];
 
