@@ -1,15 +1,3 @@
-# README
-
-참고
-
-[https://github.com/Button-Up/PJT1-Button-Up/blob/master/README.md](https://github.com/Button-Up/PJT1-Button-Up/blob/master/README.md)
-
-[https://github.com/upswp/THXSTORE](https://github.com/upswp/THXSTORE)
-
-[https://github.com/hotsix-turtles/TUPLI/blob/dev/README.md](https://github.com/hotsix-turtles/TUPLI/blob/dev/README.md)
-
-[https://github.com/yesfordev/homedong/blob/develop/README.md](https://github.com/yesfordev/homedong/blob/develop/README.md)
-
 # 팀소개
 
 ---
@@ -31,7 +19,7 @@ SSAFY  7기 공통프로젝트 - UTF
 
 ### Overview
 
-강사를 위
+강사를 위한 강의 피드백 프로젝트
 
 # 기술 스택
 
@@ -45,22 +33,10 @@ SSAFY  7기 공통프로젝트 - UTF
 | Database | MySql |
 | Server | AWS EC2, Nginx , openvidu |
 | DevOps | Git, Docker |
-- 🖥BackEnd
-    
-    ```bash
-    
-    ```
-    
-- 🎨FrontEnd
-    
-    ```bash
-    
-    ```
-    
 
 ### 서비스 아키텍처
 
-![README%20af8ef944777c4897baf9f39408554be5/Untitled.png](README%20af8ef944777c4897baf9f39408554be5/Untitled.png)
+![image](https://user-images.githubusercontent.com/56426044/185528366-573a3da5-226b-4a8c-8ec9-dd0cab7b3699.png)
 
 - 백엔드 구조
     
@@ -233,6 +209,7 @@ SSAFY  7기 공통프로젝트 - UTF
 [ERD](https://www.erdcloud.com/d/gsvoKGuaGr5kK6yFi)
 
 ### 코드 컨벤션
+---
 
 - 백엔드
     - 파일명: PascalCase (ex: UserRepository)
@@ -323,6 +300,7 @@ feat/backend : 기능 추가
 ---
 
 ### 회원가입, 메인화면
+![image](./docs/gif/회원가입, 메인화면.png)
 
 ### 강사입장
 
@@ -337,5 +315,3 @@ feat/backend : 기능 추가
 ### 학생 화면공유
 
 ### 학생 통신
-
-[제목 없음](https://www.notion.so/a1d0272750a1446dbcfd2b7f8f766d5e)
