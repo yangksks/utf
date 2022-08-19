@@ -300,7 +300,7 @@ feat/backend : 기능 추가
 ---
 
 ### 회원가입, 메인화면
-![image](./docs/gif/회원가입, 메인화면.png)
+![image](./docs/gif/회원가입, 메인화면.gif)
 
 ### 강사입장
 
